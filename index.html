@@ -112,7 +112,7 @@ button{cursor:pointer}
 /* Fields */
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field>span{font-size:var(--t-s);font-weight:700;color:var(--ink-2)}
-input[type=text],input[type=number],input[type=search],select,textarea{width:100%;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--rule);background:var(--paper);font-size:var(--t-m)}
+input[type=text],input[type=password],input[type=number],input[type=search],select,textarea{width:100%;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--rule);background:var(--paper);font-size:var(--t-m)}
 input::placeholder,textarea::placeholder{color:var(--ink-3)}
 textarea{resize:vertical;line-height:1.55}
 select{appearance:auto}
@@ -795,7 +795,7 @@ async function flush(id) {
 function setSaveState(t) { const el = $('#save-state'); if (el) el.textContent = t; }
 
 async function boot() {
-  loadSettings(); render();
+  loadSettings(); OAI = loadOAI(); render();
   const cl = window.claude;
   if (!cl || typeof cl.use !== 'function') return startLocal();
   let db = null, user = null, sample = null;
@@ -882,11 +882,39 @@ function locate(text, quote, from) {
 /* never cut a ⟦placeholder⟧ in half */
 function snapMarks(t, a, b) { const re = new RegExp(MARK_RE.source, 'g'); let m; while ((m = re.exec(t))) { const s = m.index, e = s + m[0].length; if (a > s && a < e) a = s; if (b > s && b < e) b = e; } return [a, b]; }
 function quoteLen(text, i, quote) { if (text.substr(i, quote.length) === quote) return quote.length; const ws = quote.trim().split(/\s+/).map(reEsc).join('\\s+'); const m = new RegExp('^' + ws).exec(text.slice(i)); return m ? m[0].length : quote.length; }
-async function sortWithClaude(c, text, signal) {
+/* ===== her own OpenAI key: only on the standalone website, kept only in this browser ===== */
+const STANDALONE = !(window.claude && typeof window.claude.use === 'function');
+const OAI_DEFAULT_MODEL = 'gpt-5-mini';
+let OAI = null;
+function loadOAI() { try { const r = JSON.parse(localStorage.getItem(APP_KEY + '-openai') || 'null'); return r && r.key ? { key: String(r.key), model: String(r.model || OAI_DEFAULT_MODEL) } : null; } catch (e) { return null; } }
+function saveOAI(v) { try { if (v) localStorage.setItem(APP_KEY + '-openai', JSON.stringify(v)); else localStorage.removeItem(APP_KEY + '-openai'); return true; } catch (e) { return false; } }
+async function openaiJSON(prompt, signal, cfg) {
+  cfg = cfg || OAI; let res;
+  try {
+    res = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', signal,
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + cfg.key },
+      body: JSON.stringify({ model: cfg.model || OAI_DEFAULT_MODEL, response_format: { type: 'json_object' }, messages: [{ role: 'user', content: prompt }] }) });
+  } catch (e) { if (signal && signal.aborted) throw e; throw { code: 'network' }; }
+  let body = null; try { body = await res.json(); } catch (e) { body = null; }
+  if (!res.ok) {
+    const t = String((body && body.error && (body.error.code || body.error.type)) || '');
+    if (res.status === 401) throw { code: 'oai_key' };
+    if (res.status === 429 && /quota|billing|credit/i.test(t)) throw { code: 'oai_credit' };
+    if (res.status === 429) throw { code: 'rate_limited' };
+    if (res.status === 404 || /model/i.test(t)) throw { code: 'oai_model' };
+    throw { code: 'network' };
+  }
+  const txt = body && body.choices && body.choices[0] && body.choices[0].message && body.choices[0].message.content;
+  try { return JSON.parse(txt); } catch (e) { throw { code: 'invalid_json' }; }
+}
+const PROVIDER_NAME = { claude: 'Claude', openai: 'ChatGPT' };
+function aiProvider() { if (S.settings.useClaude && SAMPLE) return 'claude'; if (STANDALONE && OAI && OAI.key) return 'openai'; return null; }
+async function sortWithAI(c, text, signal, provider) {
   const known = new Set(allSpans(c).map(s => s.id));
   const earlier = allSpans(c).filter(s => s.cat !== 'context').slice(-60).map(s => `[${s.id}] (${s.cat}) ${s.short || shortOf(s.text)}`).join('\n') || 'none';
   const body = text.length > 24000 ? text.slice(0, 24000) : text;
-  const data = await SAMPLE.json(`${AI_PROMPT}\n\nEARLIER POINTS:\n${earlier}\n\nNOTES:\n"""\n${body}\n"""`, { signal, modelTier: 'default' });
+  const prompt = `${AI_PROMPT}\n\nEARLIER POINTS:\n${earlier}\n\nNOTES:\n"""\n${body}\n"""`;
+  const data = provider === 'openai' ? await openaiJSON(prompt, signal) : await SAMPLE.json(prompt, { signal, modelTier: 'default' });
   const spans = []; let cursor = 0;
   (Array.isArray(data && data.spans) ? data.spans : []).forEach(x => {
     const q = String(x && x.quote || ''); if (q.trim().length < 3) return;
@@ -896,7 +924,7 @@ async function sortWithClaude(c, text, signal) {
     const cat = CATS[x.cat] ? x.cat : 'context';
     const tps = Array.isArray(x.topics) ? x.topics.filter(t => TOPICS.includes(t)) : [];
     let rel = null; if (x.update && known.has(String(x.update.id)) && ['better', 'worse', 'resolved'].includes(x.update.change)) rel = { id: String(x.update.id), change: x.update.change };
-    spans.push({ id: uid('s'), a, b, cat, topics: tps, short: String(x.short || '').slice(0, 120) || shortOf(body.slice(a, b)), rel, by: 'claude' });
+    spans.push({ id: uid('s'), a, b, cat, topics: tps, short: String(x.short || '').slice(0, 120) || shortOf(body.slice(a, b)), rel, by: provider });
     cursor = b;
   });
   if (text.length > body.length) sortByRules(text.slice(body.length)).forEach(s => { s.a += body.length; s.b += body.length; spans.push(s); });
@@ -905,12 +933,15 @@ async function sortWithClaude(c, text, signal) {
   if (!spans.length) throw { code: 'empty_sort' };
   return { spans, checks };
 }
-function aiErrorText(e) {
-  const code = e && e.code;
-  if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(code)) { SAMPLE = null; return 'Claude isn’t available here, so your notes were sorted on this iPad with the built-in rules.'; }
-  if (code === 'rate_limited') return 'Claude is busy right now, so your notes were sorted with the built-in rules. You can re-sort later.';
-  if (code === 'empty_sort' || code === 'invalid_json') return 'Claude’s answer couldn’t be read, so your notes were sorted with the built-in rules.';
-  return 'Couldn’t reach Claude, so your notes were sorted with the built-in rules.';
+function aiErrorText(e, provider) {
+  const code = e && e.code; const name = PROVIDER_NAME[provider] || 'Claude'; const tail = ', so your notes were sorted with the built-in rules.';
+  if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(code)) { SAMPLE = null; return 'Claude isn’t available here' + tail; }
+  if (code === 'oai_key') return 'Your OpenAI key wasn’t accepted' + tail + ' Check it in Settings.';
+  if (code === 'oai_credit') return 'Your OpenAI account has no API credit left' + tail;
+  if (code === 'oai_model') return 'The OpenAI model in Settings isn’t available' + tail;
+  if (code === 'rate_limited') return name + ' is busy right now' + tail + ' You can re-sort later.';
+  if (code === 'empty_sort' || code === 'invalid_json') return name + '’s answer couldn’t be read' + tail;
+  return 'Couldn’t reach ' + name + tail;
 }
 
 /* ================= case operations ================= */
@@ -1047,7 +1078,7 @@ function writeHTML(c, d) {
 function reviewHTML(c, d) {
   const r = deidFor(c, d); d.result = r;
   const sum = deidSummary(r);
-  const who = S.settings.useClaude && SAMPLE ? 'Claude will sort the hidden version using your Claude account. The original stays on this iPad.' : 'Sorting happens on this iPad.';
+  const p = aiProvider(); const who = p === 'claude' ? 'Claude will sort the hidden version using your Claude account. The original stays on this iPad.' : p === 'openai' ? 'ChatGPT will sort the hidden version using your own OpenAI key. The original stays on this iPad.' : 'Sorting happens on this iPad.';
   return `<div class="sheet"><div class="sheet-head"><h3>Check what is hidden</h3><span class="xs muted">${sum.length ? 'Hid ' + esc(sum.join(', ')) : 'Nothing identifying found'}</span></div>
     ${r.people.length ? `<div class="stack-s" style="margin-bottom:14px"><span class="small muted">Who is who? This only changes the label; names are never kept.</span>
       ${r.people.map(p => `<div class="row"><span class="pill">${esc(p.label)}</span><span class="small muted grow">${plural(p.count, 'mention')}</span>
@@ -1066,7 +1097,7 @@ function reviewBody(r) {
 }
 function sortingHTML(d) {
   return `<div class="sheet"><div class="sheet-head"><h3>Sorting your notes</h3></div>
-    <div class="busy-line"><span class="stroke" aria-hidden="true"></span><span class="grow">${d.withClaude ? 'Claude is sorting the hidden version. This usually takes 10 to 40 seconds.' : 'Sorting on this iPad.'}</span><button class="btn sm" data-act="stop-sort">Stop</button></div></div>`;
+    <div class="busy-line"><span class="stroke" aria-hidden="true"></span><span class="grow">${d.provider ? `${PROVIDER_NAME[d.provider]} is sorting the hidden version. This usually takes 10 to 40 seconds.` : 'Sorting on this iPad.'}</span><button class="btn sm" data-act="stop-sort">Stop</button></div></div>`;
 }
 function markup(text) { return esc(text).replace(MARK_RE, (m, l) => `<span class="pill">${l}</span>`); }
 function hlHTML(e, sweep) {
@@ -1089,7 +1120,7 @@ function sheetsHTML(c) {
   return `${LEGEND}${groups.map(g => {
     if (g.kind === 'quick') return `<article class="sheet"><div class="sheet-head"><h3>Added in the app · ${fmtDate(g.date)}</h3></div><div class="stack-s sheet-body">${g.items.map(e => `<div class="row" style="align-items:baseline"><span class="grow">${hlHTML(e, UI.justSorted === e.id)}</span><button class="btn quiet sm" data-act="del-entry" data-id="${esc(e.id)}" aria-label="Delete this line">${icon('trash')}</button></div>`).join('')}</div></article>`;
     const iv = g.intId && c.ints.find(i => i.id === g.intId);
-    return `<article class="sheet" id="sheet-${esc(g.id)}"><div class="sheet-head"><h3>Session notes · ${fmtDate(g.date)}</h3><span class="row xs muted">${iv ? `${esc(variantOf(iv).name)} · ` : ''}Sorted ${g.by === 'claude' ? 'by Claude' : 'on this iPad'}
+    return `<article class="sheet" id="sheet-${esc(g.id)}"><div class="sheet-head"><h3>Session notes · ${fmtDate(g.date)}</h3><span class="row xs muted">${iv ? `${esc(variantOf(iv).name)} · ` : ''}Sorted ${g.by === 'claude' ? 'by Claude' : g.by === 'openai' ? 'by ChatGPT' : 'on this iPad'}
         <button class="btn quiet sm" data-act="copy-entry" data-id="${esc(g.id)}">${icon('copy')}Copy</button>
         ${UI.confirm === 'e:' + g.id ? `<button class="btn sm danger" data-act="del-entry-yes" data-id="${esc(g.id)}">Delete these notes</button><button class="btn quiet sm" data-act="cancel-confirm">Keep</button>` : `<button class="btn quiet sm" data-act="del-entry" data-id="${esc(g.id)}" aria-label="Delete these notes">${icon('trash')}</button>`}</span></div>
       <div class="sheet-body ruled" style="white-space:pre-wrap">${hlHTML(g, UI.justSorted === g.id)}</div></article>`;
@@ -1203,11 +1234,22 @@ function optionHTML(c, o, iv) {
 }
 
 /* ================= settings ================= */
+function oaiSettingsHTML() {
+  const has = !!(OAI && OAI.key);
+  return `<div class="stack-s"><h2>Sort with ChatGPT</h2>
+    <p class="small muted">Without a key, notes are sorted on this iPad with the built-in rules. With your own OpenAI API key, ChatGPT sorts them much more accurately. Only the hidden version of your notes is sent, and the key stays in this browser on this iPad.</p>
+    ${has ? `<div class="row"><span class="status good">Key saved</span><span class="small muted">ending ${esc(OAI.key.slice(-4))} · ${esc(OAI.model)}</span></div>` : ''}
+    <label class="field"><span>OpenAI API key</span><input type="password" id="oai-key" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${has ? 'Paste a new key to replace it' : 'Starts with sk-'}"></label>
+    <details class="more"><summary>${icon('chev')}Model</summary><label class="field" style="margin-top:8px"><span>Model name</span><input type="text" id="oai-model" value="${esc((OAI && OAI.model) || OAI_DEFAULT_MODEL)}" autocapitalize="off" spellcheck="false"></label></details>
+    <div class="row"><button class="btn sm primary" data-act="oai-save">${has ? 'Save and test' : 'Save and test key'}</button>${has ? '<button class="btn sm quiet danger" data-act="oai-remove">Remove key</button>' : ''}</div>
+    <p class="small" id="oai-status" aria-live="polite">${esc(UI.oaiStatus || '')}</p>
+    <p class="xs muted">The key needs API credit from platform.openai.com. A ChatGPT Plus subscription doesn’t include it. Set a monthly spending limit there.</p></div>`;
+}
 function settingsHTML() {
   return `<section class="stack" style="max-width:720px"><h1>Settings</h1>
     <div class="stack-s"><h2>Where your cases are saved</h2><p>${S.mode === 'db' ? 'Privately in your Claude account. Only you can see your cases, even if this page is shared with others.' : 'On this iPad only. Clearing website data removes them.'}</p></div>
-    <div class="stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
-      <p class="small muted">${SAMPLE ? 'Claude sorts much more accurately than the built-in rules. Only the hidden version of your notes is sent, using your own Claude account.' : 'Claude is not available on this page right now, so sorting uses the built-in rules on this iPad.'}</p></div>
+    ${STANDALONE ? oaiSettingsHTML() : `<div class="stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
+      <p class="small muted">${SAMPLE ? 'Claude sorts much more accurately than the built-in rules. Only the hidden version of your notes is sent, using your own Claude account.' : 'Claude is not available on this page right now, so sorting uses the built-in rules on this iPad.'}</p></div>`}
     <div class="stack-s"><h2>Back up your cases</h2><textarea class="copybox" id="export" readonly>${esc(JSON.stringify(S.cases, null, 1))}</textarea><div><button class="btn sm" data-act="copy-export">${icon('copy')}Copy all cases</button></div>
       <label class="field"><span>Restore from a backup</span><textarea class="copybox" id="import" placeholder="Paste a backup here"></textarea></label><div><button class="btn sm" data-act="import">Restore</button></div></div>
     <div class="stack-s"><h2>Delete everything</h2>${UI.confirm === 'wipe' ? `<div class="row"><button class="btn danger" data-act="wipe-yes">Delete all ${plural(S.cases.length, 'case')}</button><button class="btn quiet" data-act="cancel-confirm">Keep them</button></div>` : '<div><button class="btn danger" data-act="wipe">Delete all cases</button></div>'}</div>
@@ -1399,12 +1441,12 @@ function gapItem(c, key) { return checklist(c).all.find(i => i.key === key); }
 async function runSort(c) {
   const d = draftOf(c); const r = deidFor(c, d); const text = r.text;
   const keep = { caseId: c.id, stage: 'write', text: d.text, opts: clone(d.opts), count: d.count };
-  d.stage = 'sorting'; d.withClaude = !!(S.settings.useClaude && SAMPLE); render();
+  const provider = aiProvider(); d.stage = 'sorting'; d.provider = provider; render();
   let res = null, by = 'rules', note = null;
-  if (d.withClaude) {
+  if (provider) {
     const ctl = new AbortController(); UI.sortCtl = ctl;
-    try { res = await sortWithClaude(c, text, ctl.signal); by = 'claude'; }
-    catch (e) { if (ctl.signal.aborted) return; note = aiErrorText(e); }
+    try { res = await sortWithAI(c, text, ctl.signal, provider); by = provider; }
+    catch (e) { if (ctl.signal.aborted) return; note = aiErrorText(e, provider); }
     if (UI.sortCtl !== ctl) return; UI.sortCtl = null;
   }
   if (!res) res = { spans: sortByRules(text), checks: [] };
@@ -1531,6 +1573,22 @@ const ACT = {
   wipe: () => { UI.confirm = 'wipe'; render(); },
   'wipe-yes': () => { const ids = S.cases.map(c => c.id); S.cases = []; ids.forEach(id => { dirty.add(id); flush(id); }); UI.confirm = null; go('home'); showToast('All cases deleted.'); },
   'toast-action': () => { const run = UI.toastAction; const el = $('#toast'); if (el) el.hidden = true; UI.toastAction = null; if (run) run(); },
+  'oai-save': async () => {
+    const k = ($('#oai-key') || {}).value; const m = ($('#oai-model') || {}).value;
+    const key = (k && k.trim()) || (OAI && OAI.key); const model = (m && m.trim()) || OAI_DEFAULT_MODEL;
+    if (!key) { showToast('Paste the OpenAI key first.'); const el = $('#oai-key'); if (el) el.focus(); return; }
+    const st = $('#oai-status'); if (st) st.textContent = 'Testing the key…';
+    try {
+      await openaiJSON('Reply with only JSON: {"ok": true}', null, { key, model });
+      OAI = { key, model }; const saved = saveOAI(OAI);
+      UI.oaiStatus = saved ? 'Key works. New notes will be sorted by ChatGPT.' : 'Key works, but this browser wouldn’t store it, so it will be forgotten when the page closes.';
+    } catch (e) {
+      const c = e && e.code;
+      UI.oaiStatus = c === 'oai_key' ? 'That key wasn’t accepted. Check it was copied in full.' : c === 'oai_credit' ? 'The key works, but the OpenAI account has no API credit. Add credit at platform.openai.com.' : c === 'oai_model' ? 'The key works, but that model name isn’t available. Try gpt-5-mini.' : 'Couldn’t reach OpenAI. Check the internet connection and try again.';
+    }
+    render();
+  },
+  'oai-remove': () => { OAI = null; saveOAI(null); UI.oaiStatus = ''; render(); showToast('Key removed from this iPad.'); },
   'close-copy': () => { const el = $('#copy-panel'); if (el) el.remove(); }
 };
 
