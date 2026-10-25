@@ -1,0 +1,1733 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Five Ps Casework (classic)</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: pen, paper and highlighters. A ballpoint-blue bar, a cool desk-grey ground,
+   white note sheets; her notes come back highlighted by 5 Ps colour, with a sticky
+   "Still missing" column beside the sheet on iPad landscape. */
+:root{
+  --desk:oklch(95.6% .006 255); --paper:oklch(99.6% .002 255); --paper-edge:oklch(89.5% .009 255);
+  --ink:oklch(24% .025 265); --ink-2:oklch(43% .02 265); --ink-3:oklch(52% .016 265);
+  --rule:oklch(88.5% .009 255); --pencil:oklch(60% .012 265);
+  --pen:oklch(42% .17 266); --pen-text:oklch(42% .17 266); --on-pen:oklch(99% .005 266); --pen-soft:oklch(93.5% .035 266); --pen-deep:oklch(36% .15 266);
+  --redpen:oklch(51% .19 27); --redpen-soft:oklch(95.5% .025 27);
+  --ok:oklch(47% .11 152); --ok-soft:oklch(94.5% .04 152); --warn:oklch(52% .12 70); --warn-soft:oklch(95% .045 80);
+  --hl-pres:oklch(86.5% .075 305); --hl-pred:oklch(93% .15 103); --hl-prec:oklch(86.5% .13 66);
+  --hl-perp:oklch(86% .105 355); --hl-prot:oklch(89% .14 148); --hl-pos:oklch(88% .08 228);
+  --font:"Atkinson Hyperlegible",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --t-xs:.8125rem; --t-s:.9375rem; --t-m:1.0625rem; --t-l:1.25rem; --t-xl:1.5rem; --t-xxl:1.875rem;
+  --shadow-sheet:0 1px 2px oklch(30% .03 265 / .07),0 10px 28px -14px oklch(30% .03 265 / .22);
+  --mask:oklch(93.2% .01 262); --margin-rule:oklch(86% .05 27);
+  --bar-h:60px; --brand-hl:oklch(88% .16 103); --brand-ink:oklch(24% .025 265);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --desk:oklch(19% .012 265); --paper:oklch(23.5% .014 265); --paper-edge:oklch(31% .016 265);
+  --ink:oklch(94% .008 265); --ink-2:oklch(79% .012 265); --ink-3:oklch(70% .012 265);
+  --rule:oklch(32% .015 265); --pencil:oklch(62% .012 265); --mask:oklch(31% .016 265); --margin-rule:oklch(38% .07 27);
+  --pen:oklch(45% .16 266); --pen-text:oklch(78% .11 266); --on-pen:oklch(99% .005 266); --pen-soft:oklch(32% .07 266); --pen-deep:oklch(38% .14 266);
+  --redpen:oklch(71% .16 27); --redpen-soft:oklch(29% .06 27);
+  --ok:oklch(76% .13 152); --ok-soft:oklch(29% .05 152); --warn:oklch(80% .12 80); --warn-soft:oklch(30% .05 80);
+  --hl-pres:oklch(40% .085 305); --hl-pred:oklch(44% .085 100); --hl-prec:oklch(43% .095 60);
+  --hl-perp:oklch(41% .095 355); --hl-prot:oklch(42% .09 150); --hl-pos:oklch(41% .075 232);
+  --shadow-sheet:0 1px 2px oklch(5% 0 0 / .4),0 10px 28px -14px oklch(5% 0 0 / .6);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --desk:oklch(19% .012 265); --paper:oklch(23.5% .014 265); --paper-edge:oklch(31% .016 265);
+  --ink:oklch(94% .008 265); --ink-2:oklch(79% .012 265); --ink-3:oklch(70% .012 265);
+  --rule:oklch(32% .015 265); --pencil:oklch(62% .012 265); --mask:oklch(31% .016 265); --margin-rule:oklch(38% .07 27);
+  --pen:oklch(45% .16 266); --pen-text:oklch(78% .11 266); --on-pen:oklch(99% .005 266); --pen-soft:oklch(32% .07 266); --pen-deep:oklch(38% .14 266);
+  --redpen:oklch(71% .16 27); --redpen-soft:oklch(29% .06 27);
+  --ok:oklch(76% .13 152); --ok-soft:oklch(29% .05 152); --warn:oklch(80% .12 80); --warn-soft:oklch(30% .05 80);
+  --hl-pres:oklch(40% .085 305); --hl-pred:oklch(44% .085 100); --hl-prec:oklch(43% .095 60);
+  --hl-perp:oklch(41% .095 355); --hl-prot:oklch(42% .09 150); --hl-pos:oklch(41% .075 232);
+  --shadow-sheet:0 1px 2px oklch(5% 0 0 / .4),0 10px 28px -14px oklch(5% 0 0 / .6);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scrollbar-color:var(--pencil) transparent}
+body{background:var(--desk);color:var(--ink);font:400 var(--t-m)/1.5 var(--font);-webkit-font-smoothing:antialiased;caret-color:var(--pen-text)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--pen)}
+::selection{background:var(--hl-pred);color:var(--ink)}
+h1,h2,h3{margin:0;line-height:1.2;text-wrap:balance;font-weight:700;letter-spacing:-.005em}
+h1{font-size:var(--t-xxl)} h2{font-size:var(--t-xl)} h3{font-size:var(--t-l)}
+p{margin:0}
+a{color:var(--pen-text);text-underline-offset:.18em;text-decoration-thickness:1px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2.5px solid var(--pen-text);outline-offset:2px;border-radius:6px}
+.small{font-size:var(--t-s)} .xs{font-size:var(--t-xs)} .muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums;font-weight:700}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.between{justify-content:space-between}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack-s{display:flex;flex-direction:column;gap:8px}
+.grow{flex:1 1 auto;min-width:0}
+.icon{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--pen);color:var(--on-pen)}
+.bar-in{max-width:1280px;margin:0 auto;min-height:var(--bar-h);display:flex;align-items:center;gap:12px;padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{font-weight:700;font-size:var(--t-l);white-space:nowrap;display:flex;align-items:center;gap:2px}
+.brand mark{background:linear-gradient(transparent 30%,var(--brand-hl) 30%,var(--brand-hl) 88%,transparent 88%);color:var(--brand-ink);padding:0 .12em;border-radius:3px}
+.bar .case-id{display:flex;align-items:baseline;gap:8px;min-width:0;font-weight:700;font-size:var(--t-l)}
+.bar .case-id span{font-weight:400;font-size:var(--t-m);opacity:.85;white-space:nowrap}
+.bar .case-id b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-btn .wide{display:none} @media (min-width:600px){.bar-btn .wide{display:inline}}
+.bar-btn{white-space:nowrap;flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;padding:8px 14px;border-radius:10px;border:1px solid oklch(100% 0 0 / .28);background:transparent;color:var(--on-pen);font-weight:700;font-size:var(--t-s)}
+.bar-btn:hover{background:oklch(100% 0 0 / .1)}
+.bar-btn.icon-only{padding:0;border-color:transparent}
+.save-state{font-size:var(--t-xs);opacity:.85;white-space:nowrap}
+
+/* Page */
+.wrap{max-width:1280px;margin:0 auto;padding-block:20px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.notice{font-size:var(--t-xs);color:var(--ink-2);padding-top:28px;border-top:1px solid var(--rule);margin-top:40px;max-width:72ch}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 16px;border-radius:10px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font-weight:700;font-size:var(--t-s);line-height:1.2;text-decoration:none;transition:background-color .15s ease,border-color .15s ease}
+.btn:hover{border-color:var(--pencil)}
+.btn.primary{background:var(--pen);border-color:var(--pen);color:var(--on-pen)}
+.btn.primary:hover{background:var(--pen-deep);border-color:var(--pen-deep)}
+.btn.quiet{background:transparent;border-color:transparent;color:var(--pen-text);padding-inline:10px}
+.btn.quiet:hover{background:var(--pen-soft)}
+.btn.danger{color:var(--redpen)}
+.btn.sm{min-height:38px;padding:6px 12px;border-radius:8px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.is-busy{cursor:progress}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:10px;background:var(--paper);overflow:hidden}
+.seg button{border:0;background:transparent;min-height:40px;padding:6px 14px;font-weight:700;font-size:var(--t-s);color:var(--ink-2)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--pen);color:var(--on-pen)}
+
+/* Fields */
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>span{font-size:var(--t-s);font-weight:700;color:var(--ink-2)}
+input[type=text],input[type=password],input[type=number],input[type=search],select,textarea{width:100%;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--rule);background:var(--paper);font-size:var(--t-m)}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+textarea{resize:vertical;line-height:1.55}
+select{appearance:auto}
+
+/* Tabs */
+.case-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:transparent;min-height:48px;padding:10px 16px;font-weight:700;font-size:var(--t-m);color:var(--ink-2);border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--pen)}
+.tab .count{font-variant-numeric:tabular-nums;font-weight:700;font-size:var(--t-xs);min-width:24px;padding:1px 7px;border-radius:999px;background:var(--pen-soft);color:var(--pen-text)}
+.tab .count.risk{background:var(--redpen-soft);color:var(--redpen)}
+.panel{padding-top:24px}
+
+/* Safety strip */
+.safety{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:10px;background:var(--redpen-soft);color:var(--ink);margin-top:16px}
+.safety .icon{color:var(--redpen);margin-top:2px}
+.safety b{color:var(--redpen)}
+.safety .lines{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:var(--t-s);margin-top:4px}
+.safety .lines span{white-space:nowrap}
+.safety.calm{background:transparent;padding:4px 0;border-radius:0}
+@media (max-width:599px){.safety{flex-wrap:wrap}.safety>.grow{flex:1 1 calc(100% - 40px)}.safety>.btn{margin-left:36px}}
+
+/* Notes grid */
+.notes-grid{display:grid;gap:28px;grid-template-columns:minmax(0,1fr);grid-template-areas:"add" "sheets" "gaps"}
+.area-add{grid-area:add;min-width:0} .area-gaps{grid-area:gaps;min-width:0} .area-sheets{grid-area:sheets;min-width:0}
+@media (min-width:960px){
+  .notes-grid{grid-template-columns:minmax(0,1fr) minmax(300px,360px);grid-template-areas:"add gaps" "sheets gaps";align-items:start;column-gap:36px}
+  .area-gaps{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--bar-h) + 16px);max-height:calc(100vh - var(--bar-h) - 40px);overflow:auto;padding-right:4px}
+}
+
+/* Paper sheets */
+.sheet{scroll-margin-top:calc(env(safe-area-inset-top,0px) + var(--bar-h) + 16px);background:var(--paper);border:1px solid var(--paper-edge);border-radius:4px;box-shadow:var(--shadow-sheet);padding:20px 22px}
+.sheet-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px;padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid var(--rule)}
+.sheet-head h3{font-size:var(--t-m)}
+.sheet-body{font-size:var(--t-m);line-height:1.85;max-width:75ch;overflow-wrap:anywhere}
+.sheet-body.ruled{position:relative;padding-left:26px;margin-left:-8px}
+.sheet-body.ruled::before{content:"";position:absolute;left:14px;top:0;bottom:0;width:1px;background:var(--margin-rule)}
+.rmark{position:absolute;left:3px;width:5px;height:1.15em;margin-top:.3em;border-radius:2px;background:var(--redpen)}
+.add-more{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:12px 20px;text-align:left;background:var(--paper);border:1px solid var(--paper-edge);border-radius:4px;box-shadow:var(--shadow-sheet);color:var(--pen-text);font:700 var(--t-m)/1.3 var(--font);cursor:pointer}
+.add-more:hover{border-color:var(--pencil)}
+.gap .src{margin:6px 0 0 28px;font-size:var(--t-xs);color:var(--ink-2);line-height:1.5}
+.gap .src a{color:var(--pen-text)}
+.pick-link{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;margin-top:14px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:inherit;cursor:pointer}
+.pick-link .icon{color:var(--pen-text);margin-top:2px}
+.pick-link b{display:block}
+.pick-link .hint{display:block;font-size:var(--t-s);color:var(--ink-2)}
+.focus{max-width:860px;display:flex;flex-direction:column;gap:8px}
+.focus-sec{margin-top:12px}
+.focus-sec>p{margin:0 0 6px}
+.dedication{font-style:italic;font-size:var(--t-m);color:var(--ink-2);margin:0 0 20px;text-wrap:balance}
+.dedication mark{background:linear-gradient(transparent 34%,var(--hl-perp) 34%,var(--hl-perp) 90%,transparent 90%);color:var(--ink);padding:0 .12em;border-radius:3px}
+mark{background-color:transparent;color:inherit}
+.paste.compact{min-height:96px}
+.paste{min-height:220px;border:0;padding:0;background:transparent;border-radius:0;font-size:var(--t-m);line-height:1.7}
+.paste:focus-visible{outline:none}
+.sheet:focus-within{border-color:var(--pencil)}
+.add-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--rule)}
+
+/* Highlights */
+.hl{--hlc:transparent;background-image:linear-gradient(var(--hlc),var(--hlc));background-repeat:no-repeat;background-size:100% 84%;background-position:0 72%;border-radius:.28em;padding:0 .12em;-webkit-box-decoration-break:clone;box-decoration-break:clone;cursor:pointer;border:0;color:inherit;font:inherit;text-align:left}
+.hl:hover{filter:saturate(1.25)}
+.c-presenting{--hlc:var(--hl-pres)} .c-predisposing{--hlc:var(--hl-pred)} .c-precipitating{--hlc:var(--hl-prec)}
+.c-perpetuating{--hlc:var(--hl-perp)} .c-protective{--hlc:var(--hl-prot)} .c-positive{--hlc:var(--hl-pos)}
+.hl.c-risk{background-image:none;text-decoration-line:underline;text-decoration-color:var(--redpen);text-decoration-thickness:2px;text-underline-offset:.22em}
+.hl.c-goal{background-image:none;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-color:var(--pen-text);text-decoration-thickness:2px;text-underline-offset:.22em}
+.hl.c-context{background-image:none;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-color:var(--pencil);text-decoration-thickness:1px;text-underline-offset:.24em}
+.code{font-size:.6em;font-weight:700;letter-spacing:.07em;color:var(--ink-2);vertical-align:.42em;margin:0 .25em 0 .15em;user-select:none;-webkit-user-select:none;white-space:nowrap}
+.code.c-risk{color:var(--redpen)} .code.c-goal{color:var(--pen-text)}
+.hl.sel{outline:2px solid var(--pen-text);outline-offset:1px}
+@media (prefers-reduced-motion:no-preference){
+  .hl.sweep{animation:sweep .26s cubic-bezier(.22,.9,.24,1) both;animation-delay:calc(var(--i,0) * 28ms)}
+  @keyframes sweep{from{background-size:0% 84%}to{background-size:100% 84%}}
+}
+.pill{display:inline-flex;align-items:center;padding:0 .4em;margin:0 .05em;border:1px solid transparent;border-radius:5px;font-size:.84em;line-height:1.5;color:var(--ink-2);background:var(--mask);white-space:nowrap;vertical-align:.04em}
+button.pill{cursor:pointer;font-family:inherit}
+button.pill:hover{border-color:var(--pencil)}
+.pill.off{border-style:solid;border-color:var(--rule);background:transparent;color:var(--ink);text-decoration:line-through;text-decoration-color:var(--pencil)}
+.word{border:0;background:transparent;padding:0;font:inherit;color:inherit;cursor:pointer;border-radius:3px}
+.word:hover{background:var(--pen-soft)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:var(--t-xs);color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.swatch{display:inline-block;width:22px;height:11px;border-radius:3px;background:var(--hlc)}
+.swatch.c-risk{background:none;border-bottom:2px solid var(--redpen);height:8px;border-radius:0}
+.swatch.c-goal{background:none;border-bottom:2px dotted var(--pen-text);height:8px;border-radius:0}
+
+/* Missing column */
+.gaps h2{font-size:var(--t-l)}
+.meter{display:flex;align-items:center;gap:10px;font-size:var(--t-s);color:var(--ink-2)}
+.meter .track{flex:1;height:6px;border-radius:999px;background:var(--rule);overflow:hidden}
+.meter .fill{height:100%;background:var(--pen)}
+.gap-group{display:flex;flex-direction:column}
+.gap-group>h3{font-size:var(--t-s);font-weight:700;color:var(--ink-2);padding:16px 0 6px}
+.h-count{display:inline-block;min-width:1.6em;padding:0 .45em;margin-left:4px;border-radius:999px;background:var(--pen-soft);color:var(--pen-text);font-size:var(--t-s);text-align:center;vertical-align:.2em;font-variant-numeric:tabular-nums}
+.gap-group>h3.risk{color:var(--redpen)}
+.gap{border-top:1px solid var(--rule);padding:12px 0}
+.gap:last-child{border-bottom:1px solid var(--rule)}
+.gap-row{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:0;background:transparent;padding:0;color:inherit}
+.gap-row .mark{flex:none;width:18px;height:18px;margin-top:3px;border-radius:50%;border:1.5px dashed var(--pencil)}
+.gap-row .mark.risk{border:0;color:var(--redpen)}
+.gap-row b{font-weight:700;display:block}
+.gap-row .hint{font-size:var(--t-s);color:var(--ink-2);display:block;margin-top:2px}
+.gap-row .tag{font-size:var(--t-xs);font-weight:700;color:var(--pen-text);white-space:nowrap}
+.gap-open{display:flex;flex-direction:column;gap:10px;margin:12px 0 0 28px}
+.gap-open textarea{min-height:76px}
+.done-list{font-size:var(--t-s);color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 14px;padding-top:8px}
+.done-list span{display:inline-flex;align-items:center;gap:4px}
+.done-list .icon{width:16px;height:16px;color:var(--ok)}
+
+/* Board */
+.board{columns:1;column-gap:0;column-rule:1px solid var(--rule);background:var(--paper);border:1px solid var(--paper-edge);border-top:0;border-radius:4px;box-shadow:var(--shadow-sheet);overflow:hidden}
+@media (min-width:900px){.board{columns:2}}
+.cell{break-inside:avoid;-webkit-column-break-inside:avoid;border-top:1px solid var(--paper-edge);padding:22px 24px 24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ink{background-image:linear-gradient(var(--hlc),var(--hlc));background-repeat:no-repeat;background-size:100% 62%;background-position:0 82%;padding:0 .14em;border-radius:.2em}
+.cell-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cell-head h3{font-size:var(--t-l);display:flex;align-items:center;gap:10px}
+.cell-head .num{color:var(--ink-3)}
+.cell-hint{font-size:var(--t-s);color:var(--ink-2);margin-top:-6px}
+.cell .items{gap:14px}
+.cell .items li{font-size:var(--t-m);line-height:1.8;max-width:62ch}
+.items{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.items li{line-height:1.55}
+.trend{font-size:var(--t-xs);font-weight:700;margin-left:6px;white-space:nowrap}
+.trend.better{color:var(--ok)} .trend.worse{color:var(--redpen)} .trend.resolved{color:var(--ink-3)}
+.empty-cell{border:1.5px dashed var(--pencil);border-radius:8px;padding:12px;color:var(--ink-2);font-size:var(--t-s);display:flex;flex-direction:column;gap:10px}
+.inline-add{display:flex;gap:8px}
+.inline-add input{min-height:40px}
+.below{display:grid;gap:24px;grid-template-columns:minmax(0,1fr);margin-top:28px}
+@media (min-width:900px){.below{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.listing{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.listing>*{border-bottom:1px solid var(--rule);padding:10px 0}
+
+/* Map */
+.map-wrap{position:relative;height:clamp(460px,68vh,820px);border:1px solid var(--paper-edge);border-radius:4px;background:var(--paper);box-shadow:var(--shadow-sheet);overflow:hidden;touch-action:none;cursor:grab}
+.map-wrap.drag{cursor:grabbing}
+.map-svg{display:block;width:100%;height:100%;user-select:none;-webkit-user-select:none}
+.map-zoom{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:12px;display:flex;flex-direction:column;gap:8px}
+.map-zoom .btn{width:44px;padding:0;box-shadow:0 1px 3px oklch(20% .02 265 / .15)}
+.mn text{font-family:var(--font);fill:var(--ink)}
+.mn{cursor:pointer;outline:none}
+.mn rect{fill:var(--paper);stroke:var(--rule);stroke-width:1}
+.mn.root{cursor:default} .mn.root rect{fill:var(--pen);stroke:none} .mn.root text{fill:var(--on-pen)}
+.mn.branch rect{fill:var(--hlc);stroke:none}
+.mn.item rect{stroke:var(--hlc);stroke-width:2.5}
+.mn.c-risk.branch rect{fill:var(--redpen-soft);stroke:var(--redpen);stroke-width:1.5} .mn.c-risk.branch text{fill:var(--redpen)}
+.mn.c-risk.item rect{stroke:var(--redpen);stroke-width:1.5}
+.mn.c-goal.branch rect{fill:var(--paper);stroke:var(--pen-text);stroke-width:1.5;stroke-dasharray:2 3}
+.mn.c-goal.item rect{stroke:var(--pen-text);stroke-width:1.5;stroke-dasharray:2 3}
+.mn.missing rect{fill:var(--paper);stroke:var(--pencil);stroke-width:1.5;stroke-dasharray:5 4} .mn.missing text{fill:var(--ink-3)}
+.mn:focus-visible rect,.mn.sel rect{stroke:var(--pen-text);stroke-width:3;stroke-dasharray:none}
+.mconn{fill:none;stroke-width:1.75;stroke:var(--pencil)} .mconn.dashed{stroke-dasharray:5 4}
+
+/* Plan */
+.plan-grid{display:grid;gap:32px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:960px){.plan-grid{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:start}}
+.option{border-top:1px solid var(--rule);padding:14px 0}
+.option:last-child{border-bottom:1px solid var(--rule)}
+.option summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"main fit chev";gap:6px 12px;align-items:start}
+.option summary .opt-main{grid-area:main} .option summary .fit{grid-area:fit} .option summary .chev{grid-area:chev}
+@media (max-width:599px){.option summary{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"main chev" "fit chev"}.option summary .fit{justify-self:start}}
+.option summary::-webkit-details-marker{display:none}
+.option summary .chev{transition:transform .2s ease;color:var(--ink-3);margin-top:4px}
+.option[open] summary .chev{transform:rotate(180deg)}
+.fit{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.fit.yes{background:var(--ok-soft);color:var(--ok)} .fit.maybe{background:var(--pen-soft);color:var(--pen-text)} .fit.no{background:var(--desk);color:var(--ink-2);border:1px solid var(--rule)}
+.option-body{display:flex;flex-direction:column;gap:12px;padding:12px 0 4px}
+.option-body ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.dose{display:flex;flex-direction:column;gap:6px}
+.bar-track{position:relative;height:14px;border-radius:999px;background:var(--rule)}
+.bar-track .full{position:absolute;top:0;bottom:0;border-radius:999px;background:color-mix(in oklch,var(--pen) 22%,var(--rule))}
+.bar-track .typ{position:absolute;top:0;bottom:0;border-radius:999px;background:color-mix(in oklch,var(--pen) 55%,var(--rule))}
+.bar-track .full.open{opacity:.6}
+.bar-track .band{position:absolute;top:0;bottom:0;border-radius:999px;background:color-mix(in oklch,var(--pen) 55%,var(--rule))}
+.bar-track .band.warn{background:var(--warn)}
+.bar-track .tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-2);transform:translateX(-1px)}
+.track-labels{position:relative;height:1.6em;color:var(--ink-2)}
+.track-labels span{position:absolute;top:0;white-space:nowrap;transform:translateX(-50%)}
+.track-labels span.l,.track-labels span:first-child{transform:none}
+.track-labels span.r{transform:translateX(-100%)}
+.track-labels span.warn{color:var(--warn);font-weight:700}
+.bar-track .now{position:absolute;top:-5px;bottom:-5px;width:4px;border-radius:2px;background:var(--ink);transform:translateX(-2px)}
+.status{font-size:var(--t-xs);font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.status.good{background:var(--ok-soft);color:var(--ok)} .status.warn{background:var(--warn-soft);color:var(--warn)} .status.crit{background:var(--redpen-soft);color:var(--redpen)} .status.info{background:var(--pen-soft);color:var(--pen-text)}
+.active-int{background:var(--paper);border:1px solid var(--paper-edge);border-radius:4px;box-shadow:var(--shadow-sheet);padding:18px;display:flex;flex-direction:column;gap:12px}
+.copybox{width:100%;min-height:160px;font-family:var(--mono);font-size:var(--t-xs);line-height:1.5}
+
+/* Cases */
+.case-list{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.case-row{display:flex;align-items:center;gap:16px;padding:16px 4px;border:0;border-bottom:1px solid var(--rule);background:transparent;text-align:left;width:100%;color:inherit}
+.case-row:hover{background:var(--paper)}
+.case-row .label{font-weight:700;font-size:var(--t-l)}
+.case-row .meta{font-size:var(--t-s);color:var(--ink-2)}
+.empty{max-width:62ch;display:flex;flex-direction:column;gap:16px;padding:24px 0}
+.new-case{display:grid;gap:12px;grid-template-columns:minmax(0,1fr);align-items:end;max-width:640px}
+@media (min-width:640px){.new-case{grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto}}
+
+/* Popover, toast */
+.pop{position:fixed;z-index:60;background:var(--paper);border:1px solid var(--paper-edge);border-radius:12px;box-shadow:0 2px 6px oklch(20% .03 265 / .12),0 18px 40px -12px oklch(20% .03 265 / .35);padding:12px;width:min(320px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px}
+.pop .opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.pop .opt{display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 10px;border-radius:8px;border:1px solid var(--rule);background:var(--paper);font-weight:700;font-size:var(--t-s);text-align:left}
+.pop .opt[aria-pressed="true"]{border-color:var(--pen-text);background:var(--pen-soft)}
+.pop .quote{font-size:var(--t-s);color:var(--ink-2);max-height:5.5em;overflow:auto}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;background:var(--ink);color:var(--desk);padding:12px 18px;border-radius:12px;font-weight:700;font-size:var(--t-s);width:max-content;max-width:min(560px,calc(100vw - 32px));display:flex;gap:14px;align-items:center;box-shadow:0 10px 30px -10px oklch(10% 0 0 / .5)}
+.toast button{border:0;background:transparent;color:var(--hl-pred);font-weight:700;padding:4px 2px;min-height:32px}
+.busy-line{display:flex;align-items:center;gap:12px;font-size:var(--t-s);color:var(--ink-2)}
+.busy-line .stroke{width:72px;height:10px;border-radius:3px;background:linear-gradient(90deg,var(--hl-pred),var(--hl-prot),var(--hl-pos));background-size:200% 100%}
+@media (prefers-reduced-motion:no-preference){.busy-line .stroke{animation:slide 1.2s linear infinite}@keyframes slide{to{background-position:-200% 0}}}
+details.more>summary{cursor:pointer;font-weight:700;color:var(--pen-text);font-size:var(--t-s);list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:40px}
+details.more>summary::-webkit-details-marker{display:none}
+.check-q{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--rule)}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<script>
+'use strict';
+/* ================= utilities ================= */
+const APP_KEY = 'fiveps-v3';
+const TAB = Math.random().toString(36).slice(2, 9);
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = p => (p || 'x') + Math.random().toString(36).slice(2, 8);
+const clone = o => JSON.parse(JSON.stringify(o));
+const pad2 = n => String(n).padStart(2, '0');
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS_LONG = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+function todayISO() { const d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function fmtDate(s) { if (!s) return ''; const p = String(s).split('-'); return p[2] ? `${Number(p[2])} ${MONTHS[Number(p[1]) - 1]} ${p[0]}` : `${MONTHS[Number(p[1]) - 1]} ${p[0]}`; }
+function fmtShort(s) { if (!s) return ''; const p = String(s).split('-'); return `${Number(p[2])} ${MONTHS[Number(p[1]) - 1]}`; }
+const plural = (n, w, pl) => `${n} ${n === 1 ? w : (pl || w + 's')}`;
+const cap = s => { s = String(s || ''); return s ? s[0].toUpperCase() + s.slice(1) : s; };
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const ML = '⟦', MR = '⟧';
+const MARK_RE = /⟦([^⟦⟧]{1,40})⟧/g;
+const PATTERN_LABELS = new Set(['name', 'phone', 'email', 'link', 'handle', 'number', 'address', 'school', 'service', 'suburb', 'postcode', 'date of birth', 'initials', 'hidden']);
+function plainText(s) { return String(s || '').replace(MARK_RE, (m, l) => PATTERN_LABELS.has(l) ? `[${l}]` : l); }
+
+const IC = {
+  back: '<path d="M15 18l-6-6 6-6"/>',
+  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  alert: '<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/>',
+  gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/>',
+  chev: '<path d="M6 9l6 6 6-6"/>',
+  board: '<rect x="3.5" y="4" width="7" height="7" rx="1.2"/><rect x="13.5" y="4" width="7" height="7" rx="1.2"/><rect x="3.5" y="14" width="7" height="6" rx="1.2"/><rect x="13.5" y="14" width="7" height="6" rx="1.2"/>',
+  map: '<circle cx="12" cy="12" r="2.6"/><circle cx="4.5" cy="6" r="1.8"/><circle cx="4.5" cy="18" r="1.8"/><circle cx="19.5" cy="6" r="1.8"/><circle cx="19.5" cy="18" r="1.8"/><path d="M9.7 10.8L6 7M9.7 13.2L6 17M14.3 10.8L18 7M14.3 13.2L18 17"/>',
+  pen: '<path d="M4 20l4.2-1 10.6-10.6a2.2 2.2 0 0 0-3.1-3.1L5.1 15.9z"/><path d="M13.5 6.5l3.1 3.1"/>',
+  next: '<path d="M5 12h12M13 7l5 5-5 5"/>',
+  trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>'
+};
+const icon = (n, cls) => `<svg class="icon ${cls || ''}" viewBox="0 0 24 24" aria-hidden="true">${IC[n] || ''}</svg>`;
+
+/* ================= categories ================= */
+const CATS = {
+  presenting: { label: 'Presenting concern', code: 'PRES', hint: 'Why they came, in plain words' },
+  predisposing: { label: 'Predisposing', code: 'PRED', hint: 'Earlier factors that made this more likely' },
+  precipitating: { label: 'Precipitating', code: 'PREC', hint: 'What happened just before it started' },
+  perpetuating: { label: 'Perpetuating', code: 'PERP', hint: 'What keeps it going now' },
+  protective: { label: 'Protective', code: 'PROT', hint: 'People and supports that help' },
+  positive: { label: 'Strengths', code: 'POS', hint: 'Strengths, interests and hopes' },
+  risk: { label: 'Risk and safety', code: 'RISK', hint: 'Risk to self, to others, or from others' },
+  goal: { label: 'Goals', code: 'GOAL', hint: 'What they, the family or you want to change' },
+  context: { label: 'Background', code: '', hint: 'Other useful context' }
+};
+const FIVE_PS = ['presenting', 'predisposing', 'precipitating', 'perpetuating', 'protective', 'positive'];
+const CAT_ORDER = ['presenting', 'predisposing', 'precipitating', 'perpetuating', 'protective', 'positive', 'risk', 'goal', 'context'];
+const TOPICS = ['home', 'family', 'education', 'peers', 'activities', 'eating', 'sleep', 'drugs', 'sexuality', 'mood', 'selfharm', 'aggression', 'abuse', 'exploitation', 'missing', 'health', 'development', 'mhhistory', 'familymh', 'culture', 'voice', 'onset', 'trauma', 'anxiety', 'attention', 'behaviour', 'measures', 'consent'];
+
+/* ================= de-identification ================= */
+const ROLE_OPTIONS = ['YP', 'Mum', 'Dad', 'Parent', 'Step-parent', 'Carer', 'Sibling', 'Brother', 'Sister', 'Grandparent', 'Aunt', 'Uncle', 'Cousin', 'Friend', 'Partner', 'Teacher', 'Doctor', 'Clinician', 'Other adult'];
+const REL_WORDS = { mum: 'Mum', mom: 'Mum', mother: 'Mum', dad: 'Dad', father: 'Dad', stepmum: 'Step-parent', stepdad: 'Step-parent', stepmother: 'Step-parent', stepfather: 'Step-parent', carer: 'Carer', guardian: 'Carer', brother: 'Brother', sister: 'Sister', sibling: 'Sibling', nan: 'Grandparent', nana: 'Grandparent', nanna: 'Grandparent', nonna: 'Grandparent', grandma: 'Grandparent', grandmother: 'Grandparent', grandpa: 'Grandparent', grandfather: 'Grandparent', pop: 'Grandparent', aunt: 'Aunt', aunty: 'Aunt', auntie: 'Aunt', uncle: 'Uncle', cousin: 'Cousin', friend: 'Friend', boyfriend: 'Partner', girlfriend: 'Partner', partner: 'Partner', teacher: 'Teacher', principal: 'Teacher', gp: 'Doctor', doctor: 'Doctor', paediatrician: 'Doctor', psychiatrist: 'Doctor', psychologist: 'Clinician', counsellor: 'Clinician', caseworker: 'Clinician' };
+const words = s => s.split(/\s+/).filter(Boolean);
+const ALLOW = new Set(words(`
+mum mom mother dad father parent parents nan nana nanna nonna grandma grandmother grandpa grandfather pop poppy aunt aunty auntie uncle cousin brother sister sibling siblings stepmum stepdad stepmother stepfather carer carers guardian foster kinship son daughter baby partner boyfriend girlfriend friend friends teacher teachers principal counsellor psychologist psychiatrist paediatrician doctor nurse gp caseworker worker clinician yp
+monday tuesday wednesday thursday friday saturday sunday january february march april may june july august september october november december jan feb mar apr jun jul aug sep sept oct nov dec term terms year years christmas easter ramadan eid diwali lunar anzac naidoc holidays
+nsw act vic qld sa wa tas nt australia australian sydney melbourne canberra brisbane perth adelaide hobart darwin newcastle wollongong queensland victoria tasmania new south wales western northern territory nz zealand aotearoa
+iran iraq syria lebanon afghanistan india china vietnam philippines indonesia malaysia sri lanka nepal pakistan bangladesh korea japan thailand fiji samoa tonga sudan somalia ethiopia eritrea kenya nigeria ghana egypt turkey greece italy england uk britain ireland scotland usa america canada africa asia europe pacific middle east
+english arabic persian farsi dari hazara pashto mandarin cantonese chinese vietnamese hindi punjabi urdu tamil sinhalese greek italian spanish korean japanese filipino tagalog samoan tongan fijian maori lebanese iranian iraqi syrian afghan indian sudanese somali aboriginal torres strait islander islanders indigenous first nations auslan muslim christian catholic orthodox hindu buddhist sikh jewish islam islamic bible quran church mosque temple
+camhs cymhs headspace centrelink ndis dcj facs police ed emergency hospital lifeline kids helpline beyond blue tafe mhat cwu ciap emr mrg rosh child protection wellbeing unit community health mental service services school department education youth justice juvenile court ambulance triage acute care team clinic medicare pbs ndia
+cbt dbt act abft tf-cbt emdr ipt fft mst sdq honosca cgas fihs k10 phq gad adhd add asd autism autistic ocd ptsd odd mdd bpd dsm icd ssri fluoxetine sertraline escitalopram ritalin concerta vyvanse melatonin iq wisc naplan mse heeadsss
+snapchat instagram tiktok facebook youtube discord roblox fortnite minecraft xbox playstation nintendo switch netflix google iphone ipad android whatsapp messenger reddit twitch spotify maccas mcdonalds kfc uno
+i ok okay re plan goals summary impression formulation history background assessment session review risk appearance behaviour speech mood affect thought perception cognition insight judgement presenting predisposing precipitating perpetuating protective positive strengths referral reason collateral identifying information social medical developmental family education substance forensic legal other initial follow up phone call home visit
+`));
+const COMMON = new Set(words(`
+a an the this that these those there here he she they we you it his her their our my your its him them us me i
+and but or so because if when while after before since until although though however also then therefore overall currently previously recently today yesterday tomorrow tonight now later earlier again still yet just only even
+in on at to from with without for of by about into over under between during through around near across within as like than
+is was are were be been being has have had do does did will would can could should may might must shall
+no not none nothing nobody yes all some many most more less few several each every both either neither any other another such same own
+who what where why how which whose whom
+said says reports reported reporting states stated stating describes described explains explained notes noted discussed agreed attended presented presents denies denied disclosed advised spoke met called saw seen asked told
+mum dad session plan goal goals review referral referred assessment impression summary formulation risk safety mood sleep school family friends home eating exercise activities drugs sexuality suicide
+good well ok okay great poor fair mild moderate severe low high positive negative
+first second third last next one two three four five six seven eight nine ten
+please thanks thank note notes update updates continue continues ongoing appears appeared seems seemed feels felt
+`));
+const PERSON_NEXT = new Set(words(`said says reported reports reporting stated states told tells described describes explained explains disclosed discloses presented presents attended attends is was has had feels felt wants wanted lives lived likes liked loves loved enjoys enjoyed became gets got goes went came comes will would can could does did doesn't didn't isn't wasn't hasn't appears appeared seemed seems denies denied agreed agrees refused refuses struggles struggled spends spent plays played and with`));
+const TITLES = { mr: 'Other adult', mrs: 'Other adult', ms: 'Other adult', miss: 'Other adult', mx: 'Other adult', dr: 'Doctor' };
+
+const PATTERNS = [
+  { label: 'email', re: /[\w.+-]+@[\w-]+\.[\w.-]+/g },
+  { label: 'link', re: /\bhttps?:\/\/\S+|\bwww\.[^\s]+/gi },
+  { label: 'handle', re: /(?<=^|\s)@[A-Za-z0-9_.]{2,}/g },
+  { label: 'date of birth', re: /\b(?:d\.?o\.?b\.?|date of birth|born(?: on)?)\s*[:\-]?\s*(?:\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}|\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9},?\s+\d{4})/gi },
+  { label: 'phone', re: /(?:\+61\s?4\d{2}|\b04\d{2})[\s-]?\d{3}[\s-]?\d{3}\b|\(?\b0[2378]\)?[\s-]?\d{4}[\s-]?\d{4}\b|\+61\s?[2378][\s-]?\d{4}[\s-]?\d{4}\b/g },
+  { label: 'number', re: /\b(?:MRN|URN|MBS|Medicare(?: number)?|ID)\s*(?:no\.?|number)?\s*[:#]?\s*[A-Z0-9][A-Z0-9-]{3,}\b/gi },
+  { label: 'number', re: /\b\d{4}\s\d{5}\s\d(?:\s?\d)?\b|\b\d{6,}\b/g },
+  { label: 'address', re: /\b\d{1,5}[A-Za-z]?(?:\/\d{1,5})?\s+(?:[A-Z][a-z]+\s){1,3}(?:Street|St|Road|Rd|Avenue|Ave|Crescent|Cres|Drive|Dr|Place|Pl|Court|Ct|Lane|Ln|Parade|Pde|Highway|Hwy|Way|Close|Boulevard|Blvd|Terrace|Tce|Circuit|Cct|Grove)\b\.?/g },
+  { label: 'school', re: /\b(?:St\.?\s|Saint\s)?(?:[A-Z][a-z]+\s){1,4}(?:High School|Public School|Primary School|Secondary College|Grammar School|Christian School|Catholic School|Anglican School|Intensive English Centre|College|Grammar|Academy)\b/g },
+  { label: 'service', re: /\b(?:[A-Z][a-z]+\s){1,4}(?:Hospital|Medical Centre|Health Centre|Medical Practice|Family Practice|Medical)\b/g },
+  { label: 'suburb', re: /\b(?:[A-Z][a-z]+\s){1,3}(?:NSW|ACT|VIC|QLD|SA|WA|TAS|NT)\s+\d{4}\b/g },
+  { label: 'postcode', re: /\b(?:NSW|ACT|VIC|QLD|TAS)\s?\d{4}\b/g },
+  { label: 'initials', re: /\b[A-Z]\.\s?[A-Z]\.(?:\s?[A-Z]\.)?(?=\s|$|[,;)])/g }
+];
+const FULL_DATE = /\b(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2}|\d{4})\b|\b(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?,?\s+(\d{4})\b/gi;
+
+/* opts: { manual: [words], unhide: [keys or originals], roles: {personKey: role} } */
+function deidentify(raw, opts) {
+  opts = opts || {};
+  const text = String(raw || '').replace(/\r\n?/g, '\n');
+  const unhide = new Set((opts.unhide || []).map(s => s.toLowerCase()));
+  const manual = new Set((opts.manual || []).map(s => s.toLowerCase()));
+  const roles = opts.roles || {};
+  const ranges = [];
+  const taken = (a, b) => ranges.some(r => a < r.b && b > r.a);
+  // 1. patterns
+  for (const p of PATTERNS) {
+    p.re.lastIndex = 0; let m;
+    while ((m = p.re.exec(text))) {
+      const a = m.index, b = a + m[0].length;
+      if (!m[0].trim() || taken(a, b)) continue;
+      if (unhide.has(m[0].toLowerCase())) { ranges.push({ a, b, kind: 'keep', orig: m[0] }); continue; }
+      ranges.push({ a, b, kind: 'pattern', label: p.label, orig: m[0] });
+    }
+  }
+  // 2. full dates -> month and year
+  FULL_DATE.lastIndex = 0; let dm;
+  while ((dm = FULL_DATE.exec(text))) {
+    const a = dm.index, b = a + dm[0].length; if (taken(a, b) || unhide.has(dm[0].toLowerCase())) continue;
+    let mo, yr;
+    if (dm[1]) { mo = Number(dm[2]); yr = dm[3]; } else { mo = MONTHS_LONG.findIndex(x => x.startsWith(dm[5].toLowerCase().slice(0, 3))) + 1; yr = dm[6]; }
+    if (!(mo >= 1 && mo <= 12)) continue;
+    if (String(yr).length === 2) yr = '20' + yr;
+    ranges.push({ a, b, kind: 'date', label: `${MONTHS[mo - 1]} ${yr}`, orig: dm[0] });
+  }
+  // 3. names
+  const toks = []; const TR = /[A-Za-z][A-Za-z'’-]*/g; let tm;
+  while ((tm = TR.exec(text))) toks.push({ s: tm[0], a: tm.index, b: tm.index + tm[0].length });
+  const isStart = i => {
+    let j = toks[i].a - 1;
+    while (j >= 0 && /[\s"'“‘(\[*•\-]/.test(text[j]) && text[j] !== '\n') j--;
+    return j < 0 || /[.!?:\n]/.test(text[j]);
+  };
+  const base = s => s.replace(/['’]s$/i, '');
+  const capLike = s => /^[A-Z][a-z]/.test(s) || /^[A-Z][a-z]*['’-][A-Z]/.test(s);
+  const cand = [];
+  toks.forEach((t, i) => {
+    if (taken(t.a, t.b)) return;
+    const b0 = base(t.s); const low = b0.toLowerCase();
+    if (unhide.has(low)) return;
+    if (manual.has(low)) { ranges.push({ a: t.a, b: t.b, kind: 'pattern', label: 'hidden', orig: t.s }); return; }
+    if (!capLike(t.s) || ALLOW.has(low)) return;
+    const st = isStart(i);
+    if (st && COMMON.has(low)) return;
+    cand.push({ i, low, start: st });
+  });
+  const midLows = new Set(cand.filter(c => !c.start || c.force).map(c => c.low));
+  const nextWord = i => { const n = toks[i + 1]; if (!n) return ''; const gap = text.slice(toks[i].b, n.a); if (/[.!?\n]/.test(gap)) return ''; return n.s.toLowerCase(); };
+  const names = cand.filter(c => {
+    if (c.force || !c.start) return true;
+    const t = toks[c.i];
+    if (/['’]s$/i.test(t.s)) return true;
+    if (midLows.has(c.low)) return true;
+    const after = text.slice(t.b, t.b + 3);
+    if (/^\s*[(,]/.test(after)) return true;
+    return PERSON_NEXT.has(nextWord(c.i));
+  });
+  // group consecutive name tokens (first + last), with optional title before
+  const used = new Set(); const mentions = [];
+  names.forEach(c => {
+    if (used.has(c.i)) return;
+    let i0 = c.i, i1 = c.i;
+    while (names.some(n => n.i === i1 + 1) && /^ $/.test(text.slice(toks[i1].b, toks[i1 + 1].a))) { i1++; used.add(i1); }
+    let a = toks[i0].a, title = null;
+    const prev = toks[i0 - 1];
+    if (prev && TITLES[prev.s.toLowerCase().replace('.', '')] && /^\.?\s$/.test(text.slice(prev.b, toks[i0].a))) { a = prev.a; title = prev.s.toLowerCase().replace('.', ''); }
+    let b = toks[i1].b; if (/['’]s$/i.test(toks[i1].s)) b -= 2;
+    if (taken(a, b)) return;
+    const parts = []; for (let k = i0; k <= i1; k++) parts.push(base(toks[k].s).toLowerCase());
+    let guess = title ? TITLES[title] : null, preceded = false;
+    let pj = i0 - 1; if (title) pj--;
+    while (pj >= 0 && /^(his|her|their|my|the|yp's|yp’s)$/i.test(toks[pj].s)) pj--;
+    if (pj >= 0 && REL_WORDS[toks[pj].s.toLowerCase()] && /^[\s,.]*$/.test(text.slice(toks[pj].b, a).replace(/\b(his|her|their|my|the)\b/gi, ''))) { preceded = true; if (!guess || title === 'dr') guess = guess || REL_WORDS[toks[pj].s.toLowerCase()]; }
+    if (!guess) { const after = text.slice(b, b + 24).match(/^\s*\(\s*(?:his|her|their|my)?\s*([a-z]+)\s*\)/i); if (after && REL_WORDS[after[1].toLowerCase()]) guess = REL_WORDS[after[1].toLowerCase()]; }
+    mentions.push({ a, b, parts, guess, preceded, orig: text.slice(a, b) });
+  });
+  // assign people
+  const people = []; const byPart = new Map();
+  mentions.forEach(m => {
+    let p = null;
+    for (const part of m.parts) if (byPart.has(part)) { p = byPart.get(part); break; }
+    if (!p) { p = { key: m.parts[0], letter: people.length < 26 ? String.fromCharCode(65 + people.length) : String(people.length + 1), count: 0, guess: null, origs: new Set() }; people.push(p); }
+    m.parts.forEach(part => { if (!byPart.has(part)) byPart.set(part, p); });
+    p.count++; p.origs.add(m.orig); if (!p.guess && m.guess) p.guess = m.guess;
+    m.person = p;
+  });
+  const sorted = people.slice().sort((x, y) => y.count - x.count);
+  if (sorted[0] && !sorted[0].guess && sorted[0].count >= (opts.ypMin || 2) && (!sorted[1] || sorted[0].count > sorted[1].count) && !people.some(p => p.guess === 'YP')) sorted[0].guess = 'YP';
+  people.forEach(p => { p.role = roles[p.key] || p.guess || ''; p.label = p.role || `Person ${p.letter}`; });
+  mentions.forEach(m => ranges.push({ a: m.a, b: m.b, kind: 'person', label: m.preceded ? 'name' : m.person.label, key: m.person.key, orig: m.orig }));
+  // 4. build segments
+  ranges.sort((x, y) => x.a - y.a);
+  const segs = []; let pos = 0;
+  ranges.forEach(r => { if (r.a < pos) return; if (r.a > pos) segs.push({ t: 'text', s: text.slice(pos, r.a) }); segs.push(Object.assign({ t: 'mask' }, r)); pos = r.b; });
+  if (pos < text.length) segs.push({ t: 'text', s: text.slice(pos) });
+  const out = segs.map(s => s.t === 'text' ? s.s : s.kind === 'keep' ? s.orig : s.kind === 'date' ? s.label : ML + s.label + MR).join('');
+  const counts = {}; ranges.forEach(r => { if (r.kind === 'keep') return; const k = r.kind === 'person' ? 'name' : r.kind === 'date' ? 'date' : r.label; counts[k] = (counts[k] || 0) + 1; });
+  return { text: out, segs, people: people.map(p => ({ key: p.key, letter: p.letter, count: p.count, role: p.role, guess: p.guess, label: p.label, origs: [...p.origs] })), counts, total: ranges.length };
+}
+function deidSummary(d) {
+  const parts = []; const c = d.counts;
+  const nm = d.people.length; if (nm) parts.push(plural(nm, 'name')); if (c.hidden) parts.push(plural(c.hidden, 'word') + ' you chose');
+  [['phone', 'phone number'], ['email', 'email'], ['address', 'address', 'addresses'], ['school', 'school name'], ['service', 'service name'], ['suburb', 'suburb'], ['postcode', 'postcode'], ['number', 'ID number'], ['date of birth', 'date of birth', 'dates of birth'], ['initials', 'set of initials', 'sets of initials'], ['handle', 'social media handle'], ['link', 'link']].forEach(([k, w, pl]) => { if (c[k]) parts.push(plural(c[k], w, pl)); });
+  if (c.date) parts.push(`${plural(c.date, 'exact date')} shortened to month and year`);
+  return parts;
+}
+/* ================= on-device sorter (used when Claude is off or unavailable) ================= */
+const R_ = (s) => new RegExp(s, 'i');
+const RULES_CAT = [
+  ['risk', R_("suicid|self[- ]?harm|cutting|cuts? (him|her|them)sel|kill (him|her|them|my)sel|overdos|wish(es)? (i|he|she|they) (could|was|were) (dead|gone)|disappear|end (it all|my life|his life|her life|their life)|not want(s|ed)? to (live|be here|be alive)|harm (to )?others|hurt (someone|others|people)|weapon|knife|assault|abus|family violence|domestic violence|\\bdv\\b|neglect|unsafe|ran away|run(s|ning)? away|went missing|absconded|exploit|groom|sexual safety|rosh|mandatory report|child protection")],
+  ['goal', R_("\\b(wants? to|would like (to|him|her|them)|hopes? to|goal|aims? to|keen to|plans? to|wants? (him|her|them) (back|to))\\b")],
+  ['presenting', R_("lost interest|no longer enjoys|stopped enjoying|referred|referral|presenting (with|concern)|presents with|main concern|reason for referral")],
+  ['protective', R_("\\b(supportive|support from|supports? (him|her|them)|close to|trusted|visits|connected (to|with)|engaged (with|in)|mentor|good relationship|stable|safe (person|adult)|helps (him|her|them)|youth group|church|mosque|temple)\\b")],
+  ['positive', R_("\\b(enjoys?|enjoying|loves?|likes?|interested in|good at|talented|strengths?|proud|funny|sense of humou?r|creative|draw(s|ing)?|music|plays|kind|caring|motivated|resilient|insightful|articulate)\\b")],
+  ['precipitating', R_("\\b(since (the start|term|last|then|starting|moving|the move)|after (the|his|her|their)|following|recently|started when|triggered|new school|changed schools?|moved (house|school)|broke up|breakup|passed away|died|death of|bullied|bullying|lost (his|her|their) job)\\b")],
+  ['predisposing', R_("\\b(history of|family history|has a history|as a (child|toddler|baby)|early childhood|born|premature|developmental|diagnosed|adhd|autis|asd|separated in|divorced|always been|temperament|previous(ly)?|in the past|years ago|in (19|20)\\d\\d)\\b")],
+  ['perpetuating', R_("\\b(most (days|nights)|every (day|night)|continues?|ongoing|still|avoid(s|ing|ance)?|keeps|gaming|up (till|until|late)|late nights?|sleeping \\d|skipping|not (going|attending)|missed|irregular|conflict|arguments?|argues|isolat|withdraw|refus)\\b")],
+  ['presenting', R_("\\b(low mood|school refusal|anxi|depress|sad|irritab|angry|anger|outbursts|worr|panic|tearful|cry|meltdowns?|tantrums?|aggress|behaviour(al)? (problems|concerns))\\b")]
+];
+const RULES_TOPIC = {
+  home: "lives with|living with|at home|household|home life|housing|bedroom|parents?|mum|dad|carer|foster|kinship",
+  family: "mum|dad|parents?|brother|sister|siblings?|grand|aunt|uncle|cousin|family|step|separat|divorc",
+  education: "school|year \\d|term \\d|class|teacher|attend|tafe|work|job|suspend|grades|homework|naplan|absent",
+  peers: "friends?|peers?|social|lonely|isolat|bullied|bullying",
+  activities: "hobby|hobbies|sport|basketball|footy|soccer|netball|dance|music|draw|gaming|games|club|activities",
+  eating: "eat|eating|appetite|meals?|breakfast|lunch|dinner|weight|food|exercise",
+  sleep: "sleep|bed|night|tired|insomnia|nightmare|\\d+ ?(am|pm)",
+  drugs: "alcohol|drink|vape|vaping|cannabis|weed|drugs?|smok|substance",
+  sexuality: "sexual|sexuality|gender|identity|lgbt|queer|gay|lesbian|bisexual|trans\\b|boyfriend|girlfriend|relationship with (a|her|his) (partner|boyfriend|girlfriend)",
+  mood: "mood|sad|low|depress|happy|tearful|cry|irritab|angry|numb|hopeless|bothered",
+  selfharm: "suicid|self[- ]?harm|cutting|kill|overdos|disappear|not want to (live|be here)|end it",
+  aggression: "aggress|violent|violence|hit|hits|hitting|punch|fight|threat|harm (to )?others|hurt (someone|others)",
+  abuse: "abus|family violence|domestic violence|\\bdv\\b|neglect|unsafe at home|rosh|child protection|dcj|facs|mandatory report",
+  exploitation: "online|exploit|groom|sexual safety|older (men|man|boyfriend|girlfriend)|nudes|sext|social media|snapchat|instagram|tiktok",
+  missing: "ran away|run away|runaway|missing|absconded|stayed out",
+  health: "medication|asthma|diagnos|illness|hospital|gp|paediatric|hearing|vision|weight|pain|headache|medical",
+  development: "development|milestone|pregnan|birth|premature|speech|early childhood|toddler",
+  mhhistory: "previous(ly)? (seen|saw|engaged)|psycholog|counsell|headspace|camhs|psychiatr|admission|medication|treatment",
+  familymh: "family history|(mum|dad|mother|father|parent|sibling|brother|sister) (has|had) (a history of )?(depress|anxi|bipolar|schizo|psychosis|mental|adhd|autis|substance|alcohol)|mental illness in",
+  culture: "culture|cultural|faith|religio|church|mosque|temple|language|aboriginal|torres|community|identity|heritage",
+  voice: "\\bsaid\\b|\\bsays\\b|describes|reports? (that|feeling)|\"|“|in (his|her|their) words",
+  onset: "since|started|began|ago|for (\\d+|a few|several) (days|weeks|months|years)|last (week|month|year|term)|in (january|february|march|april|may|june|july|august|september|october|november|december|term \\d|20\\d\\d)",
+  trauma: "trauma|abus|violence|assault|accident|died|death|grief|witness|bullied",
+  anxiety: "anxi|worr|panic|fear|nervous|scared|avoid",
+  attention: "adhd|attention|focus|concentrat|hyperactiv|impulsiv|fidget|distract",
+  behaviour: "tantrum|meltdown|aggress|defian|oppositional|non-?complian|hitting|rule[- ]breaking|outburst",
+  measures: "\\bsdq\\b|honosca|\\bcgas\\b|\\bfihs\\b",
+  consent: "consent|confidential"
+};
+const TOPIC_RE = Object.fromEntries(Object.entries(RULES_TOPIC).map(([k, v]) => [k, new RegExp(v, 'i')]));
+function topicsOf(s) { return TOPICS.filter(t => TOPIC_RE[t] && TOPIC_RE[t].test(s)); }
+function catOf(s) { for (const [cat, re] of RULES_CAT) if (re.test(s)) return cat; return 'context'; }
+function splitSentences(text) {
+  const out = []; const re = /[^.!?;\n]+(?:[.!?;]+["”')]*|\n|$)/g; let m;
+  while ((m = re.exec(text))) {
+    if (!m[0]) { re.lastIndex++; continue; }
+    let a = m.index, b = a + m[0].length;
+    while (a < b && /\s/.test(text[a])) a++;
+    while (b > a && /\s/.test(text[b - 1])) b--;
+    if (b - a >= 3 && /[A-Za-z]/.test(text.slice(a, b))) out.push({ a, b });
+  }
+  return out;
+}
+function shortOf(s, max) { max = max || 90; s = plainText(s).replace(/\s+/g, ' ').trim().replace(/[.;]+$/, ''); return s.length > max ? s.slice(0, max - 3).replace(/\s+\S*$/, '') + '…' : s; }
+function sortByRules(text) {
+  return splitSentences(text).map(r => { const s = text.slice(r.a, r.b); return { id: uid('s'), a: r.a, b: r.b, cat: catOf(s), topics: topicsOf(s), short: shortOf(s, catOf(s) === 'risk' ? 400 : 90), rel: null, by: 'rules' }; });
+}
+
+/* ================= still-missing checklist ================= */
+/* detect(ctx): ctx = { spans, text (all text lower), cats:Set, topics:Set } */
+const T = (...ts) => ctx => ts.some(t => ctx.topics.has(t));
+const K = re => ctx => re.test(ctx.text);
+const OR = (...fs) => ctx => fs.some(f => f(ctx));
+const CHECKLIST = [
+  { group: 'safety', key: 'selfharm', title: 'Suicidal thoughts and self-harm', hint: 'Ask directly, every time.', detect: OR(T('selfharm'), K(/suicid|self[- ]?harm/)), cat: 'risk', topics: ['selfharm'], quick: ['Asked: no suicidal thoughts or self-harm reported', 'Asked: concerns reported'] },
+  { group: 'safety', key: 'aggression', title: 'Risk of harm to others', hint: 'Aggression, threats, weapons.', detect: OR(T('aggression'), K(/harm (to )?others|aggress|violen|threat/)), cat: 'risk', topics: ['aggression'], quick: ['Asked: no risk of harm to others reported', 'Asked: concerns reported'] },
+  { group: 'safety', key: 'abuse', title: 'Abuse, family violence or neglect', hint: 'Child protection. Use the Mandatory Reporter Guide if needed.', detect: OR(T('abuse'), K(/abus|family violence|domestic violence|neglect|rosh|child protection|mandatory reporter/)), cat: 'risk', topics: ['abuse'], quick: ['Asked: no abuse, family violence or neglect reported', 'Asked: concerns reported'] },
+  { group: 'safety', key: 'exploitation', title: 'Online safety and exploitation', hint: 'Online contacts, sexual safety, older peers.', detect: OR(T('exploitation'), K(/exploit|groom|online safety|sexual safety/)), cat: 'risk', topics: ['exploitation'], quick: ['Asked: no online safety or exploitation concerns', 'Asked: concerns reported'] },
+  { group: 'safety', key: 'missing', title: 'Running away or going missing', detect: OR(T('missing'), K(/ran away|run away|runaway|missing|absconded/)), cat: 'risk', topics: ['missing'], quick: ['Asked: no running away reported', 'Asked: concerns reported'] },
+  { group: 'formulation', key: 'presenting', title: 'Presenting concern', detect: ctx => ctx.cats.has('presenting'), cat: 'presenting' },
+  { group: 'formulation', key: 'predisposing', title: 'Predisposing factors', hint: 'History, family history, development, early adversity.', detect: ctx => ctx.cats.has('predisposing'), cat: 'predisposing' },
+  { group: 'formulation', key: 'precipitating', title: 'Precipitating factors', hint: 'What changed just before it started?', detect: ctx => ctx.cats.has('precipitating'), cat: 'precipitating' },
+  { group: 'formulation', key: 'perpetuating', title: 'Perpetuating factors', hint: 'What keeps it going now?', detect: ctx => ctx.cats.has('perpetuating'), cat: 'perpetuating' },
+  { group: 'formulation', key: 'protective', title: 'Protective factors', hint: 'Who and what helps?', detect: ctx => ctx.cats.has('protective'), cat: 'protective' },
+  { group: 'formulation', key: 'positive', title: 'Strengths', hint: 'Interests, skills, what they are proud of.', detect: ctx => ctx.cats.has('positive'), cat: 'positive' },
+  { group: 'formulation', key: 'goals', title: 'Goals', hint: 'In the young person’s words if you can.', detect: ctx => ctx.cats.has('goal'), cat: 'goal' },
+  { group: 'formulation', key: 'voice', title: 'The young person’s own view', hint: 'A quote or their description.', detect: OR(T('voice'), K(/["“]|\bsaid\b|\bsays\b|describes/)), cat: 'context', topics: ['voice'] },
+  { group: 'assessment', key: 'onset', title: 'When it started', hint: 'Onset and what has changed since.', detect: OR(T('onset'), ctx => ctx.spans.some(s => (s.cat === 'presenting' || s.cat === 'precipitating') && TOPIC_RE.onset.test(s.text))), cat: 'context', topics: ['onset'] },
+  { group: 'assessment', key: 'home', title: 'Home and family', hint: 'Who lives at home and how they get on.', detect: OR(T('home'), K(/lives with|living with|household/)), cat: 'context', topics: ['home', 'family'] },
+  { group: 'assessment', key: 'education', title: 'School or work', hint: 'Attendance, learning, how school feels.', detect: T('education'), cat: 'context', topics: ['education'] },
+  { group: 'assessment', key: 'activities', title: 'Friends and activities', detect: T('peers', 'activities'), cat: 'context', topics: ['peers', 'activities'] },
+  { group: 'assessment', key: 'eating', title: 'Eating and exercise', detect: T('eating'), cat: 'context', topics: ['eating'] },
+  { group: 'assessment', key: 'sleep', title: 'Sleep', detect: T('sleep'), cat: 'context', topics: ['sleep'] },
+  { group: 'assessment', key: 'drugs', title: 'Alcohol, vaping and drugs', detect: T('drugs'), cat: 'context', topics: ['drugs'] },
+  { group: 'assessment', key: 'sexuality', title: 'Sexuality and relationships', hint: 'If appropriate for their age.', detect: T('sexuality'), cat: 'context', topics: ['sexuality'], optional: true },
+  { group: 'assessment', key: 'mood', title: 'Mood', detect: T('mood', 'anxiety'), cat: 'context', topics: ['mood'] },
+  { group: 'assessment', key: 'mhhistory', title: 'Past mental health support', hint: 'Services, therapy, medication.', detect: OR(T('mhhistory'), K(/previous(ly)? (seen|saw|engaged)|psycholog|counsell|headspace|psychiatr|no previous/)), cat: 'context', topics: ['mhhistory'] },
+  { group: 'assessment', key: 'health', title: 'Health, development and medication', detect: T('health', 'development'), cat: 'context', topics: ['health'] },
+  { group: 'assessment', key: 'familymh', title: 'Family mental health history', detect: OR(T('familymh'), K(/family history|history of (depress|anxi|bipolar|psychosis|mental)/)), cat: 'predisposing', topics: ['familymh'] },
+  { group: 'assessment', key: 'culture', title: 'Culture and what matters to them', hint: 'Identity, faith, community, language.', detect: T('culture'), cat: 'context', topics: ['culture'], optional: true },
+  { group: 'admin', key: 'measures', title: 'Outcome measures', hint: 'SDQ, HoNOSCA and CGAS, as your service’s NOCC schedule requires.', detect: T('measures'), cat: 'context', topics: ['measures'], optional: true, quick: ['Outcome measures completed'] },
+  { group: 'admin', key: 'consent', title: 'Consent and confidentiality explained', detect: T('consent'), cat: 'context', topics: ['consent'], optional: true, quick: ['Consent and limits of confidentiality explained'] }
+];
+/* "Picked up from your notes": prompts the notes trigger, each tied to an Australian or NSW source.
+   Shown on the Next session tab. They suggest what to clarify; they never diagnose. */
+const MOOD_RE = /low mood|depress|sad|tearful|hopeless|can't be bothered|lost interest/;
+const PICKS = [
+  { key: 'p_safety', label: 'Safety follow-up', cat: 'risk', when: ctx => ctx.riskPos.some(s => /suicid|self[- ]?harm|disappear|wish|not (want|wanting) to (live|be here)|passive|end (it|my life)|cutting/i.test(plainText(s.text))),
+    title: 'Ask how often the thoughts come, any plan or intent, and access to means. Make or review a safety plan with them and their family.',
+    why: 'NSW Health policy asks clinicians to ask directly about suicidal thoughts and to build a safety plan with the person and family, covering warning signs, coping, supports and access to means. Asking is unlikely to make things worse.',
+    src: ['nswpd', 'lifeinmind'], done: K(/safety plan/), topics: ['selfharm'] },
+  { key: 'p_sleep', label: 'Sleep', when: ctx => MOOD_RE.test(ctx.text) && /\b\d{1,2}\s?(am|pm)\b|gaming|phone in bed|can't sleep|cannot sleep|insomnia|not sleeping|late nights?|sleeping (in|until)|up (till|until)/.test(ctx.text),
+    title: 'Clarify sleep: bedtime on school nights, phone or gaming in bed, and whether the low mood came first.',
+    why: 'An Australian study that followed teens for a year found low mood predicted shorter school-night sleep later, so sleep is worth tracking as part of the mood picture.',
+    src: ['lovato'], done: K(/bedtime (is|of)|phone (out|away|outside)|sleep (plan|routine)|in bed by/), topics: ['sleep'] },
+  { key: 'p_bully', label: 'Bullying', when: K(/bull(ied|ying|y)|picked on|teased|excluded by/),
+    title: 'Ask what is happening with the bullying now: where, how often, online or in person, whether school knows, and how it affects mood and safety.',
+    why: 'An Australian-led review found being bullied is causally linked to depression, anxiety, self-harm and suicidal thoughts.',
+    src: ['moore'], done: K(/school (has been|was|is) (told|aware|informed)|year (adviser|advisor|coordinator)|anti-?bullying plan|bullying (has )?(stopped|resolved)/), topics: ['peers'] },
+  { key: 'p_online', label: 'Online', when: ctx => /bull|harass|threat/.test(ctx.text) && /snapchat|instagram|tiktok|online|messag|social media|cyber|discord/.test(ctx.text),
+    title: 'Check what is happening online: which apps, who is involved, whether screenshots are kept, and whether to report it.',
+    why: 'eSafety, the Australian regulator, can work with platforms to remove serious cyberbullying, usually within a day, and link young people to support.',
+    src: ['esafety'], done: K(/esafety|reported (it|to)|screenshot/), topics: ['peers'] },
+  { key: 'p_school', label: 'School mornings', when: K(/school refus|missed \d+|missing school|not attending|won't go to school|absent from school|wagging|school avoid/),
+    title: 'Map a school morning: when the worry starts, what is avoided, and a first small step back that the school could support.',
+    why: 'NSW Department of Education lists anxiety, low mood, bullying, family conflict and a parent’s mental illness as common causes. A gradual return planned with the school is recommended.',
+    src: ['nswdoe', 'rcn'], done: K(/graded return|gradual return|return(-| to )school plan|attendance plan|school meeting/), topics: ['education'] },
+  { key: 'p_parent', label: 'Parent’s mental health', when: ctx => /(mum|mom|mother|dad|father|parent)[^.\n]{0,40}(depress|anxiety|mental (health|illness)|bipolar|psychosis)/.test(ctx.text) || ctx.topics.has('familymh'),
+    title: 'Ask how the parent’s own mental health is now and what support they have.',
+    why: 'Emerging Minds, Australia’s national child mental health workforce centre, notes that a parent’s mental illness raises a child’s risk mainly through day-to-day parenting, and that supporting the parent and family helps.',
+    src: ['emergingminds'], done: K(/(mum|dad|parent|mother|father)('s)? (mood|mental health) (is|has been)|(mum|dad|parent|mother|father) (is )?(seeing|engaged|linked|referred)/), topics: ['familymh'] },
+  { key: 'p_eating', label: 'Eating', when: K(/eating less|skipping (meals|breakfast|lunch)|not eating|weight (loss|change|gain)|lost weight|appetite/),
+    title: 'Clarify the eating change: weight change, body image, dieting or extra exercise, or low appetite with mood.',
+    why: 'InsideOut Institute at the University of Sydney lists food restriction, body checking, frequent talk about weight or shape, and more exercise as warning signs. Low mood can also reduce appetite.',
+    src: ['insideout'], done: K(/weight (is )?(stable|unchanged)|body image|no (dieting|restriction)|appetite (is )?(back|better|improv)/), topics: ['eating'] },
+  { key: 'p_mood', when: K(MOOD_RE), title: 'How long has the low mood lasted, and is it most days?', why: 'Two weeks or more, most days, matters when deciding on assessment and treatment.', src: ['orygen'],
+    done: K(/(\d+|two|three|several|few) (weeks|months)|most days|every day|since (term|january|february|march|april|may|june|july|august|september|october|november|december|20\d\d)/), topics: ['mood', 'onset'] },
+  { key: 'p_mood2', when: K(MOOD_RE), title: 'Changes in sleep, appetite, energy or concentration?', why: 'These help gauge how severe the low mood is.', src: ['orygen'], done: ctx => ctx.topics.has('sleep') && ctx.topics.has('eating'), topics: ['sleep', 'eating'] },
+  { key: 'p_trauma', when: OR(T('trauma'), K(/abus|violence|assault|accident|died|grief|bullied/)), title: 'Nightmares, upsetting memories, avoiding reminders, feeling on edge?', why: 'The Australian PTSD Guidelines include recommendations for assessing and treating children and young people after a frightening event.', src: ['ptsd'], done: K(/nightmare|flashback|memories|on edge|jumpy|startle|avoids? reminders/), topics: ['trauma'] },
+  { key: 'p_attention', when: OR(T('attention'), K(/adhd|attention|concentrat|hyperactiv|impulsiv/)), title: 'Were attention problems there before age 12, at home and at school?', why: 'The Australian ADHD guideline uses criteria that need symptoms before age 12 and in more than one setting. Low mood, poor sleep and trauma can also affect attention.', src: ['aadpa'], done: K(/before (age )?12|since (primary|childhood|kindergarten)|at home and (at )?school|both settings/), topics: ['attention'] },
+  { key: 'p_behaviour', when: OR(T('behaviour'), K(/tantrum|meltdown|aggress|defian|oppositional|hitting/)), title: 'What happens just before and after the behaviour, and where?', why: 'Antecedents and consequences shape the parent-focused plan in Dadds and Hawes’ Integrated Family Intervention.', src: ['ifi'], done: K(/trigger|before (the|it)|afterwards|consequence|when (asked|told)/), topics: ['behaviour'] },
+  { key: 'p_anxiety', when: OR(T('anxiety'), K(/anxi|worr|panic|fear/)), title: 'What does the worry stop them doing?', why: 'Avoidance shows the impact and gives CBT its targets. The Australian guideline recommends CBT first for anxiety in children and young people.', src: ['anxCPG'], done: K(/avoid|won't go|refus|stops (him|her|them)/), topics: ['anxiety'] },
+  { key: 'p_drugs', when: K(/alcohol|vape|vaping|cannabis|weed|drug/), title: 'How often, and is it used to cope or to sleep?', why: 'Separates experimenting from coping.', src: [], done: K(/daily|weekly|every (day|weekend)|occasionally|to cope|to sleep|to forget/), topics: ['drugs'] }
+];
+function buildCtx(c) {
+  const spans = allSpans(c).filter(s => s.cat !== 'none');
+  const text = c.entries.map(e => plainText(e.text)).join('\n').toLowerCase();
+  const cats = new Set(spans.map(s => s.cat)); const topics = new Set(spans.flatMap(s => s.topics || []));
+  topicsOf(text).forEach(t => topics.add(t));
+  const riskPos = spans.filter(s => s.cat === 'risk' && !(typeof isNegScreen === 'function' && isNegScreen(s)));
+  return { spans, text, cats, topics, riskPos };
+}
+function checklist(c) {
+  const ctx = buildCtx(c); const st = c.check || {};
+  const items = CHECKLIST.map(it => {
+    const s = st[it.key]; const auto = it.detect(ctx);
+    const state = auto || (s && s.s === 'done') ? 'covered' : s && (s.s === 'na') ? 'na' : s && s.s === 'next' ? 'next' : 'missing';
+    return Object.assign({}, it, { state });
+  });
+  const probes = PICKS.filter(p => p.when(ctx) && !(st[p.key] && st[p.key].s === 'na')).map(p => Object.assign({ group: 'pick', cat: p.cat || 'context' }, p, { state: p.done(ctx) || (st[p.key] && st[p.key].s === 'done') ? 'covered' : 'missing' }));
+  const checks = c.entries.flatMap(e => (e.checks || []).map(k => ({ key: 'c_' + k.id, group: 'test', title: k.text, why: k.why, cat: 'context', by: e.by }))).filter(k => !(st[k.key] && st[k.key].s === 'na')).map(k => Object.assign(k, { state: st[k.key] && st[k.key].s === 'done' ? 'covered' : st[k.key] && st[k.key].s === 'next' ? 'next' : 'missing' }));
+  const all = items.concat(probes, checks);
+  /* one count everywhere: every non-optional item that is not marked not relevant */
+  const focusOnly = i => i.group === 'pick' || i.group === 'test';
+  const core = all.filter(i => !i.optional && !focusOnly(i) && i.state !== 'na');
+  const open = all.filter(i => (i.state === 'missing' || i.state === 'next') && !focusOnly(i));
+  const picks = all.filter(i => i.group === 'pick' && i.state === 'missing'), tests = all.filter(i => i.group === 'test' && i.state === 'missing');
+  const saved = open.filter(i => i.state === 'next' && i.group !== 'safety'), safety = open.filter(i => i.group === 'safety');
+  return { all, covered: core.filter(i => i.state === 'covered').length, total: core.length, open, toCover: open.filter(i => !i.optional).length, picks, tests, saved, safety, focusN: picks.length + tests.length + saved.length };
+}
+
+/* ================= interventions (her five) ================= */
+const SRC = {
+  nswpd: ['NSW Health PD2022_043, Clinical care of people who may be suicidal', 'https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2022_043.pdf'],
+  lifeinmind: ['Life in Mind (Everymind): suicide myths', 'https://lifeinmind.org.au/about-suicide/suicide-prevention/suicide-myths'],
+  lovato: ['Lovato et al., 2017, Australian teens, Nature and Science of Sleep', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5315345'],
+  moore: ['Moore et al., 2017, World Journal of Psychiatry', 'https://www.wjgnet.com/2220-3206/abstract/v7/i1/60.htm'],
+  esafety: ['eSafety Commissioner', 'https://esafety.gov.au/newsroom/media-releases/one-third-of-cyberbullying-cases-involve-threats-to-safety'],
+  nswdoe: ['NSW Department of Education: school refusal guide', 'https://prod65.education.nsw.gov.au/content/dam/main-education/en/home/student-wellbeing/attendance-matters---resources-for-schools/School_Refusal_Quick_Reference_Guide.pdf'],
+  rcn: ['Raising Children Network: school refusal', 'https://raisingchildren.net.au/teens/behaviour/behaviour-questions-issues/school-refusal'],
+  emergingminds: ['Emerging Minds: parental mental health and parenting', 'https://emergingminds.com.au/resources/parental-mental-health-and-parenting-how-are-they-related/'],
+  insideout: ['InsideOut Institute: warning signs', 'https://insideoutinstitute.org.au/news/warning-signs-your-child-may-be-struggling-with-body-image'],
+  aadpa: ['Australian ADHD guideline (AADPA), 2022', 'https://emergingminds.com.au/resources/australian-evidence-based-clinical-practice-guideline-for-attention-deficit-hyperactivity-disorder-adhd/'],
+  anxCPG: ['Melbourne Children’s anxiety guideline, 2023', 'https://www.mcri.edu.au/images/2023/10/Evidence-based_Clinical_Practice_Guidelines_For_Anxiety_in_Children_and_Young_People_2023.pdf'],
+  rch: ['RCH anxiety guideline', 'https://www.rch.org.au/clinicalguide/guideline_index/Anxiety__identification_and_management/'],
+  orygen: ['Orygen depression practice points', 'https://orygen.org.au/Training/Resources/Depression/Clinical-practice-points'],
+  nice: ['NICE NG134 (UK)', 'https://www.nice.org.uk/guidance/ng134/chapter/Recommendations'],
+  ptsd: ['Australian PTSD Guidelines, 3rd edition update, 2022', 'https://researchonline.jcu.edu.au/70619/'],
+  nctsn: ['NCTSN TF-CBT fact sheet', 'https://nctsn.org/sites/default/files/interventions/TF-CBT_042726.pdf'],
+  ranzcp: ['RANZCP self-harm guideline, 2016', 'https://www.ranzcp.org/getmedia/19124a28-c8d8-4e36-ab78-03c03f32f9b7/deliberate-self-harm-cpg.pdf'],
+  dbta: ['DBT-A programme summary (ACF)', 'https://preventionservices.acf.hhs.gov/programs/783/show'],
+  abft: ['ABFT trial, 2021', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8041448'],
+  ifi: ['Dadds and Hawes, 2006', 'https://silvereye.com.au/integrated-family-intervention-for-child-conduct-problems/prod4082'],
+  etg: ['Therapeutic Guidelines through CIAP', 'https://www.ciap.health.nsw.gov.au/']
+};
+const link = k => `<a href="${esc(SRC[k][1])}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a>`;
+const INTERVENTIONS = [
+  { type: 'cbt', name: 'CBT', variants: [
+      { id: 'anx', name: 'CBT for anxiety', unit: 'sessions', full: [6, 32], typ: null, median: 12, rangeLabel: 'range in trials', review: 'The guideline sets no number of sessions. Trials ran 6 to 32 weeks, median 12.' },
+      { id: 'dep', name: 'CBT for depression', unit: 'sessions', full: [12, null], typ: null, reviewAt: [4, 6], rangeLabel: 'at least 3 months', review: 'At least 3 months (about 12 weekly sessions). If there is no response after 4 to 6 sessions, hold a team review.' },
+      { id: 'tf', name: 'Trauma-focused CBT', unit: 'sessions', full: [8, 25], typ: [12, 20], rangeLabel: '8 to 25, typically 12 to 20', review: '8 to 25 sessions, typically 12 to 20; 16 to 25 for complex trauma. Re-measure at the end of each phase.' }],
+    guidance: () => `<ul><li>Anxiety, ages 8 to 18, mild to moderate: CBT is first line, before medication. Involve parents; parent-only CBT is a weaker option. ${link('anxCPG')}, ${link('rch')}</li><li>Depression, adolescents, moderate to severe: at least 3 months of CBT is first line. ${link('orygen')}, based on ${link('nice')}</li><li>PTSD in children: trauma-focused CBT, with or without a caregiver, is strongly recommended. ${link('ptsd')}; session numbers from ${link('nctsn')}</li></ul>` },
+  { type: 'dbt', name: 'DBT', variants: [{ id: 'a', name: 'DBT for adolescents (DBT-A)', unit: 'weeks', full: [24, 52], typ: [24, 26], rangeLabel: '24 to 52 weeks', review: 'Weekly individual session plus a weekly multifamily skills group, usually 24 weeks.' }],
+    guidance: () => `<ul><li>Young people who self-harm: CBT, DBT or MBT might reduce repeat self-harm and can be considered where suitable. ${link('ranzcp')}</li><li>DBT-A is for ages 13 to 18 with difficulty regulating emotions, over 24 to 52 weeks. ${link('dbta')}</li></ul>` },
+  { type: 'abft', name: 'Attachment-based family therapy (ABFT)', variants: [{ id: 'a', name: 'ABFT', unit: 'weeks', full: [16, 16], typ: null, rangeLabel: '16 weeks in trials', review: 'Delivered as 16 weekly sessions in trials.' }],
+    guidance: () => `<ul><li>Adolescents with depression or suicidal thinking where the parent relationship is strained. NICE lists attachment-based family therapy as an option for 12 to 18 year olds. ${link('nice')}</li><li>One trial found ABFT no better than usual care for suicidal ideation, so review progress closely. ${link('abft')}</li><li>No Australian guideline specific to ABFT was found.</li></ul>` },
+  { type: 'family', name: 'Family systems therapy', variants: [{ id: 'a', name: 'Family systems therapy', unit: 'sessions', full: [15, null], typ: null, rangeLabel: 'at least 15 fortnightly', review: 'For depression that has not responded: at least 15 fortnightly sessions.' }],
+    guidance: () => `<ul><li>When family patterns, conflict or communication keep the problem going. For depression that has not responded to individual therapy, NICE suggests systemic family therapy of at least 15 fortnightly sessions. ${link('nice')}</li><li>No Australian guideline specific to family systems therapy was found.</li></ul>` },
+  { type: 'ifi', name: 'Behavioural intervention (Dadds and Hawes)', variants: [{ id: 'a', name: 'Integrated Family Intervention', unit: 'sessions', full: [9, 9], typ: null, rangeLabel: '9-session manual', review: 'A 9-session manualised parent programme with handouts.' }],
+    guidance: () => `<ul><li>Integrated Family Intervention for Child Conduct Problems: parent-focused, mainly for children aged 2 to 8 with aggression, non-compliance, tantrums or rule breaking. It replaces token systems with warmth and closeness. ${link('ifi')}</li></ul>` }
+];
+const INT_BY = Object.fromEntries(INTERVENTIONS.map(i => [i.type, i]));
+function variantOf(iv) { const def = INT_BY[iv.type]; return def ? (def.variants.find(v => v.id === iv.variant) || def.variants[0]) : null; }
+function bestVariant(c, def) {
+  if (def.type !== 'cbt') return def.variants[0].id;
+  const t = buildCtx(c).text;
+  if (/nightmare|flashback|ptsd|trauma/.test(t)) return 'tf';
+  if (/low mood|depress|hopeless|lost interest|can't be bothered/.test(t)) return 'dep';
+  return 'anx';
+}
+function fitFor(c, def) {
+  const ctx = buildCtx(c); const t = ctx.text; const age = Number(c.age) || null; const r = []; let level = 'maybe'; const no = [];
+  const has = re => re.test(t);
+  if (def.type === 'cbt') {
+    if (has(/anxi|worr|panic|fear|avoid/)) r.push('anxiety');
+    if (has(/low mood|depress|sad|hopeless|can't be bothered|lost interest/)) r.push('low mood');
+    if (ctx.topics.has('trauma') && has(/nightmare|flashback|memories|on edge|avoid/)) r.push('possible trauma reactions');
+    if (age && age < 8) no.push('CBT evidence is mainly for ages 8 and up');
+    level = r.length ? 'yes' : 'maybe';
+  } else if (def.type === 'dbt') {
+    const pos = t.replace(/\b(no|denies|denied|nil|without|never)\s+(any\s+)?(history of\s+)?(self[- ]?harm|cutting|suicidal \w+)/g, '');
+    const sh = /self[- ]?harm|cutting|cuts? (him|her|them)sel/.test(pos), si = /suicid/.test(pos);
+    const emo = has(/overwhelm|explosive|dysregulat|intense (emotion|feeling)|outbursts|impulsiv/);
+    if (sh) r.push('self-harm'); else if (si) r.push('suicidal thinking');
+    if (emo) r.push('intense emotions');
+    if (age && age < 13) no.push('DBT-A is for ages 13 to 18');
+    level = (sh || emo) && !no.length ? 'yes' : 'maybe';
+  } else if (def.type === 'abft') {
+    const mood = has(/low mood|depress|suicid|hopeless/); const rel = has(/conflict|argu|trust|strained|rupture|separat|relationship with (mum|dad|parent)|contact is irregular/);
+    if (mood) r.push('low mood or suicidal thinking'); if (rel) r.push('strained relationship with a parent');
+    if (age && age < 12) no.push('ABFT is for adolescents');
+    level = mood && rel && !no.length ? 'yes' : 'maybe';
+  } else if (def.type === 'family') {
+    if (has(/conflict|argu|communication|separat|divorc|blended|step|tension|fight(s|ing)? with (mum|dad|parent|sibling)/)) r.push('family conflict or change');
+    level = r.length ? 'yes' : 'maybe';
+  } else if (def.type === 'ifi') {
+    if (has(/tantrum|meltdown|aggress|defian|oppositional|non-?complian|hitting|rule[- ]breaking|won't listen/)) r.push('conduct problems');
+    if (age && age > 10) no.push('mainly for ages 2 to 8');
+    level = r.length && !no.length ? 'yes' : (no.length ? 'no' : 'maybe');
+  }
+  if (no.length && level !== 'yes') level = 'no';
+  return { level, reasons: r, cautions: no };
+}
+function interventionStats(c, iv) {
+  const v = variantOf(iv); const done = c.entries.filter(e => e.intId === iv.id).length;
+  let cur = done;
+  if (v.unit === 'weeks') cur = Math.max(done, Math.round((Date.parse(todayISO()) - Date.parse(iv.start)) / 6048e5));
+  const [lo, hi] = v.full; let status;
+  if (v.reviewAt && done >= v.reviewAt[0] && done <= v.reviewAt[1]) status = ['warn', 'Review point: check response'];
+  else if (hi != null && cur > hi) status = ['crit', 'Past the usual length'];
+  else if (v.typ && cur >= v.typ[0] && cur <= v.typ[1]) status = ['good', 'In the usual range'];
+  else if (cur < lo) status = ['info', 'Early in the course'];
+  else status = ['good', 'In range'];
+  const end = hi != null ? hi : lo;
+  const scale = Math.max(end, cur + 1, v.reviewAt ? v.reviewAt[1] : 0) + (hi != null ? 0 : 2);
+  const ticks = [];
+  if (v.reviewAt) ticks.push({ a: v.reviewAt[0], b: v.reviewAt[1], label: `Review at ${v.reviewAt[0]} to ${v.reviewAt[1]}`, warn: true });
+  if (v.median) ticks.push({ a: v.median, label: `Median ${v.median}` });
+  if (v.typ) ticks.push({ a: v.typ[0], b: v.typ[1], label: `Typical ${v.typ[0]} to ${v.typ[1]}` });
+  if (hi == null) ticks.push({ a: lo, label: `At least ${lo}` });
+  else if (lo === hi) ticks.push({ a: lo, label: `${lo} in trials` });
+  return { v, done, cur, status, scale, ticks };
+}
+/* ================= state ================= */
+const S = { cases: [], ready: false, mode: 'loading', settings: { useClaude: true } };
+const UI = { view: 'home', caseId: null, tab: 'notes', formMode: 'board', draft: null, openGap: null, pop: null, justSorted: null, newCase: false, confirm: null, mapView: {}, mapOpen: {}, sortCtl: null };
+let DB = null, UID = null, SAMPLE = null;
+const dirty = new Set(), timers = {}, writing = {}, again = {};
+
+function loadSettings() { try { const r = JSON.parse(localStorage.getItem(APP_KEY + '-settings') || 'null'); if (r) Object.assign(S.settings, r); } catch (e) { /* storage unavailable */ } }
+function saveSettings() { try { localStorage.setItem(APP_KEY + '-settings', JSON.stringify(S.settings)); } catch (e) { /* storage unavailable */ } }
+function saveLocal() { try { localStorage.setItem(APP_KEY, JSON.stringify(S.cases)); } catch (e) { /* storage unavailable */ } }
+function loadLocal() { try { const r = JSON.parse(localStorage.getItem(APP_KEY) || 'null'); return Array.isArray(r) ? r : null; } catch (e) { return null; } }
+/* Same private per-user collection the earlier version used; new case docs are tagged so older records there are left alone. */
+const CASE_KIND = 'fiveps-case';
+const caseCol = () => DB.collection('data/users/' + UID);
+
+function current() { return S.cases.find(c => c.id === UI.caseId) || null; }
+function touch(c) {
+  c.updated = Date.now(); c._tab = TAB; dirty.add(c.id);
+  clearTimeout(timers[c.id]); timers[c.id] = setTimeout(() => flush(c.id), 400);
+  setSaveState('Saving…');
+}
+async function flush(id) {
+  if (S.mode !== 'db') { saveLocal(); dirty.delete(id); setSaveState(''); return; }
+  if (writing[id]) { again[id] = true; return; }
+  writing[id] = true; const c = S.cases.find(x => x.id === id);
+  try {
+    const ref = caseCol().doc(id);
+    if (c) await ref.set(clone(c)); else await ref.delete();
+    dirty.delete(id); setSaveState('');
+  } catch (e) {
+    if (e && (e.code === 'invalid_argument' || e.code === 'revoked' || e.code === 'not_granted')) {
+      S.mode = 'local'; saveLocal(); dirty.delete(id); render();
+      showToast('Saving on this iPad only. Ask the owner for Contributor access to save to your account.');
+    } else if (e && e.code === 'quota_exceeded') { showToast('Your saved cases are full. Delete an old case to make room.'); }
+    else { setSaveState('Not saved yet'); showToast('Could not save just now. Your work is still here; it will retry on your next change.'); }
+  } finally { writing[id] = false; if (again[id]) { again[id] = false; flush(id); } }
+}
+function setSaveState(t) { const el = $('#save-state'); if (el) el.textContent = t; }
+
+async function boot() {
+  loadSettings(); OAI = loadOAI(); render();
+  const cl = window.claude;
+  if (!cl || typeof cl.use !== 'function') return startLocal();
+  let db = null, user = null, sample = null;
+  try { [db, user, sample] = await Promise.all([cl.use('db'), cl.use('user'), cl.use('sample')]); } catch (e) { /* absent */ }
+  SAMPLE = sample || null;
+  if (user) { try { UID = await user.id(); } catch (e) { UID = null; } }
+  if (db && UID) {
+    DB = db; S.mode = 'db';
+    caseCol().onSnapshot(onSnap, () => { DB = null; startLocal(true); showToast('Lost the link to your saved cases. Changes now stay on this iPad.'); });
+    setTimeout(() => { if (!S.ready) { S.ready = true; render(); } }, 6000);
+  } else startLocal();
+}
+function startLocal(keep) { S.mode = 'local'; if (!keep || !S.cases.length) S.cases = (loadLocal() || []).map(normalise); S.ready = true; render(); }
+function onSnap(snap) {
+  let changed = false; const seen = new Set();
+  snap.docs.forEach(d => {
+    const data = d.data(); if (!data || data.kind !== CASE_KIND) return; seen.add(d.id);
+    const local = S.cases.find(c => c.id === d.id);
+    if (!local) { S.cases.push(normalise(clone(data))); changed = true; }
+    else if (data._tab !== TAB && (data.updated || 0) > (local.updated || 0) && !dirty.has(d.id)) { Object.keys(local).forEach(k => delete local[k]); Object.assign(local, normalise(clone(data))); changed = true; }
+  });
+  if (!snap.metadata.fromCache) { const n = S.cases.length; S.cases = S.cases.filter(c => seen.has(c.id) || dirty.has(c.id)); if (n !== S.cases.length) changed = true; }
+  if (!S.ready && (!snap.metadata.fromCache || snap.size)) { S.ready = true; changed = true; }
+  if (changed) render();
+}
+function normalise(c) {
+  c.kind = CASE_KIND;
+  c.entries = c.entries || []; c.check = c.check || {}; c.ints = c.ints || []; c.goalProgress = c.goalProgress || {}; c.riskSeen = c.riskSeen || [];
+  c.entries.forEach(e => { e.spans = e.spans || []; e.checks = e.checks || []; });
+  return c;
+}
+function newCase(label, age) { return normalise({ id: uid('c'), label: label.trim().slice(0, 40), age: age ? Number(age) : null, created: todayISO(), updated: Date.now(), entries: [], check: {}, ints: [], goalProgress: {}, safetyReviewed: null, riskSeen: [] }); }
+
+/* ================= derived ================= */
+function spanText(e, s) { return e.text.slice(s.a, s.b); }
+function allSpans(c) { const out = []; c.entries.forEach(e => e.spans.forEach(s => out.push(Object.assign({}, s, { text: spanText(e, s), entryId: e.id, date: e.date })))); return out; }
+function latestChanges(c) { const m = {}; allSpans(c).forEach(s => { if (s.rel && s.rel.id) m[s.rel.id] = { change: s.rel.change, date: s.date }; }); return m; }
+function activeInt(c) { return c.ints.find(i => !i.end) || null; }
+/* A plain 'asked, none reported' screen is documentation, not a risk to act on. Anything else filed as risk raises the banner. */
+const NEG_RE = /^\s*(asked(\s+about)?[^:]{0,40}:\s*)?(no|nil|not|none|denie[sd]|never)\b/i;
+const POS_RE = /passive|wish|\bbut\b|however|concerns? (were )?(reported|raised)|disclos|plan to|attempt|cutting|overdose/i;
+function isNegScreen(s) { if (s.neg) return true; const t = plainText(s.short || s.text || ''); return NEG_RE.test(t) && !POS_RE.test(t); }
+function riskSpans(c) { return allSpans(c).filter(s => s.cat === 'risk' && !isNegScreen(s)); }
+function newRisk(c) { const seen = new Set(c.riskSeen || []); return riskSpans(c).filter(s => !seen.has(s.id)); }
+function sessionCount(c) { return c.entries.filter(e => e.kind === 'notes').length; }
+
+/* ================= sorting ================= */
+const AI_PROMPT = `You are helping a social worker in a NSW Health Child and Adolescent Mental Health Service (CAMHS) turn her own de-identified notes about a child or teenager into a 5 Ps formulation.
+
+Hard rules:
+- Work within Australian and NSW Health practice and terminology.
+- Text inside ⟦ ⟧ is a placeholder for a hidden name or detail. Keep placeholders exactly as written and never guess what they hide.
+- Do not diagnose and do not state likelihoods.
+- Do not add facts that are not in the notes.
+- Treat culture, religion and family background as context, never as risk.
+
+Task: split the NOTES into short spans (a clause or a sentence) that carry clinical meaning, and label each one. Every "quote" must be copied character for character from the NOTES so it can be found. Skip filler such as dates and headings.
+
+Categories (cat):
+presenting = the reason for referral or the main current difficulty
+predisposing = earlier or background factors that made difficulties more likely (history, family history, development, early adversity, temperament)
+precipitating = recent events or changes that triggered the current difficulties
+perpetuating = what keeps the difficulties going now (patterns, avoidance, sleep, ongoing conflict or stressors)
+protective = people, supports and resources that help
+positive = the young person's strengths, interests, skills and hopes
+risk = any statement about suicidal thoughts, self-harm, harm to others, abuse, family violence, neglect, exploitation or running away, including statements that these were asked about and denied
+goal = something the young person, family or worker wants to change
+context = other useful background (school year, who lives at home, services involved)
+
+Topics (zero or more): home, family, education, peers, activities, eating, sleep, drugs, sexuality, mood, selfharm, aggression, abuse, exploitation, missing, health, development, mhhistory (past mental health support), familymh (family mental health history), culture, voice (the young person's own words or view), onset (when it started), trauma, anxiety, attention, behaviour, measures (SDQ, HoNOSCA, CGAS), consent.
+
+For each span also give "short": the point in 4 to 12 plain words, third person, keeping placeholders. If the span reports a change in one of the EARLIER POINTS, set "update" to {"id": that point's id, "change": "better" | "worse" | "resolved"}; otherwise null.
+
+Then give up to 3 "checks": questions a careful, sceptical clinician would ask next to test the formulation (timing that does not fit, an alternative explanation, a contradiction, or missing information that would change the plan). Each {"text": a question under 20 words, "why": a reason under 20 words}.
+
+Reply with only JSON: {"spans":[{"quote":"...","cat":"...","topics":["..."],"short":"...","update":null}],"checks":[{"text":"...","why":"..."}]}`;
+function locate(text, quote, from) {
+  if (!quote) return -1;
+  let i = text.indexOf(quote, from); if (i >= 0) return i;
+  i = text.indexOf(quote); if (i >= 0) return i;
+  const ws = quote.trim().split(/\s+/).map(reEsc).join('\\s+'); if (!ws) return -1;
+  try { const re = new RegExp(ws); const m = re.exec(text.slice(from)) || re.exec(text); if (m) { const j = text.indexOf(m[0], from); return j >= 0 ? j : text.indexOf(m[0]); } } catch (e) { /* bad pattern */ }
+  return -1;
+}
+/* never cut a ⟦placeholder⟧ in half */
+function snapMarks(t, a, b) { const re = new RegExp(MARK_RE.source, 'g'); let m; while ((m = re.exec(t))) { const s = m.index, e = s + m[0].length; if (a > s && a < e) a = s; if (b > s && b < e) b = e; } return [a, b]; }
+function quoteLen(text, i, quote) { if (text.substr(i, quote.length) === quote) return quote.length; const ws = quote.trim().split(/\s+/).map(reEsc).join('\\s+'); const m = new RegExp('^' + ws).exec(text.slice(i)); return m ? m[0].length : quote.length; }
+/* ===== her own OpenAI key: only on the standalone website, kept only in this browser ===== */
+const STANDALONE = !(window.claude && typeof window.claude.use === 'function');
+const OAI_DEFAULT_MODEL = 'gpt-5-mini';
+let OAI = null;
+function loadOAI() { try { const r = JSON.parse(localStorage.getItem(APP_KEY + '-openai') || 'null'); return r && r.key ? { key: String(r.key), model: String(r.model || OAI_DEFAULT_MODEL) } : null; } catch (e) { return null; } }
+function saveOAI(v) { try { if (v) localStorage.setItem(APP_KEY + '-openai', JSON.stringify(v)); else localStorage.removeItem(APP_KEY + '-openai'); return true; } catch (e) { return false; } }
+async function openaiJSON(prompt, signal, cfg) {
+  cfg = cfg || OAI; let res;
+  try {
+    res = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', signal,
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + cfg.key },
+      body: JSON.stringify({ model: cfg.model || OAI_DEFAULT_MODEL, response_format: { type: 'json_object' }, messages: [{ role: 'user', content: prompt }] }) });
+  } catch (e) { if (signal && signal.aborted) throw e; throw { code: 'network' }; }
+  let body = null; try { body = await res.json(); } catch (e) { body = null; }
+  if (!res.ok) {
+    const t = String((body && body.error && (body.error.code || body.error.type)) || '');
+    if (res.status === 401) throw { code: 'oai_key' };
+    if (res.status === 429 && /quota|billing|credit/i.test(t)) throw { code: 'oai_credit' };
+    if (res.status === 429) throw { code: 'rate_limited' };
+    if (res.status === 404 || /model/i.test(t)) throw { code: 'oai_model' };
+    throw { code: 'network' };
+  }
+  const txt = body && body.choices && body.choices[0] && body.choices[0].message && body.choices[0].message.content;
+  try { return JSON.parse(txt); } catch (e) { throw { code: 'invalid_json' }; }
+}
+const PROVIDER_NAME = { claude: 'Claude', openai: 'ChatGPT' };
+function aiProvider() { if (S.settings.useClaude && SAMPLE) return 'claude'; if (STANDALONE && OAI && OAI.key) return 'openai'; return null; }
+async function sortWithAI(c, text, signal, provider) {
+  const known = new Set(allSpans(c).map(s => s.id));
+  const earlier = allSpans(c).filter(s => s.cat !== 'context').slice(-60).map(s => `[${s.id}] (${s.cat}) ${s.short || shortOf(s.text)}`).join('\n') || 'none';
+  const body = text.length > 24000 ? text.slice(0, 24000) : text;
+  const prompt = `${AI_PROMPT}\n\nEARLIER POINTS:\n${earlier}\n\nNOTES:\n"""\n${body}\n"""`;
+  const data = provider === 'openai' ? await openaiJSON(prompt, signal) : await SAMPLE.json(prompt, { signal, modelTier: 'default' });
+  const spans = []; let cursor = 0;
+  (Array.isArray(data && data.spans) ? data.spans : []).forEach(x => {
+    const q = String(x && x.quote || ''); if (q.trim().length < 3) return;
+    const i = locate(body, q, cursor); if (i < 0) return;
+    const [a, b] = snapMarks(body, i, i + quoteLen(body, i, q));
+    if (spans.some(s => a < s.b && b > s.a)) return;
+    const cat = CATS[x.cat] ? x.cat : 'context';
+    const tps = Array.isArray(x.topics) ? x.topics.filter(t => TOPICS.includes(t)) : [];
+    let rel = null; if (x.update && known.has(String(x.update.id)) && ['better', 'worse', 'resolved'].includes(x.update.change)) rel = { id: String(x.update.id), change: x.update.change };
+    spans.push({ id: uid('s'), a, b, cat, topics: tps, short: String(x.short || '').slice(0, 120) || shortOf(body.slice(a, b)), rel, by: provider });
+    cursor = b;
+  });
+  if (text.length > body.length) sortByRules(text.slice(body.length)).forEach(s => { s.a += body.length; s.b += body.length; spans.push(s); });
+  spans.sort((x, y) => x.a - y.a);
+  const checks = (Array.isArray(data && data.checks) ? data.checks : []).slice(0, 3).map(k => ({ id: uid('k'), text: String(k.text || '').slice(0, 160), why: String(k.why || '').slice(0, 160) })).filter(k => k.text);
+  if (!spans.length) throw { code: 'empty_sort' };
+  return { spans, checks };
+}
+function aiErrorText(e, provider) {
+  const code = e && e.code; const name = PROVIDER_NAME[provider] || 'Claude'; const tail = ', so your notes were sorted with the built-in rules.';
+  if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(code)) { SAMPLE = null; return 'Claude isn’t available here' + tail; }
+  if (code === 'oai_key') return 'Your OpenAI key wasn’t accepted' + tail + ' Check it in Settings.';
+  if (code === 'oai_credit') return 'Your OpenAI account has no API credit left' + tail;
+  if (code === 'oai_model') return 'The OpenAI model in Settings isn’t available' + tail;
+  if (code === 'rate_limited') return name + ' is busy right now' + tail + ' You can re-sort later.';
+  if (code === 'empty_sort' || code === 'invalid_json') return name + '’s answer couldn’t be read' + tail;
+  return 'Couldn’t reach ' + name + tail;
+}
+
+/* ================= case operations ================= */
+function addEntry(c, text, spans, opts) {
+  const e = Object.assign({ id: uid('e'), date: todayISO(), kind: 'notes', text, spans, by: 'rules', intId: null, checks: [] }, opts || {});
+  c.entries.push(e); touch(c); return e;
+}
+function addQuick(c, raw, cat, topics, opts) {
+  const d = deidentify(raw.trim()); const text = d.text;
+  const e = addEntry(c, text, [{ id: uid('s'), a: 0, b: text.length, cat, topics: topics || topicsOf(text), short: shortOf(text, cat === 'risk' ? 400 : 90), rel: null, by: 'worker', neg: !!(opts && opts.neg) }], Object.assign({ kind: 'quick', by: 'worker' }, opts || {}));
+  return { entry: e, hidden: d.total };
+}
+function findSpan(c, id) { for (const e of c.entries) { const s = e.spans.find(x => x.id === id); if (s) return { e, s }; } return null; }
+
+/* ================= text outputs ================= */
+function buildSummary(c) {
+  const L = []; const ch = latestChanges(c); const sp = allSpans(c);
+  L.push(`${c.label}${c.age ? ', ' + c.age : ''}: formulation summary (${fmtDate(todayISO())})`);
+  L.push('De-identified. Prepared from session notes; check before filing.');
+  const sec = (title, list) => { if (!list.length) return; L.push(''); L.push(title); list.forEach(s => { const t = ch[s.id]; L.push(`- ${plainText(s.short || shortOf(s.text))}${t ? ` (${t.change}, ${fmtShort(t.date)})` : ''}`); }); };
+  sec('Risk and safety', sp.filter(s => s.cat === 'risk'));
+  FIVE_PS.forEach(k => sec(CATS[k].label, sp.filter(s => s.cat === k)));
+  sec('Goals', sp.filter(s => s.cat === 'goal'));
+  const iv = activeInt(c);
+  if (iv) { const st = interventionStats(c, iv); L.push(''); L.push('Plan'); L.push(`- ${st.v.name}: started ${fmtDate(iv.start)}, ${plural(st.done, 'session')} so far. ${st.v.review}`); }
+  const cl = checklist(c); const open = cl.open.filter(i => !i.optional);
+  if (open.length) { L.push(''); L.push('Still to explore'); open.forEach(i => L.push(`- ${i.title}`)); }
+  return L.join('\n');
+}
+function buildMissingList(c) {
+  const cl = checklist(c); const open = cl.open.filter(i => !i.optional);
+  return [`${c.label}: still missing (${fmtDate(todayISO())})`, ...open.map(i => `- ${i.title}${i.group === 'safety' ? ' (safety)' : ''}`)].join('\n');
+}
+function buildNextList(c) {
+  const cl = checklist(c); const L = [`${c.label}: focus for next session (${fmtDate(todayISO())})`];
+  const sec = (title, list, withWhy) => { if (!list.length) return; L.push(''); L.push(title); list.forEach(i => { L.push(`- ${i.title}`); if (withWhy && i.why) L.push(`  Why: ${i.why}${i.src && i.src.length ? ` (${i.src.map(k => SRC[k][0]).join('; ')})` : ''}`); }); };
+  sec('Safety: ask every time', cl.safety, false);
+  sec('Picked up from your notes', cl.picks, true);
+  sec('To test the formulation', cl.tests, true);
+  sec('Saved for next session', cl.saved, false);
+  if (L.length === 1) L.push('', 'Nothing queued.');
+  return L.join('\n');
+}
+function buildEntryNote(c, e) {
+  const groups = {}; e.spans.forEach(s => { (groups[s.cat] = groups[s.cat] || []).push(s); });
+  const L = [`${c.label}: notes ${fmtDate(e.date)} (de-identified)`];
+  CAT_ORDER.forEach(k => { if (!groups[k] || k === 'context') return; L.push(''); L.push(CATS[k].label); groups[k].forEach(s => L.push(`- ${plainText(s.short || shortOf(spanText(e, s)))}`)); });
+  return L.join('\n');
+}
+/* ================= render root ================= */
+function render() {
+  const app = $('#app'); if (!app) return;
+  const c = current(); if (UI.view === 'case' && !c) UI.view = 'home';
+  let main;
+  if (!S.ready) main = `<div class="empty"><h1>Opening your cases</h1><p class="muted">Connecting to your saved cases. This takes a few seconds.</p></div>`;
+  else if (UI.view === 'settings') main = settingsHTML();
+  else if (UI.view === 'case') main = caseHTML(c);
+  else main = homeHTML();
+  app.innerHTML = barHTML(c) + `<main class="wrap" id="main">${main}</main>`;
+  renderPop();
+  if (UI.view === 'case' && UI.tab === 'form' && UI.formMode === 'map') wireMap(c);
+  if (UI.focus) { const el = document.getElementById(UI.focus); if (el) { el.focus({ preventScroll: false }); if (el.setSelectionRange && el.value) el.setSelectionRange(el.value.length, el.value.length); } UI.focus = null; }
+  UI.justSorted = null;
+}
+function barHTML(c) {
+  const mode = !S.ready ? '' : S.mode === 'db' ? 'Saved to your account' : 'Saved on this iPad';
+  if (UI.view === 'case' && c) return `<header class="bar"><div class="bar-in">
+      <button class="bar-btn icon-only" data-act="home" aria-label="All cases">${icon('back')}</button>
+      <div class="case-id grow"><b>${esc(c.label)}</b>${c.age ? `<span>Age ${esc(c.age)}</span>` : ''}</div>
+      <span class="save-state" id="save-state" aria-live="polite"></span>
+      <button class="bar-btn" data-act="copy-summary">${icon('copy')}<span>Copy<span class="wide"> summary</span></span></button>
+    </div></header>`;
+  if (UI.view === 'settings') return `<header class="bar"><div class="bar-in"><button class="bar-btn icon-only" data-act="home" aria-label="All cases">${icon('back')}</button><div class="case-id grow"><b>Settings</b></div></div></header>`;
+  return `<header class="bar"><div class="bar-in"><div class="brand grow">Five&nbsp;<mark>Ps</mark></div>
+    <span class="save-state" id="save-state" aria-live="polite">${esc(mode)}</span>
+    <button class="bar-btn icon-only" data-act="settings" aria-label="Settings">${icon('gear')}</button></div></header>`;
+}
+const NOTICE = `<p class="notice">Prototype for testing with de-identified or example notes. It is not an approved NSW Health system. It sorts and reminds; it never diagnoses, and your clinical judgement decides.</p>`;
+
+/* ================= home ================= */
+const DEDICATION = `<p class="dedication">Built by S for T, <mark>with Love</mark></p>`;
+function homeHTML() {
+  const list = S.cases.slice().sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  const form = UI.newCase || !list.length ? newCaseHTML(!list.length) : '';
+  if (!list.length) return `${DEDICATION}<section class="empty"><h1>Start from the notes you already have</h1>
+      <p>Paste your notes. Five Ps hides names and contact details, sorts everything into a 5 Ps formulation, and shows you only what is still missing.</p>
+      ${form}<div><button class="btn quiet" data-act="example">Try it with example notes</button></div></section>${NOTICE}`;
+  return `${DEDICATION}<section class="stack"><div class="row between"><h1>Cases</h1>${UI.newCase ? '' : `<button class="btn primary" data-act="new-case">${icon('plus')}New case</button>`}</div>
+    ${form}
+    <div class="case-list">${list.map(caseRowHTML).join('')}</div></section>${NOTICE}`;
+}
+function newCaseHTML(first) {
+  return `<form class="new-case" data-form="new-case">
+    <label class="field"><span>Case label</span><input type="text" id="nc-label" maxlength="40" placeholder="Initials or a code, e.g. J.M." autocomplete="off" required></label>
+    <label class="field"><span>Age</span><input type="number" id="nc-age" min="2" max="25" inputmode="numeric" placeholder="e.g. 15"></label>
+    <div class="row"><button class="btn primary" type="submit">Create case</button>${first ? '' : '<button class="btn quiet" type="button" data-act="cancel-new">Cancel</button>'}</div>
+    <p class="xs muted" style="grid-column:1/-1">No names. Use initials or a code you will recognise.</p></form>`;
+}
+function caseRowHTML(c) {
+  const cl = checklist(c); const n = cl.toCover; const risk = newRisk(c).length;
+  return `<button class="case-row" data-act="open-case" data-id="${esc(c.id)}">
+    <span class="grow"><span class="label">${esc(c.label)}</span><span class="meta" style="display:block">${c.age ? `Age ${esc(c.age)} · ` : ''}${plural(sessionCount(c), 'session')} · updated ${fmtShort(new Date(c.updated || Date.now()).toISOString().slice(0, 10))}</span></span>
+    ${risk ? `<span class="status crit">Risk to review</span>` : ''}
+    ${c.entries.length ? `<span class="status ${n ? 'info' : 'good'}">${n ? `${n} to cover` : 'All covered'}</span>` : '<span class="status info">No notes yet</span>'}
+    ${icon('next', 'faint')}</button>`;
+}
+
+/* ================= case ================= */
+function caseHTML(c) {
+  const cl = checklist(c); const openN = cl.toCover;
+  const tabs = [['notes', 'Notes', c.entries.length ? openN : null, 'still missing'], ['form', 'Formulation', null], ['next', 'Next session', c.entries.length ? cl.focusN : null, 'to focus on'], ['plan', 'Plan', null]];
+  return `<nav class="tabs" role="tablist" aria-label="Case sections">${tabs.map(([k, l, n, what]) => `<button class="tab" role="tab" aria-selected="${UI.tab === k}" data-act="tab" data-tab="${k}">${l}${n ? `<span class="count" title="${n} ${what}">${n}</span>` : ''}</button>`).join('')}</nav>
+    ${safetyHTML(c)}
+    <div class="panel" id="panel">${UI.tab === 'form' ? formHTML(c) : UI.tab === 'plan' ? planHTML(c) : UI.tab === 'next' ? nextHTML(c, cl) : notesHTML(c, cl)}</div>`;
+}
+function safetyHTML(c) {
+  const all = riskSpans(c); if (!all.length) return '';
+  const fresh = newRisk(c);
+  if (!fresh.length) return `<div class="safety calm small">${icon('check')}<span>Risk notes reviewed ${fmtShort(c.safetyReviewed)}. ${plural(all.length, 'risk note')} on file.</span></div>`;
+  return `<div class="safety" role="region" aria-label="Risk">${icon('alert')}<div class="grow"><b>Risk noted:</b> ${fresh.slice(0, 2).map(s => esc(plainText(s.short || shortOf(s.text)))).join('; ')}${fresh.length > 2 ? `; and ${fresh.length - 2} more` : ''}. Follow your service's risk assessment.
+      <div class="lines"><span>Health Child Wellbeing Unit <b class="num">1300 480 420</b></span><span>Child Protection Helpline <b class="num">132 111</b></span><span>Emergency <b class="num">000</b></span><span><a href="https://reporter.childstory.nsw.gov.au/s/" target="_blank" rel="noopener">Mandatory Reporter Guide</a></span></div></div>
+    <button class="btn sm" data-act="risk-reviewed">Mark reviewed</button></div>`;
+}
+
+/* ---- notes tab ---- */
+function notesHTML(c, cl) {
+  const d = UI.draft && UI.draft.caseId === c.id ? UI.draft : (UI.draft = { caseId: c.id, stage: 'write', text: '', opts: { manual: [], unhide: [], roles: {} }, count: true });
+  return `<div class="notes-grid">
+    <section class="area-add" aria-label="Add notes">${d.stage === 'review' ? reviewHTML(c, d) : d.stage === 'sorting' ? sortingHTML(d) : writeHTML(c, d)}</section>
+    <aside class="area-gaps gaps" aria-label="Still missing">${gapsHTML(c, cl)}</aside>
+    <section class="area-sheets stack" aria-label="Sorted notes">${sheetsHTML(c)}</section></div>`;
+}
+function writeHTML(c, d) {
+  const iv = activeInt(c); const v = iv && variantOf(iv);
+  if (c.entries.length && !UI.addOpen && !d.text) return `<button class="add-more" data-act="add-open">${icon('plus')}<span class="grow">Add more notes</span><span class="xs muted">${fmtDate(todayISO())}</span></button>`;
+  return `<div class="sheet"><div class="sheet-head"><h3>Add notes</h3><span class="xs muted">${fmtDate(todayISO())}</span></div>
+    <label for="paste" class="sr">Notes</label>
+    <textarea id="paste" class="paste" placeholder="Paste or type your notes from today’s session or assessment.">${esc(d.text)}</textarea>
+    <div class="add-foot">
+      <div class="stack-s">${iv ? `<label class="row small"><input type="checkbox" id="count-int" ${d.count ? 'checked' : ''}> Count as a ${esc(v.name)} session</label>` : ''}
+        ${c.entries.length ? '' : '<button class="btn quiet sm" data-act="example-fill">Use example notes</button>'}</div>
+      <button class="btn primary" data-act="to-review" ${d.text.trim() ? '' : 'disabled'} id="to-review">Hide details and sort</button></div></div>`;
+}
+function reviewHTML(c, d) {
+  const r = deidFor(c, d); d.result = r;
+  const sum = deidSummary(r);
+  const p = aiProvider(); const who = p === 'claude' ? 'Claude will sort the hidden version using your Claude account. The original stays on this iPad.' : p === 'openai' ? 'ChatGPT will sort the hidden version using your own OpenAI key. The original stays on this iPad.' : 'Sorting happens on this iPad.';
+  return `<div class="sheet"><div class="sheet-head"><h3>Check what is hidden</h3><span class="xs muted">${sum.length ? 'Hid ' + esc(sum.join(', ')) : 'Nothing identifying found'}</span></div>
+    ${r.people.length ? `<div class="stack-s" style="margin-bottom:14px"><span class="small muted">Who is who? This only changes the label; names are never kept.</span>
+      ${r.people.map(p => `<div class="row"><span class="pill">${esc(p.label)}</span><span class="small muted grow">${plural(p.count, 'mention')}</span>
+        <label class="sr" for="role-${esc(p.key)}">Role for ${esc(p.label)}</label><select id="role-${esc(p.key)}" data-role="${esc(p.key)}" style="width:auto;min-height:40px">${['', ...ROLE_OPTIONS].map(o => `<option value="${esc(o)}" ${p.role === o ? 'selected' : ''}>${o ? esc(o) : 'Person ' + esc(p.letter)}</option>`).join('')}</select>
+        <button class="btn quiet sm" data-act="unhide" data-key="${esc(p.key)}">Not a name</button></div>`).join('')}</div>` : ''}
+    <div class="sheet-body" style="white-space:pre-wrap">${reviewBody(r)}</div>
+    <div class="add-foot"><span class="xs muted" style="max-width:46ch">Tap any word to hide it. Tap a grey label to show it again. ${esc(who)}</span>
+      <div class="row"><button class="btn quiet" data-act="to-write">Back</button><button class="btn primary" data-act="sort">Sort notes</button></div></div></div>`;
+}
+function reviewBody(r) {
+  return r.segs.map(s => {
+    if (s.t === 'text') return s.s.split(/(\s+)/).map(w => /^\s+$/.test(w) || !w ? esc(w) : /[A-Za-z]{2,}/.test(w) ? `<button class="word" data-act="hide-word" data-w="${esc(w.replace(/^[^A-Za-z]+|[^A-Za-z'’-]+$/g, ''))}">${esc(w)}</button>` : esc(w)).join('');
+    if (s.kind === 'keep') return esc(s.orig);
+    return `<button class="pill" data-act="unhide" data-key="${esc(s.kind === 'person' ? s.key : s.orig)}" title="Show again" aria-label="Hidden: ${esc(s.label)}. Tap to show again">${esc(s.label)}</button>`;
+  }).join('');
+}
+function sortingHTML(d) {
+  return `<div class="sheet"><div class="sheet-head"><h3>Sorting your notes</h3></div>
+    <div class="busy-line"><span class="stroke" aria-hidden="true"></span><span class="grow">${d.provider ? `${PROVIDER_NAME[d.provider]} is sorting the hidden version. This usually takes 10 to 40 seconds.` : 'Sorting on this iPad.'}</span><button class="btn sm" data-act="stop-sort">Stop</button></div></div>`;
+}
+function markup(text) { return esc(text).replace(MARK_RE, (m, l) => `<span class="pill">${l}</span>`); }
+function hlHTML(e, sweep) {
+  const spans = e.spans.slice().sort((x, y) => x.a - y.a); let pos = 0, out = '', i = 0;
+  spans.forEach(s => {
+    if (s.a < pos) return;
+    if (s.a > pos) out += markup(e.text.slice(pos, s.a));
+    const code = CATS[s.cat] && CATS[s.cat].code;
+    if (s.cat === 'risk' && !isNegScreen(s)) out += '<span class="rmark" aria-hidden="true"></span>';
+    out += `<mark class="hl c-${s.cat}${sweep ? ' sweep' : ''}${UI.pop && UI.pop.spanId === s.id ? ' sel' : ''}" style="--i:${i++}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}" aria-label="${esc(CATS[s.cat] ? CATS[s.cat].label : 'Note')}: ${esc(plainText(e.text.slice(s.a, s.b)))}">${markup(e.text.slice(s.a, s.b))}</mark>${code ? `<span class="code c-${s.cat}" aria-hidden="true">${code}</span>` : ''}`;
+    pos = s.b;
+  });
+  if (pos < e.text.length) out += markup(e.text.slice(pos));
+  return out;
+}
+const LEGEND = `<div class="legend" aria-label="Highlight key">${FIVE_PS.map(k => `<span><i class="swatch c-${k}"></i>${CATS[k].label}</span>`).join('')}<span><i class="swatch c-risk"></i>Risk</span><span><i class="swatch c-goal"></i>Goal</span></div>`;
+function sheetsHTML(c) {
+  if (!c.entries.length) return '';
+  const groups = []; c.entries.slice().reverse().forEach(e => { const last = groups[groups.length - 1]; if (e.kind === 'quick' && last && last.kind === 'quick' && last.date === e.date) last.items.push(e); else groups.push(e.kind === 'quick' ? { kind: 'quick', date: e.date, items: [e] } : e); });
+  return `${LEGEND}${groups.map(g => {
+    if (g.kind === 'quick') return `<article class="sheet"><div class="sheet-head"><h3>Added in the app · ${fmtDate(g.date)}</h3></div><div class="stack-s sheet-body">${g.items.map(e => `<div class="row" style="align-items:baseline"><span class="grow">${hlHTML(e, UI.justSorted === e.id)}</span><button class="btn quiet sm" data-act="del-entry" data-id="${esc(e.id)}" aria-label="Delete this line">${icon('trash')}</button></div>`).join('')}</div></article>`;
+    const iv = g.intId && c.ints.find(i => i.id === g.intId);
+    return `<article class="sheet" id="sheet-${esc(g.id)}"><div class="sheet-head"><h3>Session notes · ${fmtDate(g.date)}</h3><span class="row xs muted">${iv ? `${esc(variantOf(iv).name)} · ` : ''}Sorted ${g.by === 'claude' ? 'by Claude' : g.by === 'openai' ? 'by ChatGPT' : 'on this iPad'}
+        <button class="btn quiet sm" data-act="copy-entry" data-id="${esc(g.id)}">${icon('copy')}Copy</button>
+        ${UI.confirm === 'e:' + g.id ? `<button class="btn sm danger" data-act="del-entry-yes" data-id="${esc(g.id)}">Delete these notes</button><button class="btn quiet sm" data-act="cancel-confirm">Keep</button>` : `<button class="btn quiet sm" data-act="del-entry" data-id="${esc(g.id)}" aria-label="Delete these notes">${icon('trash')}</button>`}</span></div>
+      <div class="sheet-body ruled" style="white-space:pre-wrap">${hlHTML(g, UI.justSorted === g.id)}</div></article>`;
+  }).join('')}`;
+}
+
+/* ---- still missing ---- */
+const GROUPS = [['safety', 'Safety: ask every time'], ['formulation', 'Formulation'], ['assessment', 'Assessment'], ['admin', 'Admin']];
+function gapsHTML(c, cl) {
+  if (!c.entries.length) return `<h2>Still missing</h2><p class="small muted" style="margin-top:8px">Sort your first notes and this column will list only what is still missing: safety questions first, then gaps in the 5 Ps and the HEEADSSS areas.</p>`;
+  const pct = cl.total ? Math.round(cl.covered / cl.total * 100) : 100;
+  const open = cl.open.filter(i => !i.optional), opt = cl.open.filter(i => i.optional);
+  return `<div class="stack-s"><div class="row between"><h2>Still missing${open.length ? ` <span class="h-count">${open.length}</span>` : ''}</h2>${open.length ? `<button class="btn quiet sm" data-act="copy-missing">${icon('copy')}Copy as list</button>` : ''}</div>
+    <div class="meter"><span class="track" aria-hidden="true"><span class="fill" style="width:${pct}%;display:block"></span></span><span><b class="num">${cl.covered}</b> of <b class="num">${cl.total}</b> covered</span></div></div>
+    ${open.length ? GROUPS.map(([g, label]) => { const items = open.filter(i => i.group === g); if (!items.length) return ''; return `<div class="gap-group"><h3 class="${g === 'safety' ? 'risk' : ''}">${label}</h3>${items.map(i => gapHTML(c, i)).join('')}</div>`; }).join('') : `<p style="margin-top:12px">Nothing essential is missing. Check the formulation and copy the summary.</p>`}
+    ${cl.picks.length + cl.tests.length ? `<button class="pick-link" data-act="tab" data-tab="next">${icon('next')}<span class="grow"><b>${plural(cl.picks.length + cl.tests.length, 'thing')} picked up from your notes</b><span class="hint">What to clarify next session, with the research behind it</span></span></button>` : ''}
+    ${opt.length ? `<details class="more" style="margin-top:12px" ${UI.optOpen ? 'open' : ''} data-more="opt"><summary>${icon('chev')}If relevant (${opt.length})</summary><div class="gap-group">${opt.map(i => gapHTML(c, i)).join('')}</div></details>` : ''}
+    ${coveredHTML(cl)}`;
+}
+function gapHTML(c, it) {
+  const open = UI.openGap === it.key;
+  const mark = it.group === 'safety' ? `<span class="mark risk">${icon('alert')}</span>` : '<span class="mark" aria-hidden="true"></span>';
+  const hint = it.why || it.hint || '';
+  const focus = it.group === 'pick' || it.group === 'test';
+  const srcLine = it.group === 'pick' ? `<p class="src">${it.src && it.src.length ? 'Source: ' + it.src.map(k => link(k)).join('; ') : 'Practice prompt, no study linked'}</p>` : it.group === 'test' ? `<p class="src">Suggested by ${esc(PROVIDER_NAME[it.by] || 'Claude')} from these notes. Not from a cited source.</p>` : '';
+  return `<div class="gap"><button class="gap-row" data-act="gap" data-key="${esc(it.key)}" aria-expanded="${open}">${mark}<span class="grow"><b>${esc(it.title)}</b>${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</span>${it.state === 'next' && !focus ? '<span class="tag">Next session</span>' : ''}</button>${srcLine}
+    ${open ? `<div class="gap-open">
+      ${it.quick ? `<div class="row">${it.quick.map((q, n) => `<button class="btn sm" data-act="gap-quick" data-key="${esc(it.key)}" data-n="${n}">${esc(q)}</button>`).join('')}</div>` : ''}
+      <label class="sr" for="gap-in">What you know</label><textarea id="gap-in" placeholder="${focus ? 'What did you find out?' : 'Add what you know. It will be sorted for you.'}"></textarea>
+      <div class="row"><button class="btn primary sm" data-act="gap-save" data-key="${esc(it.key)}">Add</button>${focus ? '' : `<button class="btn quiet sm" data-act="gap-next" data-key="${esc(it.key)}">${it.state === 'next' ? 'Not for next session' : 'Ask next session'}</button>`}${it.group === 'safety' ? '' : `<button class="btn quiet sm" data-act="gap-na" data-key="${esc(it.key)}">Not relevant</button>`}</div></div>` : ''}</div>`;
+}
+function nextHTML(c, cl) {
+  if (!c.entries.length) return `<div class="empty"><h2>Nothing to focus on yet</h2><p class="muted">Add notes and this tab lists what to clarify next session, with the research behind each point.</p><div><button class="btn primary" data-act="tab" data-tab="notes">Add notes</button></div></div>`;
+  const sec = (title, cls, list, note) => list.length ? `<section class="gap-group focus-sec"><h3 class="${cls}">${title}</h3>${note ? `<p class="small muted">${note}</p>` : ''}${list.map(i => gapHTML(c, i)).join('')}</section>` : '';
+  const any = cl.safety.length + cl.focusN;
+  return `<div class="focus"><div class="row between"><div class="stack-s"><h2>Focus for next session</h2><p class="small muted">Picked up from your notes, with Australian and NSW sources. Tap an item to record what you find out.</p></div>${any ? `<button class="btn" data-act="copy-next">${icon('copy')}Copy as list</button>` : ''}</div>
+    ${sec('Safety: ask every time', 'risk', cl.safety)}
+    ${sec('Picked up from your notes', '', cl.picks, 'Patterns in your notes that research links to something worth clarifying. They suggest what to ask; they don’t diagnose.')}
+    ${sec('To test the formulation', '', cl.tests, 'Sceptical questions from the AI sort, to check the formulation holds up.')}
+    ${sec('Saved for next session', '', cl.saved)}
+    ${any ? '' : '<p>Nothing to follow up. Everything picked up from your notes has been covered.</p>'}</div>`;
+}
+function coveredHTML(cl) {
+  const cov = cl.all.filter(i => i.state === 'covered'), na = cl.all.filter(i => i.state === 'na');
+  if (!cov.length && !na.length) return '';
+  return `<details class="more" style="margin-top:12px"><summary>${icon('chev')}Covered (${cov.length})${na.length ? ` and not relevant (${na.length})` : ''}</summary>
+    <div class="done-list">${cov.map(i => `<span>${icon('check')}${esc(i.title)}</span>`).join('')}${na.map(i => `<span class="faint">${esc(i.title)} <button class="btn quiet sm" data-act="gap-undo" data-key="${esc(i.key)}">Undo</button></span>`).join('')}</div></details>`;
+}
+
+/* ---- formulation tab ---- */
+function formHTML(c) {
+  if (!c.entries.length) return `<div class="empty"><h2>Nothing to show yet</h2><p class="muted">Add notes and the 5 Ps fill in here, in the same highlighter colours.</p><div><button class="btn primary" data-act="tab" data-tab="notes">Add notes</button></div></div>`;
+  return `<div class="stack"><div class="row between"><div class="seg" role="group" aria-label="View"><button data-act="form-mode" data-mode="board" aria-pressed="${UI.formMode === 'board'}">Board</button><button data-act="form-mode" data-mode="map" aria-pressed="${UI.formMode === 'map'}">Map</button></div>
+    <button class="btn" data-act="copy-summary">${icon('copy')}Copy formulation</button></div>
+    ${UI.formMode === 'map' ? mapHTML(c) : boardHTML(c)}</div>`;
+}
+/* rules-sorted points show the whole sentence; AI points keep their short wording */
+function boardText(s) { return s.by === 'rules' || !s.short ? shortOf(s.text, 320) : s.short; }
+function itemHTML(s, ch) {
+  const t = ch[s.id]; const words = { better: 'Better', worse: 'Worse', resolved: 'Resolved' };
+  return `<li><mark class="hl c-${s.cat}${UI.pop && UI.pop.spanId === s.id ? ' sel' : ''}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark>${t ? `<span class="trend ${t.change}">${words[t.change]} · ${fmtShort(t.date)}</span>` : ''}</li>`;
+}
+function cellHTML(c, cat, spans, ch) {
+  const list = spans.filter(s => s.cat === cat); const adding = UI.addCat === cat;
+  const add = `<form class="inline-add" data-form="add-item" data-cat="${cat}"><label class="sr" for="add-${cat}">Add to ${CATS[cat].label}</label><input type="text" id="add-${cat}" placeholder="Add a point" autocomplete="off"><button class="btn sm" type="submit">Add</button></form>`;
+  return `<section class="cell" aria-label="${CATS[cat].label}"><div class="cell-head"><h3><span class="ink c-${cat}">${CATS[cat].label}</span></h3><span class="row"><span class="num">${list.length}</span>${list.length && !adding ? `<button class="btn quiet sm" data-act="add-cat" data-cat="${cat}" aria-label="Add to ${CATS[cat].label}">${icon('plus')}</button>` : ''}</span></div>
+    <p class="cell-hint">${CATS[cat].hint}</p>
+    ${list.length ? `<ul class="items">${list.map(s => itemHTML(s, ch)).join('')}</ul>${adding ? add : ''}` : `<div class="empty-cell"><span>Nothing yet.</span>${add}</div>`}</section>`;
+}
+function boardHTML(c) {
+  const sp = allSpans(c); const ch = latestChanges(c);
+  const risk = sp.filter(s => s.cat === 'risk'), goals = sp.filter(s => s.cat === 'goal'), ctx = sp.filter(s => s.cat === 'context');
+  return `${risk.length ? `<section class="stack-s"><h3 style="color:var(--redpen)">Risk and safety</h3><ul class="items">${risk.map(s => itemHTML(s, ch)).join('')}</ul></section>` : ''}
+    <div class="board">${FIVE_PS.map(k => cellHTML(c, k, sp, ch)).join('')}</div>
+    <div class="below"><section class="stack-s"><h3>Goals</h3>${goals.length ? `<ul class="items">${goals.map(s => itemHTML(s, ch)).join('')}</ul>` : '<p class="small muted">No goals yet.</p>'}<form class="inline-add" data-form="add-item" data-cat="goal"><label class="sr" for="add-goal">Add a goal</label><input type="text" id="add-goal" placeholder="Add a goal, in their words if you can" autocomplete="off"><button class="btn sm" type="submit">Add</button></form></section>
+      <section class="stack-s"><h3>Background</h3>${ctx.length ? `<details class="more"><summary>${icon('chev')}${plural(ctx.length, 'point')}</summary><ul class="items" style="margin-top:8px">${ctx.map(s => itemHTML(s, ch)).join('')}</ul></details>` : '<p class="small muted">Nothing filed as background.</p>'}</section></div>`;
+}
+
+/* ---- plan tab ---- */
+function planHTML(c) {
+  const iv = activeInt(c);
+  const opts = INTERVENTIONS.map(def => ({ def, fit: fitFor(c, def) })).sort((a, b) => ({ yes: 0, maybe: 1, no: 2 }[a.fit.level] - { yes: 0, maybe: 1, no: 2 }[b.fit.level]));
+  const goals = allSpans(c).filter(s => s.cat === 'goal');
+  return `<div class="plan-grid"><section class="stack">
+      <h2>Intervention</h2>
+      ${iv ? activeHTML(c, iv) : '<p class="muted">None started. Pick one below; the notes you add can then count as sessions.</p>'}
+      <div>${opts.map(o => optionHTML(c, o, iv)).join('')}</div>
+      <p class="small muted">For medication and the full Australian guidance, open ${link('etg')}.</p></section>
+    <section class="stack"><h2>Goals</h2>
+      ${goals.length ? `<div class="listing">${goals.map(g => { const p = c.goalProgress[g.id] || 'not'; return `<div class="stack-s"><span><mark class="hl c-goal" role="button" tabindex="0" data-act="span" data-id="${esc(g.id)}">${markup(g.short || shortOf(g.text))}</mark></span><div class="seg" role="group" aria-label="Progress">${[['not', 'Not yet'], ['some', 'Some progress'], ['done', 'Achieved']].map(([k, l]) => `<button data-act="goal-progress" data-id="${esc(g.id)}" data-v="${k}" aria-pressed="${p === k}">${l}</button>`).join('')}</div></div>`; }).join('')}</div>` : '<p class="muted small">Goals from your notes appear here. You can also add one on the Formulation board.</p>'}
+    </section></div>
+    ${caseAdminHTML(c)}`;
+}
+function caseAdminHTML(c) {
+  return `<details class="more case-admin" ${UI.adminOpen ? 'open' : ''}><summary>${icon('chev')}Case details</summary>
+    <form class="new-case" data-form="edit-case" style="margin-top:12px">
+      <label class="field"><span>Case label</span><input type="text" id="ec-label" maxlength="40" value="${esc(c.label)}" autocomplete="off" required></label>
+      <label class="field"><span>Age</span><input type="number" id="ec-age" min="2" max="25" inputmode="numeric" value="${c.age == null ? '' : esc(c.age)}"></label>
+      <div class="row"><button class="btn" type="submit">Save</button></div></form>
+    <div class="row" style="margin-top:12px">${UI.confirm === 'del-case' ? `<button class="btn danger" data-act="del-case-yes">Delete ${esc(c.label)} and all its notes</button><button class="btn quiet" data-act="cancel-confirm">Keep</button>` : `<button class="btn quiet danger" data-act="del-case">${icon('trash')}Delete this case</button>`}</div></details>`;
+}
+function activeHTML(c, iv) {
+  const st = interventionStats(c, iv); const v = st.v; const pct = x => Math.min(100, Math.max(0, x / st.scale * 100));
+  const [lo, hi] = v.full;
+  return `<div class="active-int"><div class="row between"><h3>${esc(v.name)}</h3><span class="status ${st.status[0]}">${esc(st.status[1])}</span></div>
+    <p class="small muted">Started ${fmtDate(iv.start)} · <b class="num">${st.done}</b> ${st.done === 1 ? 'session' : 'sessions'} logged${v.unit === 'weeks' ? ` · week ${st.cur}` : ''}</p>
+    <div class="dose"><div class="bar-track" role="img" aria-label="${esc(`${st.cur} ${v.unit} so far. ${v.rangeLabel}.`)}">
+      ${hi != null && hi > lo ? `<span class="full" style="left:${pct(lo)}%;width:${pct(hi) - pct(lo)}%"></span>` : hi == null ? `<span class="full open" style="left:${pct(lo)}%;width:${100 - pct(lo)}%"></span>` : ''}
+      ${st.ticks.map(t => t.b != null ? `<span class="band${t.warn ? ' warn' : ''}" style="left:${pct(t.a)}%;width:${Math.max(1.5, pct(t.b) - pct(t.a))}%"></span>` : `<span class="tick" style="left:${pct(t.a)}%"></span>`).join('')}
+      <span class="now" style="left:${pct(st.cur)}%"></span></div>
+      <div class="track-labels xs" aria-hidden="true"><span style="left:0">0</span>${st.ticks.map(t => { const at = pct(t.b != null ? (t.a + t.b) / 2 : t.a); const side = at > 80 ? 'r' : at < 18 ? 'l' : 'm'; return `<span class="${side}${t.warn ? ' warn' : ''}" style="left:${at}%">${esc(t.label)}</span>`; }).join('')}</div>
+      ${v.review.toLowerCase().includes(v.rangeLabel.toLowerCase()) ? '' : `<p class="xs muted">Shaded: ${esc(v.rangeLabel)}</p>`}</div>
+    <p class="small">${esc(v.review)}</p>
+    <div class="row">${UI.confirm === 'stop-int' ? `<button class="btn sm danger" data-act="stop-int-yes">Stop ${esc(v.name)}</button><button class="btn quiet sm" data-act="cancel-confirm">Keep going</button>` : `<button class="btn quiet sm" data-act="stop-int">Stop this intervention</button>`}</div></div>`;
+}
+function optionHTML(c, o, iv) {
+  const { def, fit } = o; const isActive = iv && iv.type === def.type;
+  const chip = fit.level === 'yes' ? `<span class="fit yes">${icon('check')}Matches notes</span>` : fit.level === 'no' ? '<span class="fit no">Less likely to fit</span>' : '<span class="fit maybe">Possible</span>';
+  const reasons = fit.reasons.length ? 'Notes mention ' + fit.reasons.join(', ') + '.' : 'Nothing in the notes points to it yet.';
+  return `<details class="option" ${UI.openOpt === def.type ? 'open' : ''} data-opt="${def.type}"><summary><span class="grow opt-main"><b>${esc(def.name)}</b>${isActive ? ' <span class="status good">Active</span>' : ''}<span class="small muted" style="display:block">${esc(reasons)}${fit.cautions.length ? ' ' + esc(cap(fit.cautions.join('; '))) + '.' : ''}</span></span>${chip}${icon('chev', 'chev')}</summary>
+    <div class="option-body">${def.guidance()}
+      <div class="row">${def.variants.length > 1 ? `<label class="sr" for="var-${def.type}">Type</label><select id="var-${def.type}" style="width:auto">${def.variants.map(v => `<option value="${v.id}" ${bestVariant(c, def) === v.id ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</select>` : `<span class="small muted">${esc(def.variants[0].review)}</span>`}
+        ${isActive ? '' : `<button class="btn ${fit.level === 'yes' ? 'primary' : ''} sm" data-act="start-int" data-type="${def.type}">${iv ? 'Switch to this' : 'Start'}</button>`}</div></div></details>`;
+}
+
+/* ================= settings ================= */
+function oaiSettingsHTML() {
+  const has = !!(OAI && OAI.key);
+  return `<div class="stack-s"><h2>Sort with ChatGPT</h2>
+    <p class="small muted">Without a key, notes are sorted on this iPad with the built-in rules. With your own OpenAI API key, ChatGPT sorts them much more accurately. Only the hidden version of your notes is sent, and the key stays in this browser on this iPad.</p>
+    ${has ? `<div class="row"><span class="status good">Key saved</span><span class="small muted">ending ${esc(OAI.key.slice(-4))} · ${esc(OAI.model)}</span></div>` : ''}
+    <label class="field"><span>OpenAI API key</span><input type="password" id="oai-key" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${has ? 'Paste a new key to replace it' : 'Starts with sk-'}"></label>
+    <details class="more"><summary>${icon('chev')}Model</summary><label class="field" style="margin-top:8px"><span>Model name</span><input type="text" id="oai-model" value="${esc((OAI && OAI.model) || OAI_DEFAULT_MODEL)}" autocapitalize="off" spellcheck="false"></label></details>
+    <div class="row"><button class="btn sm primary" data-act="oai-save">${has ? 'Save and test' : 'Save and test key'}</button>${has ? '<button class="btn sm quiet danger" data-act="oai-remove">Remove key</button>' : ''}</div>
+    <p class="small" id="oai-status" aria-live="polite">${esc(UI.oaiStatus || '')}</p>
+    <p class="xs muted">The key needs API credit from platform.openai.com. A ChatGPT Plus subscription doesn’t include it. Set a monthly spending limit there.</p></div>`;
+}
+function settingsHTML() {
+  return `<section class="stack" style="max-width:720px"><h1>Settings</h1>
+    <div class="stack-s"><h2>Where your cases are saved</h2><p>${S.mode === 'db' ? 'Privately in your Claude account. Only you can see your cases, even if this page is shared with others.' : 'On this iPad only. Clearing website data removes them.'}</p></div>
+    ${STANDALONE ? oaiSettingsHTML() : `<div class="stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
+      <p class="small muted">${SAMPLE ? 'Claude sorts much more accurately than the built-in rules. Only the hidden version of your notes is sent, using your own Claude account.' : 'Claude is not available on this page right now, so sorting uses the built-in rules on this iPad.'}</p></div>`}
+    <div class="stack-s"><h2>Back up your cases</h2><textarea class="copybox" id="export" readonly>${esc(JSON.stringify(S.cases, null, 1))}</textarea><div><button class="btn sm" data-act="copy-export">${icon('copy')}Copy all cases</button></div>
+      <label class="field"><span>Restore from a backup</span><textarea class="copybox" id="import" placeholder="Paste a backup here"></textarea></label><div><button class="btn sm" data-act="import">Restore</button></div></div>
+    <div class="stack-s"><h2>Delete everything</h2>${UI.confirm === 'wipe' ? `<div class="row"><button class="btn danger" data-act="wipe-yes">Delete all ${plural(S.cases.length, 'case')}</button><button class="btn quiet" data-act="cancel-confirm">Keep them</button></div>` : '<div><button class="btn danger" data-act="wipe">Delete all cases</button></div>'}</div>
+    ${NOTICE}</section>`;
+}
+
+/* ================= popover & toast ================= */
+function renderPop() {
+  let el = $('#pop'); const p = UI.pop; const c = current();
+  if (!p || !c) { if (el) el.remove(); return; }
+  const f = findSpan(c, p.spanId); if (!f) { UI.pop = null; if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'pop'; el.className = 'pop'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'File this note'); document.body.appendChild(el); }
+  const s = f.s;
+  const SHORT = { presenting: 'Presenting', positive: 'Strengths', risk: 'Risk', goal: 'Goal' };
+  el.innerHTML = `<p class="quote">${markup(spanText(f.e, s))}</p>
+    <span class="small muted">File under</span>
+    <div class="opts">${CAT_ORDER.map(k => `<button class="opt" data-act="refile" data-cat="${k}" aria-pressed="${s.cat === k}"><i class="swatch c-${k}"></i>${esc(SHORT[k] || CATS[k].label)}</button>`).join('')}</div>
+    <label class="field"><span>Wording in the formulation</span><input type="text" id="pop-short" value="${esc(s.short || shortOf(spanText(f.e, s)))}"></label>
+    <div class="row between"><button class="btn quiet sm danger" data-act="unhighlight">Remove highlight</button><button class="btn primary sm" data-act="pop-done">Done</button></div>`;
+  const r = p.rect; const W = Math.min(320, innerWidth - 32); const H = el.offsetHeight || 360;
+  const barB = (($('.bar') && $('.bar').getBoundingClientRect().bottom) || 60) + 8;
+  let left = Math.min(Math.max(16, r.left), innerWidth - W - 16); let top = r.bottom + 8;
+  if (top + H > innerHeight - 12) top = r.top - H - 8;
+  if (top < barB) top = Math.max(barB, Math.min(innerHeight - H - 12, r.bottom + 8));
+  el.style.left = left + 'px'; el.style.top = top + 'px';
+}
+let toastT = null;
+function showToast(msg, action) {
+  let el = $('#toast'); if (!el) { el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; el.setAttribute('role', 'status'); document.body.appendChild(el); }
+  el.innerHTML = `<span>${esc(msg)}</span>${action ? `<button data-act="toast-action">${esc(action.label)}</button>` : ''}`;
+  el.hidden = false; UI.toastAction = action ? action.run : null;
+  clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; UI.toastAction = null; }, action ? 7000 : 4200);
+}
+/* ================= map: the same highlights, branched ================= */
+const MAP_SIDES = { right: ['risk', 'presenting', 'precipitating', 'perpetuating'], left: ['predisposing', 'protective', 'positive', 'goal'] };
+const MAP_GAP_KEY = { risk: 'selfharm', goal: 'goals' };
+let measureCtx = null;
+function textW(t, bold) {
+  try { if (!measureCtx) measureCtx = document.createElement('canvas').getContext('2d'); measureCtx.font = `${bold ? 700 : 400} 14px "Atkinson Hyperlegible", system-ui, sans-serif`; return measureCtx.measureText(t).width; }
+  catch (e) { return t.length * 7.6; }
+}
+function wrapText(t, maxW, maxLines) {
+  const ws = String(t).split(/\s+/).filter(Boolean); const lines = []; let cur = '';
+  ws.forEach(w => { const next = cur ? cur + ' ' + w : w; if (textW(next) > maxW && cur) { lines.push(cur); cur = w; } else cur = next; });
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines) { const keep = lines.slice(0, maxLines); keep[maxLines - 1] = keep[maxLines - 1].replace(/\s*\S*$/, '') + '…'; return keep; }
+  return lines;
+}
+function mapModel(c) {
+  const sp = allSpans(c); const L = 16, PADX = 12, PADY = 9;
+  const node = (o) => { const lines = o.lines; const w = Math.ceil(Math.max(...lines.map(l => textW(l, o.bold)))) + PADX * 2; return Object.assign(o, { w: Math.max(w, o.minW || 0), h: lines.length * L + PADY * 2 }); };
+  const root = node({ kind: 'root', lines: [c.label + (c.age ? ', ' + c.age : '')], bold: true, minW: 120 });
+  const branches = [];
+  ['right', 'left'].forEach(side => MAP_SIDES[side].forEach(cat => {
+    const items = sp.filter(s => s.cat === cat);
+    if (cat === 'risk' && !items.length && !checklist(c).open.some(i => i.group === 'safety')) return;
+    const open = UI.mapOpen[c.id + ':' + cat] !== false;
+    const label = cat === 'goal' ? 'Goals' : cat === 'risk' ? 'Risk and safety' : CATS[cat].label;
+    const b = node({ kind: 'branch', cat, side, missing: !items.length, open, bold: true, lines: [items.length ? `${label}  ${items.length}` : `${label}: missing`] });
+    b.children = items.length && open ? items.map(s => node({ kind: 'item', cat, side, id: s.id, lines: wrapText(plainText(s.short || shortOf(s.text)), 230, 3) })) : [];
+    branches.push(b);
+  }));
+  // layout: each side stacks its branches; children stack to the outside of their branch
+  const GAPB = 26, GAPC = 10, X1 = 56, X2 = 44;
+  ['right', 'left'].forEach(side => {
+    const list = branches.filter(b => b.side === side); const dir = side === 'right' ? 1 : -1;
+    list.forEach(b => { const ch = b.children.reduce((a, k) => a + k.h, 0) + Math.max(0, b.children.length - 1) * GAPC; b.block = Math.max(b.h, ch); });
+    const total = list.reduce((a, b) => a + b.block, 0) + Math.max(0, list.length - 1) * GAPB;
+    let y = -total / 2;
+    list.forEach(b => {
+      b.cy = y + b.block / 2; b.x = dir > 0 ? root.w / 2 + X1 : -root.w / 2 - X1 - b.w;
+      let cy = b.cy - (b.children.reduce((a, k) => a + k.h, 0) + Math.max(0, b.children.length - 1) * GAPC) / 2;
+      b.children.forEach(k => { k.x = dir > 0 ? b.x + b.w + X2 : b.x - X2 - k.w; k.y = cy; cy += k.h + GAPC; });
+      b.y = b.cy - b.h / 2; y += b.block + GAPB;
+    });
+  });
+  root.x = -root.w / 2; root.y = -root.h / 2;
+  const all = [root, ...branches, ...branches.flatMap(b => b.children)];
+  const minX = Math.min(...all.map(n => n.x)) - 24, maxX = Math.max(...all.map(n => n.x + n.w)) + 24;
+  const minY = Math.min(...all.map(n => n.y)) - 24, maxY = Math.max(...all.map(n => n.y + n.h)) + 24;
+  return { root, branches, bounds: { minX, minY, w: maxX - minX, h: maxY - minY } };
+}
+function curve(x1, y1, x2, y2) { const mx = (x1 + x2) / 2; return `M${x1.toFixed(1)},${y1.toFixed(1)} C${mx.toFixed(1)},${y1.toFixed(1)} ${mx.toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`; }
+function nodeSVG(n, attrs) {
+  const tx = n.kind === 'item' ? 12 : 12;
+  return `<g class="mn ${n.kind}${n.missing ? ' missing' : ''} c-${n.cat || 'root'}${UI.pop && n.id && UI.pop.spanId === n.id ? ' sel' : ''}" transform="translate(${n.x.toFixed(1)},${n.y.toFixed(1)})" ${attrs}>
+    <rect width="${n.w}" height="${n.h}" rx="${n.kind === 'root' ? 10 : 7}"></rect>
+    ${n.lines.map((l, i) => `<text x="${tx}" y="${9 + 13 + i * 16}" ${n.bold ? 'font-weight="700"' : ''} font-size="14">${esc(l)}</text>`).join('')}</g>`;
+}
+function mapHTML(c) {
+  const m = mapModel(c); const r = m.root;
+  const conns = [], nodes = [nodeSVG(r, 'aria-hidden="true"')];
+  m.branches.forEach(b => {
+    const dir = b.side === 'right' ? 1 : -1;
+    conns.push(`<path class="mconn${b.missing ? ' dashed' : ''}" d="${curve(dir > 0 ? r.x + r.w : r.x, 0, dir > 0 ? b.x : b.x + b.w, b.cy)}"></path>`);
+    const label = b.lines[0];
+    const act = b.missing ? `data-act="map-missing" data-key="${esc(MAP_GAP_KEY[b.cat] || b.cat)}" aria-label="${esc(label)}. Open in Still missing"` : `data-act="map-toggle" data-cat="${b.cat}" aria-expanded="${b.open}" aria-label="${esc(label)}. ${b.open ? 'Collapse' : 'Expand'}"`;
+    nodes.push(nodeSVG(b, `role="button" tabindex="0" ${act}`));
+    b.children.forEach(k => {
+      conns.push(`<path class="mconn" d="${curve(dir > 0 ? b.x + b.w : b.x, b.cy, dir > 0 ? k.x : k.x + k.w, k.y + k.h / 2)}"></path>`);
+      nodes.push(nodeSVG(k, `role="button" tabindex="0" data-act="span" data-id="${esc(k.id)}" aria-label="${esc(k.lines.join(' '))}"`));
+    });
+  });
+  UI.mapBounds = m.bounds;
+  return `<div class="map-wrap" id="map-wrap" aria-label="Formulation map. Drag to move, pinch or use the buttons to zoom.">
+      <svg class="map-svg" id="map-svg" role="group"><g id="map-g">${conns.join('')}${nodes.join('')}</g></svg>
+      <div class="map-zoom"><button class="btn" data-act="map-zoom" data-z="in" aria-label="Zoom in">${icon('plus')}</button><button class="btn" data-act="map-zoom" data-z="out" aria-label="Zoom out"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><button class="btn" data-act="map-zoom" data-z="fit" aria-label="Fit to screen"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+    </div>
+    <p class="xs muted">Tap a colour to collapse it, tap a point to re-file it. Dashed branches are still missing.</p>`;
+}
+function mapFit(c) {
+  const wrap = $('#map-wrap'); const b = UI.mapBounds; if (!wrap || !b) return;
+  const W = wrap.clientWidth, H = wrap.clientHeight; const k = Math.min(1.25, Math.max(0.3, Math.min(W / b.w, H / b.h)));
+  UI.mapView[c.id] = { k, x: W / 2 - (b.minX + b.w / 2) * k, y: H / 2 - (b.minY + b.h / 2) * k };
+}
+function mapApply(c) { const v = UI.mapView[c.id]; const g = $('#map-g'); if (v && g) g.setAttribute('transform', `translate(${v.x.toFixed(1)},${v.y.toFixed(1)}) scale(${v.k.toFixed(3)})`); }
+function mapZoom(c, f, cx, cy) {
+  const wrap = $('#map-wrap'); const v = UI.mapView[c.id]; if (!wrap || !v) return;
+  if (cx == null) { cx = wrap.clientWidth / 2; cy = wrap.clientHeight / 2; }
+  const k = Math.min(2.5, Math.max(0.25, v.k * f)); const r = k / v.k;
+  v.x = cx - (cx - v.x) * r; v.y = cy - (cy - v.y) * r; v.k = k; mapApply(c);
+}
+function wireMap(c) {
+  const wrap = $('#map-wrap'); if (!wrap) return;
+  const fitKey = c.id + ':' + allSpans(c).length + ':' + wrap.clientWidth;
+  if (!UI.mapView[c.id] || UI.mapFitKey !== fitKey) { mapFit(c); UI.mapFitKey = fitKey; }
+  mapApply(c);
+  const pts = new Map(); let start = null, pinch = null;
+  wrap.addEventListener('pointerdown', e => {
+    if (e.target.closest('.map-zoom')) return;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); UI.mapDragged = false;
+    const v = UI.mapView[c.id];
+    if (pts.size === 1) start = { x: e.clientX, y: e.clientY, vx: v.x, vy: v.y, id: e.pointerId };
+    if (pts.size === 2) { const [p, q] = [...pts.values()]; pinch = { d: Math.hypot(p.x - q.x, p.y - q.y), k: v.k }; }
+  });
+  wrap.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const v = UI.mapView[c.id]; const rect = wrap.getBoundingClientRect();
+    if (pts.size === 2 && pinch) {
+      const [p, q] = [...pts.values()]; const d = Math.hypot(p.x - q.x, p.y - q.y);
+      UI.mapDragged = true; mapZoom(c, (pinch.k * d / pinch.d) / v.k, (p.x + q.x) / 2 - rect.left, (p.y + q.y) / 2 - rect.top); return;
+    }
+    if (start && e.pointerId === start.id) {
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (!UI.mapDragged && Math.hypot(dx, dy) < 6) return;
+      if (!UI.mapDragged) { UI.mapDragged = true; wrap.classList.add('drag'); try { wrap.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } }
+      v.x = start.vx + dx; v.y = start.vy + dy; mapApply(c);
+    }
+  });
+  const end = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; if (!pts.size) { start = null; wrap.classList.remove('drag'); } };
+  wrap.addEventListener('pointerup', end); wrap.addEventListener('pointercancel', end);
+  wrap.addEventListener('wheel', e => { e.preventDefault(); const rect = wrap.getBoundingClientRect(); mapZoom(c, Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0018)), e.clientX - rect.left, e.clientY - rect.top); }, { passive: false });
+}
+/* ================= example notes (fictional) ================= */
+const EXAMPLE = `Initial assessment 21/10/2026 with Jordan (15, Year 9 at Westfield High School) and his mum Sarah. Referred by GP Dr Patel for low mood and school refusal since Term 3.
+Jordan said "I just can't be bothered with anything anymore". Sleeping 2am to 11am most days, gaming late. Lost interest in basketball, which he used to love.
+Mum and dad separated in 2023; dad moved to Queensland and contact is irregular. Mum has a history of depression.
+Bullied at school since the start of Term 3, mostly on Snapchat. Has missed 12 of the last 20 school days. Eating less and skipping breakfast.
+Denies alcohol and drugs; vapes occasionally with friends. Asked about suicidal thoughts: passive thoughts ("sometimes I wish I could just disappear"), no plan or intent, no self-harm.
+Close to his aunt Mona, who visits weekly. Good sense of humour and enjoys drawing. Jordan wants to "feel normal again" and get back to basketball. Mum wants him back at school.
+Mum's mobile 0412 345 678. DOB 3/4/2011. Lives at 14 Smith Street, Blacktown NSW 2148.`;
+
+/* ================= copy ================= */
+function copyText(text, done) {
+  const ok = () => showToast(done || 'Copied. Paste it into your notes.');
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length); let worked = false;
+    try { worked = document.execCommand('copy'); } catch (e) { worked = false; }
+    ta.remove(); if (worked) ok(); else showCopyPanel(text);
+  };
+  try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback); else fallback(); } catch (e) { fallback(); }
+}
+function showCopyPanel(text) {
+  let el = $('#copy-panel'); if (!el) { el = document.createElement('div'); el.id = 'copy-panel'; el.className = 'pop copy-panel'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Copy this text'); document.body.appendChild(el); }
+  el.innerHTML = `<b>Select all and copy</b><textarea class="copybox" readonly>${esc(text)}</textarea><div class="row between"><span class="xs muted">Copying was blocked here, so select the text and copy it.</span><button class="btn sm" data-act="close-copy">Close</button></div>`;
+  el.style.left = '50%'; el.style.top = '50%'; el.style.transform = 'translate(-50%,-50%)';
+  const ta = el.querySelector('textarea'); ta.focus(); ta.select();
+}
+
+/* ================= actions ================= */
+function go(view, caseId) { UI.view = view; UI.caseId = caseId || null; UI.pop = null; UI.confirm = null; UI.openGap = null; UI.addCat = null; render(); window.scrollTo(0, 0); }
+function openCase(id) { UI.tab = 'notes'; UI.formMode = UI.formMode || 'board'; go('case', id); }
+function draftOf(c) { if (!UI.draft || UI.draft.caseId !== c.id) UI.draft = { caseId: c.id, stage: 'write', text: '', opts: { manual: [], unhide: [], roles: {} }, count: true }; return UI.draft; }
+/* In follow-up notes the young person is usually the one named most, so default them to YP. */
+function deidFor(c, d) { return deidentify(d.text, Object.assign({ ypMin: c.entries.some(e => e.kind === 'notes') ? 1 : 2 }, d.opts)); }
+function gapItem(c, key) { return checklist(c).all.find(i => i.key === key); }
+
+async function runSort(c) {
+  const d = draftOf(c); const r = deidFor(c, d); const text = r.text;
+  const keep = { caseId: c.id, stage: 'write', text: d.text, opts: clone(d.opts), count: d.count };
+  const provider = aiProvider(); d.stage = 'sorting'; d.provider = provider; render();
+  let res = null, by = 'rules', note = null;
+  if (provider) {
+    const ctl = new AbortController(); UI.sortCtl = ctl;
+    try { res = await sortWithAI(c, text, ctl.signal, provider); by = provider; }
+    catch (e) { if (ctl.signal.aborted) return; note = aiErrorText(e, provider); }
+    if (UI.sortCtl !== ctl) return; UI.sortCtl = null;
+  }
+  if (!res) res = { spans: sortByRules(text), checks: [] };
+  const iv = activeInt(c);
+  const e = addEntry(c, text, res.spans, { by, checks: res.checks, intId: iv && d.count ? iv.id : null });
+  UI.draft = null; UI.justSorted = e.id; UI.openGap = null; UI.addOpen = false;
+  if (UI.view === 'case' && UI.caseId === c.id) { render(); const el = document.getElementById('sheet-' + e.id); if (el && el.getBoundingClientRect().top > innerHeight * 0.55) el.scrollIntoView({ block: 'start' }); }
+  const n = res.spans.filter(s => s.cat !== 'context').length; const left = checklist(c).open.filter(i => !i.optional).length;
+  showToast(note || `Sorted ${plural(n || res.spans.length, n ? 'point' : 'line')}${n ? '' : ' as background'}. ${left ? `${left} still missing.` : 'Nothing missing.'}`, { label: 'Undo', run: () => { c.entries = c.entries.filter(x => x.id !== e.id); touch(c); UI.draft = keep; render(); } });
+}
+function stopSort() { if (UI.sortCtl) { UI.sortCtl.abort(); UI.sortCtl = null; } const d = UI.draft; if (d) d.stage = 'review'; render(); }
+
+function gapSave(c, key, text, quickIdx) {
+  const it = gapItem(c, key); if (!it) return;
+  let raw = text, neg = false;
+  if (quickIdx != null) { raw = it.quick[quickIdx]; neg = it.group === 'safety' && quickIdx === 0; }
+  raw = String(raw || '').trim(); if (!raw) { const el = $('#gap-in'); if (el) el.focus(); return; }
+  if ((it.group === 'pick' || it.group === 'test') && quickIdx == null) raw = `${it.label || it.title.replace(/[.?]$/, '')}: ${raw}`;
+  let cat = it.cat || 'context';
+  if (!(it.group === 'formulation' || it.group === 'safety' || it.cat === 'risk')) { const guess = catOf(raw); if (guess !== 'context') cat = guess; }
+  const topics = Array.from(new Set([...(it.topics || []), ...topicsOf(raw)]));
+  const r = addQuick(c, raw, cat, topics, { neg });
+  const prev = c.check[key]; c.check[key] = { s: 'done', date: todayISO() }; touch(c);
+  UI.openGap = null; render();
+  showToast(r.hidden ? `Added, with ${plural(r.hidden, 'detail')} hidden.` : 'Added.', { label: 'Undo', run: () => { c.entries = c.entries.filter(x => x.id !== r.entry.id); if (prev) c.check[key] = prev; else delete c.check[key]; touch(c); render(); } });
+}
+function setCheck(c, key, s) {
+  const prev = c.check[key];
+  if (s == null) delete c.check[key]; else c.check[key] = { s, date: todayISO() };
+  touch(c); UI.openGap = null; render();
+  if (s === 'na') showToast('Marked not relevant.', { label: 'Undo', run: () => { if (prev) c.check[key] = prev; else delete c.check[key]; touch(c); render(); } });
+}
+function savePopShort() {
+  const c = current(); const p = UI.pop; if (!p || !c) return;
+  const f = findSpan(c, p.spanId); const inp = $('#pop-short'); if (f && inp && inp.value.trim() && inp.value.trim() !== f.s.short) { f.s.short = inp.value.trim().slice(0, 140); touch(c); }
+}
+function closePop(save) {
+  if (!UI.pop) return; if (save) savePopShort();
+  UI.pop = null; render();
+}
+function openPop(id, target) {
+  const rects = target.getClientRects(); UI.pop = { spanId: id, rect: rects.length ? rects[0] : target.getBoundingClientRect() };
+  $$('.sel').forEach(x => x.classList.remove('sel')); target.classList.add('sel'); renderPop();
+  const inp = $('#pop .opt[aria-pressed="true"]') || $('#pop .opt'); if (inp && !matchMedia('(pointer:coarse)').matches) inp.focus();
+}
+function removeEntry(c, id) {
+  const i = c.entries.findIndex(x => x.id === id); if (i < 0) return; const [e] = c.entries.splice(i, 1);
+  touch(c); UI.confirm = null; render();
+  showToast(e.kind === 'quick' ? 'Line deleted.' : 'Notes deleted.', { label: 'Undo', run: () => { c.entries.splice(i, 0, e); touch(c); render(); } });
+}
+
+const ACT = {
+  home: () => go('home'),
+  settings: () => go('settings'),
+  'new-case': () => { UI.newCase = true; UI.focus = 'nc-label'; render(); },
+  'cancel-new': () => { UI.newCase = false; render(); },
+  example: () => { const c = newCase('J.M. (example)', 15); S.cases.push(c); touch(c); openCase(c.id); const d = draftOf(c); d.text = EXAMPLE; render(); },
+  'open-case': el => openCase(el.dataset.id),
+  'copy-summary': () => { const c = current(); if (c) copyText(buildSummary(c), 'Summary copied. Paste it into your notes.'); },
+  tab: el => { UI.tab = el.dataset.tab; UI.pop = null; UI.confirm = null; render(); },
+  'risk-reviewed': () => { const c = current(); c.riskSeen = Array.from(new Set([...(c.riskSeen || []), ...riskSpans(c).map(s => s.id)])); c.safetyReviewed = todayISO(); touch(c); render(); },
+  'add-open': () => { UI.addOpen = true; UI.focus = 'paste'; render(); },
+  'example-fill': () => { const c = current(); const d = draftOf(c); d.text = EXAMPLE; UI.focus = null; render(); },
+  'to-review': () => { const c = current(); const d = draftOf(c); const ta = $('#paste'); if (ta) d.text = ta.value; if (!d.text.trim()) return; d.stage = 'review'; render(); window.scrollTo(0, Math.min(scrollY, $('#main').offsetTop)); },
+  'to-write': () => { const d = draftOf(current()); d.stage = 'write'; render(); },
+  unhide: el => {
+    const c = current(); const d = draftOf(c); const key = el.dataset.key; const p = d.result && d.result.people.find(x => x.key === key);
+    const add = p ? p.origs.flatMap(o => o.split(/\s+/)).map(w => w.replace(/['’]s$/i, '').replace(/[^A-Za-z'’-]/g, '')).filter(w => w && !TITLES[w.toLowerCase().replace('.', '')]) : [key];
+    d.opts.unhide = Array.from(new Set([...d.opts.unhide, ...add])); d.opts.manual = d.opts.manual.filter(w => !add.some(a => a.toLowerCase() === w.toLowerCase())); render();
+  },
+  'hide-word': el => { const d = draftOf(current()); const w = el.dataset.w; if (!w) return; d.opts.manual = Array.from(new Set([...d.opts.manual, w])); d.opts.unhide = d.opts.unhide.filter(x => x.toLowerCase() !== w.toLowerCase()); render(); },
+  sort: () => runSort(current()),
+  'stop-sort': stopSort,
+  span: el => { const id = el.dataset.id; if (UI.pop && UI.pop.spanId === id) return closePop(true); if (UI.pop) savePopShort(); openPop(id, el); },
+  refile: el => {
+    const c = current(); const f = UI.pop && findSpan(c, UI.pop.spanId); if (!f) return;
+    const inp = $('#pop-short'); if (inp && inp.value.trim()) f.s.short = inp.value.trim().slice(0, 140);
+    const prev = f.s.cat; const cat = el.dataset.cat; if (prev === cat) return closePop(false);
+    f.s.cat = cat; f.s.by = 'worker'; touch(c); UI.pop = null; render();
+    showToast(`Moved to ${cat === 'positive' ? 'Strengths' : CATS[cat].label}.`, { label: 'Undo', run: () => { f.s.cat = prev; touch(c); render(); } });
+  },
+  unhighlight: () => {
+    const c = current(); const f = UI.pop && findSpan(c, UI.pop.spanId); if (!f) return;
+    const i = f.e.spans.indexOf(f.s); f.e.spans.splice(i, 1); let gone = null;
+    if (f.e.kind === 'quick' && !f.e.spans.length) { gone = c.entries.indexOf(f.e); c.entries.splice(gone, 1); }
+    touch(c); UI.pop = null; render();
+    showToast('Highlight removed.', { label: 'Undo', run: () => { f.e.spans.splice(i, 0, f.s); if (gone != null) c.entries.splice(gone, 0, f.e); touch(c); render(); } });
+  },
+  'pop-done': () => closePop(true),
+  'copy-entry': el => { const c = current(); const e = c.entries.find(x => x.id === el.dataset.id); if (e) copyText(buildEntryNote(c, e), 'Sorted notes copied.'); },
+  'del-entry': el => { const c = current(); const e = c.entries.find(x => x.id === el.dataset.id); if (!e) return; if (e.kind === 'quick') removeEntry(c, e.id); else { UI.confirm = 'e:' + e.id; render(); } },
+  'del-entry-yes': el => removeEntry(current(), el.dataset.id),
+  'cancel-confirm': () => { UI.confirm = null; render(); },
+  'copy-missing': () => { const c = current(); copyText(buildMissingList(c), 'List copied.'); },
+  'copy-next': () => { const c = current(); copyText(buildNextList(c), 'List copied.'); },
+  gap: el => { const k = el.dataset.key; UI.openGap = UI.openGap === k ? null : k; render(); },
+  'gap-quick': el => gapSave(current(), el.dataset.key, null, Number(el.dataset.n)),
+  'gap-save': el => { const t = $('#gap-in'); gapSave(current(), el.dataset.key, t ? t.value : ''); },
+  'gap-next': el => { const c = current(); const k = el.dataset.key; setCheck(c, k, c.check[k] && c.check[k].s === 'next' ? null : 'next'); },
+  'gap-na': el => setCheck(current(), el.dataset.key, 'na'),
+  'gap-undo': el => setCheck(current(), el.dataset.key, null),
+  'form-mode': el => { UI.formMode = el.dataset.mode; UI.pop = null; render(); },
+  'add-cat': el => { UI.addCat = el.dataset.cat; UI.focus = 'add-' + el.dataset.cat; render(); },
+  'map-toggle': el => { const c = current(); const k = c.id + ':' + el.dataset.cat; UI.mapOpen[k] = UI.mapOpen[k] === false; render(); },
+  'map-missing': el => { UI.tab = 'notes'; UI.openGap = el.dataset.key; render(); const g = $('.gap-row[aria-expanded="true"]'); if (g) g.scrollIntoView({ block: 'center' }); },
+  'map-zoom': el => { const c = current(); const z = el.dataset.z; if (z === 'fit') { mapFit(c); mapApply(c); } else mapZoom(c, z === 'in' ? 1.25 : 0.8); },
+  'start-int': el => {
+    const c = current(); const type = el.dataset.type; const def = INT_BY[type]; const sel = $('#var-' + type);
+    const variant = sel ? sel.value : def.variants[0].id; const iv = activeInt(c); if (iv) iv.end = todayISO();
+    c.ints.push({ id: uid('i'), type, variant, start: todayISO(), end: null }); touch(c); UI.openOpt = null; render(); window.scrollTo(0, 0);
+    showToast(`${variantOf(c.ints[c.ints.length - 1]).name} started. New notes will count as sessions.`);
+  },
+  'stop-int': () => { UI.confirm = 'stop-int'; render(); },
+  'stop-int-yes': () => { const c = current(); const iv = activeInt(c); if (iv) iv.end = todayISO(); UI.confirm = null; touch(c); render(); },
+  'goal-progress': el => { const c = current(); c.goalProgress[el.dataset.id] = el.dataset.v; touch(c); render(); },
+  'del-case': () => { UI.confirm = 'del-case'; UI.adminOpen = true; render(); },
+  'del-case-yes': () => { const c = current(); S.cases = S.cases.filter(x => x.id !== c.id); dirty.add(c.id); flush(c.id); UI.adminOpen = false; go('home'); showToast(`${c.label} deleted.`); },
+  'copy-export': () => copyText(JSON.stringify(S.cases, null, 1), 'All cases copied. Keep the backup somewhere safe.'),
+  import: () => {
+    const t = $('#import'); let data; try { data = JSON.parse(t.value); } catch (e) { return showToast('That backup could not be read.'); }
+    if (!Array.isArray(data)) return showToast('That backup could not be read.');
+    let n = 0; data.forEach(x => { if (!x || !x.id || !Array.isArray(x.entries)) return; const ex = S.cases.find(c => c.id === x.id); const c = normalise(clone(x)); if (ex) Object.assign(ex, c); else S.cases.push(c); touch(ex || c); n++; });
+    render(); showToast(n ? `Restored ${plural(n, 'case')}.` : 'No cases found in that backup.');
+  },
+  wipe: () => { UI.confirm = 'wipe'; render(); },
+  'wipe-yes': () => { const ids = S.cases.map(c => c.id); S.cases = []; ids.forEach(id => { dirty.add(id); flush(id); }); UI.confirm = null; go('home'); showToast('All cases deleted.'); },
+  'toast-action': () => { const run = UI.toastAction; const el = $('#toast'); if (el) el.hidden = true; UI.toastAction = null; if (run) run(); },
+  'oai-save': async () => {
+    const k = ($('#oai-key') || {}).value; const m = ($('#oai-model') || {}).value;
+    const key = (k && k.trim()) || (OAI && OAI.key); const model = (m && m.trim()) || OAI_DEFAULT_MODEL;
+    if (!key) { showToast('Paste the OpenAI key first.'); const el = $('#oai-key'); if (el) el.focus(); return; }
+    const st = $('#oai-status'); if (st) st.textContent = 'Testing the key…';
+    try {
+      await openaiJSON('Reply with only JSON: {"ok": true}', null, { key, model });
+      OAI = { key, model }; const saved = saveOAI(OAI);
+      UI.oaiStatus = saved ? 'Key works. New notes will be sorted by ChatGPT.' : 'Key works, but this browser wouldn’t store it, so it will be forgotten when the page closes.';
+    } catch (e) {
+      const c = e && e.code;
+      UI.oaiStatus = c === 'oai_key' ? 'That key wasn’t accepted. Check it was copied in full.' : c === 'oai_credit' ? 'The key works, but the OpenAI account has no API credit. Add credit at platform.openai.com.' : c === 'oai_model' ? 'The key works, but that model name isn’t available. Try gpt-5-mini.' : 'Couldn’t reach OpenAI. Check the internet connection and try again.';
+    }
+    render();
+  },
+  'oai-remove': () => { OAI = null; saveOAI(null); UI.oaiStatus = ''; render(); showToast('Key removed from this iPad.'); },
+  'close-copy': () => { const el = $('#copy-panel'); if (el) el.remove(); }
+};
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]');
+  if (UI.pop && !e.target.closest('#pop') && !(t && t.dataset.act === 'span')) closePop(true);
+  if (!t) return;
+  if (t.closest('#map-wrap') && UI.mapDragged) { UI.mapDragged = false; return; }
+  if (t.tagName === 'A') return;
+  const fn = ACT[t.dataset.act]; if (fn) { e.preventDefault(); fn(t, e); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if ($('#copy-panel')) return ACT['close-copy']();
+    if (UI.pop) return closePop(true);
+    if (UI.confirm) { UI.confirm = null; return render(); }
+    if (UI.openGap) { UI.openGap = null; return render(); }
+    return;
+  }
+  const t = e.target;
+  if ((e.key === 'Enter' || e.key === ' ') && t.matches && t.matches('[role="button"][data-act]') && t.tagName !== 'BUTTON') { e.preventDefault(); const fn = ACT[t.dataset.act]; if (fn) fn(t, e); }
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && t.id === 'paste') { e.preventDefault(); ACT['to-review'](); }
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && t.id === 'gap-in') { e.preventDefault(); const b = $('[data-act="gap-save"]'); if (b) ACT['gap-save'](b); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.id === 'paste') { const c = current(); if (!c) return; const d = draftOf(c); d.text = t.value; const b = $('#to-review'); if (b) b.disabled = !t.value.trim(); }
+});
+document.addEventListener('change', e => {
+  const t = e.target; const c = current();
+  if (t.dataset.role != null && c) { const d = draftOf(c); d.opts.roles[t.dataset.role] = t.value; if (!t.value) delete d.opts.roles[t.dataset.role]; render(); }
+  else if (t.id === 'count-int' && c) draftOf(c).count = t.checked;
+  else if (t.id === 'use-claude') { S.settings.useClaude = t.checked; saveSettings(); }
+});
+document.addEventListener('submit', e => {
+  const f = e.target; e.preventDefault();
+  if (f.dataset.form === 'new-case') {
+    const label = $('#nc-label').value.trim(); if (!label) return $('#nc-label').focus();
+    const c = newCase(label, $('#nc-age').value); S.cases.push(c); touch(c); UI.newCase = false; UI.focus = 'paste'; openCase(c.id);
+  } else if (f.dataset.form === 'add-item') {
+    const c = current(); const cat = f.dataset.cat; const inp = f.querySelector('input'); const v = inp.value.trim(); if (!v) return inp.focus();
+    const r = addQuick(c, v, cat); UI.addCat = cat; UI.focus = inp.id; render();
+    showToast(r.hidden ? `Added, with ${plural(r.hidden, 'detail')} hidden.` : `Added to ${cat === 'goal' ? 'Goals' : CATS[cat].label}.`, { label: 'Undo', run: () => { c.entries = c.entries.filter(x => x.id !== r.entry.id); touch(c); render(); } });
+  } else if (f.dataset.form === 'edit-case') {
+    const c = current(); const label = $('#ec-label').value.trim(); if (!label) return;
+    c.label = label.slice(0, 40); const age = $('#ec-age').value; c.age = age ? Number(age) : null; touch(c); UI.adminOpen = false; render(); showToast('Case details saved.');
+  }
+});
+document.addEventListener('toggle', e => {
+  const d = e.target; if (!(d instanceof HTMLDetailsElement)) return;
+  if (d.dataset.opt) { if (d.open) UI.openOpt = d.dataset.opt; else if (UI.openOpt === d.dataset.opt) UI.openOpt = null; }
+  if (d.classList.contains('case-admin')) UI.adminOpen = d.open;
+  if (d.dataset.more === 'opt') UI.optOpen = d.open;
+}, true);
+window.addEventListener('resize', () => { if (UI.pop) closePop(true); });
+document.addEventListener('scroll', () => { if (UI.pop && !$('#pop:focus-within')) closePop(true); }, { passive: true });
+
+boot();
+
+</script>
+</body>
+</html>
