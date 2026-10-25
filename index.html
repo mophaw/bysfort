@@ -1324,7 +1324,6 @@ function buildEntryNote(c, e) {
   return L.join('\n');
 }
 /* ================= render root ================= */
-const CLAUDE_URL = 'https://claude.ai/artifact/N9hQiUAwQReDaRygC77r7m';
 const CHAPTERS = ['notes', 'form', 'next', 'plan'];
 function render() {
   const app = $('#app'); if (!app) return;
@@ -1377,11 +1376,11 @@ const NOTICE = `<p class="notice">Prototype for testing with de-identified or ex
 function heroHTML(compact) {
   return `<section class="hero${compact ? ' compact' : ''}">${logoSVG(UI.entering ? 'draw-logo' : '')}<p class="wordmark">Five Ps</p><p class="dedication">Built by S for T, ${circled('with Love')}</p></section>`;
 }
+/* Website only: cases live in this browser, so offer a file to carry them to her other device. */
 function everywhereHTML() {
-  if (!STANDALONE) return '';
-  const n = S.cases.length;
-  return `<section class="everywhere"><div class="stack-s"><p class="overline">On every device</p><p>Cases here are saved in this browser only. Five Ps in Claude keeps them in your Claude account, so they’re on your iPad and your PC.</p>${n ? `<p class="small muted">To move the ${plural(n, 'case')} from this device, copy them here, then open Settings in the Claude version and paste them under “Bring cases in”.</p>` : ''}</div>
-    <div class="row">${n ? `<button class="btn" data-act="copy-export">${icon('copy')}Copy cases</button>` : ''}<a class="btn primary" href="${CLAUDE_URL}" target="_blank" rel="noopener">Open in Claude</a></div></section>`;
+  if (!STANDALONE || FRAMED) return '';
+  return `<section class="everywhere"><div class="stack-s"><p class="overline">On your iPad and your PC</p><p>Cases are saved in this browser on this device. To carry them to your other device, save a backup file here, then open it there with Open backup file.</p><p class="small muted">Cases that are already there and newer are kept, so you can do this whenever you switch.</p></div>
+    <div class="row">${S.cases.length ? `<button class="btn" data-act="download-export">${icon('download')}Save backup file</button>` : ''}<label class="btn primary filepick">${icon('upload')}Open backup file<input type="file" id="import-file" accept=".json,application/json,text/plain"></label></div></section>`;
 }
 function homeHTML() {
   const list = S.cases.slice().sort((a, b) => (b.updated || 0) - (a.updated || 0));
@@ -1639,12 +1638,12 @@ function settingsHTML() {
   const sp = UI.space.toUpperCase();
   const where = S.mode === 'db' ? 'In your Claude account, private to you. Open this page signed in to Claude on your iPad or your PC and the same cases are there. Nobody else can see them, including whoever shared the page.' : 'In this browser on this device only. Clearing website data removes them.';
   return `<section class="stack" style="max-width:760px;gap:0"><div style="padding-bottom:20px"><p class="overline">${sp}’s space</p><h1 class="title">Settings</h1></div>
-    <div class="settings-sec stack-s"><h2>Where your cases are saved</h2><p>${where}</p>${STANDALONE ? `<p class="small muted">To have them on every device, use Five Ps in Claude. <a href="${CLAUDE_URL}" target="_blank" rel="noopener">Open Five Ps in Claude</a></p>` : ''}</div>
+    <div class="settings-sec stack-s"><h2>Where your cases are saved</h2><p>${where}</p>${STANDALONE ? '<p class="small muted">To use them on another device, save a backup file below and open it there.</p>' : ''}</div>
     <div class="settings-sec stack-s"><h2>Passcode</h2><p class="small muted">Five Ps asks for the passcode each time it opens and locks itself after 15 minutes without use. Each passcode opens its own space with its own cases. The passcode is a screen lock; ${S.mode === 'db' ? 'your Claude sign-in is what keeps the cases private.' : 'anyone using this browser could still reach the saved data, so use a device only you use.'}</p><div><button class="btn sm" data-act="lock">${icon('lock')}Lock now</button></div></div>
     ${STANDALONE ? oaiSettingsHTML() : `<div class="settings-sec stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
       <p class="small muted">${SAMPLE ? 'Claude sorts much more accurately than the built-in rules. Only the hidden version of your notes is sent, using your own Claude account.' : 'Claude is not available on this page right now, so sorting uses the built-in rules on this device.'}</p></div>`}
     <div class="settings-sec stack-s"><h2>Move cases between devices</h2>
-      <p class="small muted">${STANDALONE ? (FRAMED ? 'Copy the cases here and paste them on the other device, or open a backup file saved from the website.' : 'Save a backup file here and open it on the other device, or copy the cases and paste them there.') : 'Bring in cases from the bysfort website or another browser: copy them there, then paste them here.'} Cases that are already here and newer are kept.</p>
+      <p class="small muted">${STANDALONE ? (FRAMED ? 'Copy the cases here and paste them on the other device, or open a backup file saved from the website.' : 'Save a backup file here and open it on the other device, or copy the cases and paste them there.') : 'Bring in cases from another browser: copy them there, then paste them here.'} Cases that are already here and newer are kept.</p>
       <div class="row">${STANDALONE ? `${FRAMED ? '' : `<button class="btn sm" data-act="download-export">${icon('download')}Save backup file</button>`}<label class="btn sm filepick">${icon('upload')}Open backup file<input type="file" id="import-file" accept=".json,application/json,text/plain"></label>` : ''}<button class="btn sm" data-act="copy-export">${icon('copy')}Copy all cases</button></div>
       <label class="field" style="margin-top:8px"><span>Bring cases in</span><textarea class="copybox" id="import" placeholder="Paste copied cases here"></textarea></label><div><button class="btn sm" data-act="import">Bring them in</button></div></div>
     <div class="settings-sec stack-s"><h2>Delete everything</h2><p class="small muted">Deletes every case in ${sp}’s space. The other space is not touched.</p>${UI.confirm === 'wipe' ? `<div class="row"><button class="btn danger" data-act="wipe-yes">Delete all ${plural(S.cases.length, 'case')}</button><button class="btn quiet" data-act="cancel-confirm">Keep them</button></div>` : '<div><button class="btn danger" data-act="wipe">Delete all cases</button></div>'}</div>
