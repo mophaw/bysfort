@@ -154,6 +154,15 @@ select{appearance:auto}
 .rmark{position:absolute;left:3px;width:5px;height:1.15em;margin-top:.3em;border-radius:2px;background:var(--redpen)}
 .add-more{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:12px 20px;text-align:left;background:var(--paper);border:1px solid var(--paper-edge);border-radius:4px;box-shadow:var(--shadow-sheet);color:var(--pen-text);font:700 var(--t-m)/1.3 var(--font);cursor:pointer}
 .add-more:hover{border-color:var(--pencil)}
+.gap .src{margin:6px 0 0 28px;font-size:var(--t-xs);color:var(--ink-2);line-height:1.5}
+.gap .src a{color:var(--pen-text)}
+.pick-link{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;margin-top:14px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:inherit;cursor:pointer}
+.pick-link .icon{color:var(--pen-text);margin-top:2px}
+.pick-link b{display:block}
+.pick-link .hint{display:block;font-size:var(--t-s);color:var(--ink-2)}
+.focus{max-width:860px;display:flex;flex-direction:column;gap:8px}
+.focus-sec{margin-top:12px}
+.focus-sec>p{margin:0 0 6px}
 .dedication{font-style:italic;font-size:var(--t-m);color:var(--ink-2);margin:0 0 20px;text-wrap:balance}
 .dedication mark{background:linear-gradient(transparent 34%,var(--hl-perp) 34%,var(--hl-perp) 90%,transparent 90%);color:var(--ink);padding:0 .12em;border-radius:3px}
 mark{background-color:transparent;color:inherit}
@@ -215,14 +224,15 @@ button.pill:hover{border-color:var(--pencil)}
 
 /* Board */
 .board{columns:1;column-gap:0;column-rule:1px solid var(--rule);background:var(--paper);border:1px solid var(--paper-edge);border-top:0;border-radius:4px;box-shadow:var(--shadow-sheet);overflow:hidden}
-@media (min-width:640px){.board{columns:2}}
-@media (min-width:1024px){.board{columns:3}}
-.cell{break-inside:avoid;-webkit-column-break-inside:avoid;border-top:1px solid var(--paper-edge);padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+@media (min-width:900px){.board{columns:2}}
+.cell{break-inside:avoid;-webkit-column-break-inside:avoid;border-top:1px solid var(--paper-edge);padding:22px 24px 24px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .ink{background-image:linear-gradient(var(--hlc),var(--hlc));background-repeat:no-repeat;background-size:100% 62%;background-position:0 82%;padding:0 .14em;border-radius:.2em}
 .cell-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.cell-head h3{font-size:var(--t-m);display:flex;align-items:center;gap:10px}
+.cell-head h3{font-size:var(--t-l);display:flex;align-items:center;gap:10px}
 .cell-head .num{color:var(--ink-3)}
-.cell-hint{font-size:var(--t-xs);color:var(--ink-2);margin-top:-6px}
+.cell-hint{font-size:var(--t-s);color:var(--ink-2);margin-top:-6px}
+.cell .items{gap:14px}
+.cell .items li{font-size:var(--t-m);line-height:1.8;max-width:62ch}
 .items{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
 .items li{line-height:1.55}
 .trend{font-size:var(--t-xs);font-weight:700;margin-left:6px;white-space:nowrap}
@@ -631,22 +641,54 @@ const CHECKLIST = [
   { group: 'admin', key: 'measures', title: 'Outcome measures', hint: 'SDQ, HoNOSCA and CGAS, as your service’s NOCC schedule requires.', detect: T('measures'), cat: 'context', topics: ['measures'], optional: true, quick: ['Outcome measures completed'] },
   { group: 'admin', key: 'consent', title: 'Consent and confidentiality explained', detect: T('consent'), cat: 'context', topics: ['consent'], optional: true, quick: ['Consent and limits of confidentiality explained'] }
 ];
-/* "Worth checking": criteria-informed prompts, shown only when something in the notes triggers them. Never diagnostic. */
-const PROBES = [
-  { key: 'p_mood', when: K(/low mood|depress|sad|tearful|hopeless|can't be bothered|lost interest/), title: 'How long has the low mood lasted, and is it most days?', why: 'Two weeks or more, most days, matters when deciding on a mental health assessment.', done: K(/(\d+|two|three|several|few) (weeks|months)|most days|every day|since (term|january|february|march|april|may|june|july|august|september|october|november|december|20\d\d)/), topics: ['mood', 'onset'] },
-  { key: 'p_mood2', when: K(/low mood|depress|sad|tearful|hopeless|can't be bothered|lost interest/), title: 'Changes in sleep, appetite, energy or concentration?', why: 'These help gauge severity.', done: ctx => ctx.topics.has('sleep') && ctx.topics.has('eating'), topics: ['sleep', 'eating'] },
-  { key: 'p_trauma', when: OR(T('trauma'), K(/abus|violence|assault|accident|died|grief|bullied/)), title: 'Nightmares, upsetting memories, avoiding reminders, feeling on edge?', why: 'Checks for trauma reactions before other explanations.', done: K(/nightmare|flashback|memories|on edge|jumpy|startle|avoids? reminders/), topics: ['trauma'] },
-  { key: 'p_attention', when: OR(T('attention'), K(/adhd|attention|concentrat|hyperactiv|impulsiv/)), title: 'Were attention problems there before age 12, at home and at school?', why: 'Early onset in more than one setting matters; trauma, sleep and mood can look similar.', done: K(/before (age )?12|since (primary|childhood|kindergarten)|at home and (at )?school|both settings/), topics: ['attention'] },
-  { key: 'p_behaviour', when: OR(T('behaviour'), K(/tantrum|meltdown|aggress|defian|oppositional|hitting/)), title: 'What happens just before and after the behaviour, and where?', why: 'Antecedents and consequences guide a behavioural plan.', done: K(/trigger|before (the|it)|afterwards|consequence|when (asked|told)/), topics: ['behaviour'] },
-  { key: 'p_anxiety', when: OR(T('anxiety'), K(/anxi|worr|panic|fear/)), title: 'What does the worry stop them doing?', why: 'Avoidance shows impact and gives CBT its targets.', done: K(/avoid|won't go|refus|stops (him|her|them)/), topics: ['anxiety'] },
-  { key: 'p_drugs', when: K(/alcohol|vape|vaping|cannabis|weed|drug/), title: 'How often, and is it used to cope or to sleep?', why: 'Separates experimenting from coping.', done: K(/daily|weekly|every (day|weekend)|occasionally|to cope|to sleep|to forget/), topics: ['drugs'] }
+/* "Picked up from your notes": prompts the notes trigger, each tied to an Australian or NSW source.
+   Shown on the Next session tab. They suggest what to clarify; they never diagnose. */
+const MOOD_RE = /low mood|depress|sad|tearful|hopeless|can't be bothered|lost interest/;
+const PICKS = [
+  { key: 'p_safety', label: 'Safety follow-up', cat: 'risk', when: ctx => ctx.riskPos.some(s => /suicid|self[- ]?harm|disappear|wish|not (want|wanting) to (live|be here)|passive|end (it|my life)|cutting/i.test(plainText(s.text))),
+    title: 'Ask how often the thoughts come, any plan or intent, and access to means. Make or review a safety plan with them and their family.',
+    why: 'NSW Health policy asks clinicians to ask directly about suicidal thoughts and to build a safety plan with the person and family, covering warning signs, coping, supports and access to means. Asking is unlikely to make things worse.',
+    src: ['nswpd', 'lifeinmind'], done: K(/safety plan/), topics: ['selfharm'] },
+  { key: 'p_sleep', label: 'Sleep', when: ctx => MOOD_RE.test(ctx.text) && /\b\d{1,2}\s?(am|pm)\b|gaming|phone in bed|can't sleep|cannot sleep|insomnia|not sleeping|late nights?|sleeping (in|until)|up (till|until)/.test(ctx.text),
+    title: 'Clarify sleep: bedtime on school nights, phone or gaming in bed, and whether the low mood came first.',
+    why: 'An Australian study that followed teens for a year found low mood predicted shorter school-night sleep later, so sleep is worth tracking as part of the mood picture.',
+    src: ['lovato'], done: K(/bedtime (is|of)|phone (out|away|outside)|sleep (plan|routine)|in bed by/), topics: ['sleep'] },
+  { key: 'p_bully', label: 'Bullying', when: K(/bull(ied|ying|y)|picked on|teased|excluded by/),
+    title: 'Ask what is happening with the bullying now: where, how often, online or in person, whether school knows, and how it affects mood and safety.',
+    why: 'An Australian-led review found being bullied is causally linked to depression, anxiety, self-harm and suicidal thoughts.',
+    src: ['moore'], done: K(/school (has been|was|is) (told|aware|informed)|year (adviser|advisor|coordinator)|anti-?bullying plan|bullying (has )?(stopped|resolved)/), topics: ['peers'] },
+  { key: 'p_online', label: 'Online', when: ctx => /bull|harass|threat/.test(ctx.text) && /snapchat|instagram|tiktok|online|messag|social media|cyber|discord/.test(ctx.text),
+    title: 'Check what is happening online: which apps, who is involved, whether screenshots are kept, and whether to report it.',
+    why: 'eSafety, the Australian regulator, can work with platforms to remove serious cyberbullying, usually within a day, and link young people to support.',
+    src: ['esafety'], done: K(/esafety|reported (it|to)|screenshot/), topics: ['peers'] },
+  { key: 'p_school', label: 'School mornings', when: K(/school refus|missed \d+|missing school|not attending|won't go to school|absent from school|wagging|school avoid/),
+    title: 'Map a school morning: when the worry starts, what is avoided, and a first small step back that the school could support.',
+    why: 'NSW Department of Education lists anxiety, low mood, bullying, family conflict and a parent’s mental illness as common causes. A gradual return planned with the school is recommended.',
+    src: ['nswdoe', 'rcn'], done: K(/graded return|gradual return|return(-| to )school plan|attendance plan|school meeting/), topics: ['education'] },
+  { key: 'p_parent', label: 'Parent’s mental health', when: ctx => /(mum|mom|mother|dad|father|parent)[^.\n]{0,40}(depress|anxiety|mental (health|illness)|bipolar|psychosis)/.test(ctx.text) || ctx.topics.has('familymh'),
+    title: 'Ask how the parent’s own mental health is now and what support they have.',
+    why: 'Emerging Minds, Australia’s national child mental health workforce centre, notes that a parent’s mental illness raises a child’s risk mainly through day-to-day parenting, and that supporting the parent and family helps.',
+    src: ['emergingminds'], done: K(/(mum|dad|parent|mother|father)('s)? (mood|mental health) (is|has been)|(mum|dad|parent|mother|father) (is )?(seeing|engaged|linked|referred)/), topics: ['familymh'] },
+  { key: 'p_eating', label: 'Eating', when: K(/eating less|skipping (meals|breakfast|lunch)|not eating|weight (loss|change|gain)|lost weight|appetite/),
+    title: 'Clarify the eating change: weight change, body image, dieting or extra exercise, or low appetite with mood.',
+    why: 'InsideOut Institute at the University of Sydney lists food restriction, body checking, frequent talk about weight or shape, and more exercise as warning signs. Low mood can also reduce appetite.',
+    src: ['insideout'], done: K(/weight (is )?(stable|unchanged)|body image|no (dieting|restriction)|appetite (is )?(back|better|improv)/), topics: ['eating'] },
+  { key: 'p_mood', when: K(MOOD_RE), title: 'How long has the low mood lasted, and is it most days?', why: 'Two weeks or more, most days, matters when deciding on assessment and treatment.', src: ['orygen'],
+    done: K(/(\d+|two|three|several|few) (weeks|months)|most days|every day|since (term|january|february|march|april|may|june|july|august|september|october|november|december|20\d\d)/), topics: ['mood', 'onset'] },
+  { key: 'p_mood2', when: K(MOOD_RE), title: 'Changes in sleep, appetite, energy or concentration?', why: 'These help gauge how severe the low mood is.', src: ['orygen'], done: ctx => ctx.topics.has('sleep') && ctx.topics.has('eating'), topics: ['sleep', 'eating'] },
+  { key: 'p_trauma', when: OR(T('trauma'), K(/abus|violence|assault|accident|died|grief|bullied/)), title: 'Nightmares, upsetting memories, avoiding reminders, feeling on edge?', why: 'The Australian PTSD Guidelines include recommendations for assessing and treating children and young people after a frightening event.', src: ['ptsd'], done: K(/nightmare|flashback|memories|on edge|jumpy|startle|avoids? reminders/), topics: ['trauma'] },
+  { key: 'p_attention', when: OR(T('attention'), K(/adhd|attention|concentrat|hyperactiv|impulsiv/)), title: 'Were attention problems there before age 12, at home and at school?', why: 'The Australian ADHD guideline uses criteria that need symptoms before age 12 and in more than one setting. Low mood, poor sleep and trauma can also affect attention.', src: ['aadpa'], done: K(/before (age )?12|since (primary|childhood|kindergarten)|at home and (at )?school|both settings/), topics: ['attention'] },
+  { key: 'p_behaviour', when: OR(T('behaviour'), K(/tantrum|meltdown|aggress|defian|oppositional|hitting/)), title: 'What happens just before and after the behaviour, and where?', why: 'Antecedents and consequences shape the parent-focused plan in Dadds and Hawes’ Integrated Family Intervention.', src: ['ifi'], done: K(/trigger|before (the|it)|afterwards|consequence|when (asked|told)/), topics: ['behaviour'] },
+  { key: 'p_anxiety', when: OR(T('anxiety'), K(/anxi|worr|panic|fear/)), title: 'What does the worry stop them doing?', why: 'Avoidance shows the impact and gives CBT its targets. The Australian guideline recommends CBT first for anxiety in children and young people.', src: ['anxCPG'], done: K(/avoid|won't go|refus|stops (him|her|them)/), topics: ['anxiety'] },
+  { key: 'p_drugs', when: K(/alcohol|vape|vaping|cannabis|weed|drug/), title: 'How often, and is it used to cope or to sleep?', why: 'Separates experimenting from coping.', src: [], done: K(/daily|weekly|every (day|weekend)|occasionally|to cope|to sleep|to forget/), topics: ['drugs'] }
 ];
 function buildCtx(c) {
   const spans = allSpans(c).filter(s => s.cat !== 'none');
   const text = c.entries.map(e => plainText(e.text)).join('\n').toLowerCase();
   const cats = new Set(spans.map(s => s.cat)); const topics = new Set(spans.flatMap(s => s.topics || []));
   topicsOf(text).forEach(t => topics.add(t));
-  return { spans, text, cats, topics };
+  const riskPos = spans.filter(s => s.cat === 'risk' && !(typeof isNegScreen === 'function' && isNegScreen(s)));
+  return { spans, text, cats, topics, riskPos };
 }
 function checklist(c) {
   const ctx = buildCtx(c); const st = c.check || {};
@@ -655,17 +697,30 @@ function checklist(c) {
     const state = auto || (s && s.s === 'done') ? 'covered' : s && (s.s === 'na') ? 'na' : s && s.s === 'next' ? 'next' : 'missing';
     return Object.assign({}, it, { state });
   });
-  const probes = PROBES.filter(p => p.when(ctx) && !(st[p.key] && st[p.key].s === 'na')).map(p => Object.assign({ group: 'probe', cat: 'context' }, p, { state: p.done(ctx) || (st[p.key] && st[p.key].s === 'done') ? 'covered' : st[p.key] && st[p.key].s === 'next' ? 'next' : 'missing' }));
-  const checks = c.entries.flatMap(e => (e.checks || []).map(k => ({ key: 'c_' + k.id, group: 'probe', title: k.text, why: k.why, cat: 'context', fromClaude: true }))).filter(k => !(st[k.key] && st[k.key].s === 'na')).map(k => Object.assign(k, { state: st[k.key] && st[k.key].s === 'done' ? 'covered' : st[k.key] && st[k.key].s === 'next' ? 'next' : 'missing' }));
+  const probes = PICKS.filter(p => p.when(ctx) && !(st[p.key] && st[p.key].s === 'na')).map(p => Object.assign({ group: 'pick', cat: p.cat || 'context' }, p, { state: p.done(ctx) || (st[p.key] && st[p.key].s === 'done') ? 'covered' : 'missing' }));
+  const checks = c.entries.flatMap(e => (e.checks || []).map(k => ({ key: 'c_' + k.id, group: 'test', title: k.text, why: k.why, cat: 'context', by: e.by }))).filter(k => !(st[k.key] && st[k.key].s === 'na')).map(k => Object.assign(k, { state: st[k.key] && st[k.key].s === 'done' ? 'covered' : st[k.key] && st[k.key].s === 'next' ? 'next' : 'missing' }));
   const all = items.concat(probes, checks);
   /* one count everywhere: every non-optional item that is not marked not relevant */
-  const core = all.filter(i => !i.optional && i.state !== 'na');
-  const open = all.filter(i => i.state === 'missing' || i.state === 'next');
-  return { all, covered: core.filter(i => i.state === 'covered').length, total: core.length, open, toCover: open.filter(i => !i.optional).length };
+  const focusOnly = i => i.group === 'pick' || i.group === 'test';
+  const core = all.filter(i => !i.optional && !focusOnly(i) && i.state !== 'na');
+  const open = all.filter(i => (i.state === 'missing' || i.state === 'next') && !focusOnly(i));
+  const picks = all.filter(i => i.group === 'pick' && i.state === 'missing'), tests = all.filter(i => i.group === 'test' && i.state === 'missing');
+  const saved = open.filter(i => i.state === 'next' && i.group !== 'safety'), safety = open.filter(i => i.group === 'safety');
+  return { all, covered: core.filter(i => i.state === 'covered').length, total: core.length, open, toCover: open.filter(i => !i.optional).length, picks, tests, saved, safety, focusN: picks.length + tests.length + saved.length };
 }
 
 /* ================= interventions (her five) ================= */
 const SRC = {
+  nswpd: ['NSW Health PD2022_043, Clinical care of people who may be suicidal', 'https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2022_043.pdf'],
+  lifeinmind: ['Life in Mind (Everymind): suicide myths', 'https://lifeinmind.org.au/about-suicide/suicide-prevention/suicide-myths'],
+  lovato: ['Lovato et al., 2017, Australian teens, Nature and Science of Sleep', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5315345'],
+  moore: ['Moore et al., 2017, World Journal of Psychiatry', 'https://www.wjgnet.com/2220-3206/abstract/v7/i1/60.htm'],
+  esafety: ['eSafety Commissioner', 'https://esafety.gov.au/newsroom/media-releases/one-third-of-cyberbullying-cases-involve-threats-to-safety'],
+  nswdoe: ['NSW Department of Education: school refusal guide', 'https://prod65.education.nsw.gov.au/content/dam/main-education/en/home/student-wellbeing/attendance-matters---resources-for-schools/School_Refusal_Quick_Reference_Guide.pdf'],
+  rcn: ['Raising Children Network: school refusal', 'https://raisingchildren.net.au/teens/behaviour/behaviour-questions-issues/school-refusal'],
+  emergingminds: ['Emerging Minds: parental mental health and parenting', 'https://emergingminds.com.au/resources/parental-mental-health-and-parenting-how-are-they-related/'],
+  insideout: ['InsideOut Institute: warning signs', 'https://insideoutinstitute.org.au/news/warning-signs-your-child-may-be-struggling-with-body-image'],
+  aadpa: ['Australian ADHD guideline (AADPA), 2022', 'https://emergingminds.com.au/resources/australian-evidence-based-clinical-practice-guideline-for-attention-deficit-hyperactivity-disorder-adhd/'],
   anxCPG: ['Melbourne Children’s anxiety guideline, 2023', 'https://www.mcri.edu.au/images/2023/10/Evidence-based_Clinical_Practice_Guidelines_For_Anxiety_in_Children_and_Young_People_2023.pdf'],
   rch: ['RCH anxiety guideline', 'https://www.rch.org.au/clinicalguide/guideline_index/Anxiety__identification_and_management/'],
   orygen: ['Orygen depression practice points', 'https://orygen.org.au/Training/Resources/Depression/Clinical-practice-points'],
@@ -846,6 +901,7 @@ function sessionCount(c) { return c.entries.filter(e => e.kind === 'notes').leng
 const AI_PROMPT = `You are helping a social worker in a NSW Health Child and Adolescent Mental Health Service (CAMHS) turn her own de-identified notes about a child or teenager into a 5 Ps formulation.
 
 Hard rules:
+- Work within Australian and NSW Health practice and terminology.
 - Text inside ⟦ ⟧ is a placeholder for a hidden name or detail. Keep placeholders exactly as written and never guess what they hide.
 - Do not diagnose and do not state likelihoods.
 - Do not add facts that are not in the notes.
@@ -971,9 +1027,19 @@ function buildSummary(c) {
   if (open.length) { L.push(''); L.push('Still to explore'); open.forEach(i => L.push(`- ${i.title}`)); }
   return L.join('\n');
 }
+function buildMissingList(c) {
+  const cl = checklist(c); const open = cl.open.filter(i => !i.optional);
+  return [`${c.label}: still missing (${fmtDate(todayISO())})`, ...open.map(i => `- ${i.title}${i.group === 'safety' ? ' (safety)' : ''}`)].join('\n');
+}
 function buildNextList(c) {
-  const cl = checklist(c); const items = cl.open.filter(i => i.state === 'next' || i.group === 'safety' || i.group === 'probe');
-  return [`${c.label}: to ask next session`, ...items.map(i => `- ${i.title}`)].join('\n');
+  const cl = checklist(c); const L = [`${c.label}: focus for next session (${fmtDate(todayISO())})`];
+  const sec = (title, list, withWhy) => { if (!list.length) return; L.push(''); L.push(title); list.forEach(i => { L.push(`- ${i.title}`); if (withWhy && i.why) L.push(`  Why: ${i.why}${i.src && i.src.length ? ` (${i.src.map(k => SRC[k][0]).join('; ')})` : ''}`); }); };
+  sec('Safety: ask every time', cl.safety, false);
+  sec('Picked up from your notes', cl.picks, true);
+  sec('To test the formulation', cl.tests, true);
+  sec('Saved for next session', cl.saved, false);
+  if (L.length === 1) L.push('', 'Nothing queued.');
+  return L.join('\n');
 }
 function buildEntryNote(c, e) {
   const groups = {}; e.spans.forEach(s => { (groups[s.cat] = groups[s.cat] || []).push(s); });
@@ -1042,10 +1108,10 @@ function caseRowHTML(c) {
 /* ================= case ================= */
 function caseHTML(c) {
   const cl = checklist(c); const openN = cl.toCover;
-  const tabs = [['notes', 'Notes', c.entries.length ? openN : null], ['form', 'Formulation', null], ['plan', 'Plan', null]];
-  return `<nav class="tabs" role="tablist" aria-label="Case sections">${tabs.map(([k, l, n]) => `<button class="tab" role="tab" aria-selected="${UI.tab === k}" data-act="tab" data-tab="${k}">${l}${n ? `<span class="count" title="${n} still missing">${n}</span>` : ''}</button>`).join('')}</nav>
+  const tabs = [['notes', 'Notes', c.entries.length ? openN : null, 'still missing'], ['form', 'Formulation', null], ['next', 'Next session', c.entries.length ? cl.focusN : null, 'to focus on'], ['plan', 'Plan', null]];
+  return `<nav class="tabs" role="tablist" aria-label="Case sections">${tabs.map(([k, l, n, what]) => `<button class="tab" role="tab" aria-selected="${UI.tab === k}" data-act="tab" data-tab="${k}">${l}${n ? `<span class="count" title="${n} ${what}">${n}</span>` : ''}</button>`).join('')}</nav>
     ${safetyHTML(c)}
-    <div class="panel" id="panel">${UI.tab === 'form' ? formHTML(c) : UI.tab === 'plan' ? planHTML(c) : notesHTML(c, cl)}</div>`;
+    <div class="panel" id="panel">${UI.tab === 'form' ? formHTML(c) : UI.tab === 'plan' ? planHTML(c) : UI.tab === 'next' ? nextHTML(c, cl) : notesHTML(c, cl)}</div>`;
 }
 function safetyHTML(c) {
   const all = riskSpans(c); if (!all.length) return '';
@@ -1128,14 +1194,15 @@ function sheetsHTML(c) {
 }
 
 /* ---- still missing ---- */
-const GROUPS = [['safety', 'Safety: ask every time'], ['probe', 'Worth checking'], ['formulation', 'Formulation'], ['assessment', 'Assessment'], ['admin', 'Admin']];
+const GROUPS = [['safety', 'Safety: ask every time'], ['formulation', 'Formulation'], ['assessment', 'Assessment'], ['admin', 'Admin']];
 function gapsHTML(c, cl) {
   if (!c.entries.length) return `<h2>Still missing</h2><p class="small muted" style="margin-top:8px">Sort your first notes and this column will list only what is still missing: safety questions first, then gaps in the 5 Ps and the HEEADSSS areas.</p>`;
   const pct = cl.total ? Math.round(cl.covered / cl.total * 100) : 100;
   const open = cl.open.filter(i => !i.optional), opt = cl.open.filter(i => i.optional);
-  return `<div class="stack-s"><div class="row between"><h2>Still missing${open.length ? ` <span class="h-count">${open.length}</span>` : ''}</h2>${open.length ? `<button class="btn quiet sm" data-act="copy-next">${icon('copy')}Copy as list</button>` : ''}</div>
+  return `<div class="stack-s"><div class="row between"><h2>Still missing${open.length ? ` <span class="h-count">${open.length}</span>` : ''}</h2>${open.length ? `<button class="btn quiet sm" data-act="copy-missing">${icon('copy')}Copy as list</button>` : ''}</div>
     <div class="meter"><span class="track" aria-hidden="true"><span class="fill" style="width:${pct}%;display:block"></span></span><span><b class="num">${cl.covered}</b> of <b class="num">${cl.total}</b> covered</span></div></div>
     ${open.length ? GROUPS.map(([g, label]) => { const items = open.filter(i => i.group === g); if (!items.length) return ''; return `<div class="gap-group"><h3 class="${g === 'safety' ? 'risk' : ''}">${label}</h3>${items.map(i => gapHTML(c, i)).join('')}</div>`; }).join('') : `<p style="margin-top:12px">Nothing essential is missing. Check the formulation and copy the summary.</p>`}
+    ${cl.picks.length + cl.tests.length ? `<button class="pick-link" data-act="tab" data-tab="next">${icon('next')}<span class="grow"><b>${plural(cl.picks.length + cl.tests.length, 'thing')} picked up from your notes</b><span class="hint">What to clarify next session, with the research behind it</span></span></button>` : ''}
     ${opt.length ? `<details class="more" style="margin-top:12px" ${UI.optOpen ? 'open' : ''} data-more="opt"><summary>${icon('chev')}If relevant (${opt.length})</summary><div class="gap-group">${opt.map(i => gapHTML(c, i)).join('')}</div></details>` : ''}
     ${coveredHTML(cl)}`;
 }
@@ -1143,11 +1210,24 @@ function gapHTML(c, it) {
   const open = UI.openGap === it.key;
   const mark = it.group === 'safety' ? `<span class="mark risk">${icon('alert')}</span>` : '<span class="mark" aria-hidden="true"></span>';
   const hint = it.why || it.hint || '';
-  return `<div class="gap"><button class="gap-row" data-act="gap" data-key="${esc(it.key)}" aria-expanded="${open}">${mark}<span class="grow"><b>${esc(it.title)}</b>${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</span>${it.state === 'next' ? '<span class="tag">Next session</span>' : ''}</button>
+  const focus = it.group === 'pick' || it.group === 'test';
+  const srcLine = it.group === 'pick' ? `<p class="src">${it.src && it.src.length ? 'Source: ' + it.src.map(k => link(k)).join('; ') : 'Practice prompt, no study linked'}</p>` : it.group === 'test' ? `<p class="src">Suggested by ${esc(PROVIDER_NAME[it.by] || 'Claude')} from these notes. Not from a cited source.</p>` : '';
+  return `<div class="gap"><button class="gap-row" data-act="gap" data-key="${esc(it.key)}" aria-expanded="${open}">${mark}<span class="grow"><b>${esc(it.title)}</b>${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</span>${it.state === 'next' && !focus ? '<span class="tag">Next session</span>' : ''}</button>${srcLine}
     ${open ? `<div class="gap-open">
       ${it.quick ? `<div class="row">${it.quick.map((q, n) => `<button class="btn sm" data-act="gap-quick" data-key="${esc(it.key)}" data-n="${n}">${esc(q)}</button>`).join('')}</div>` : ''}
-      <label class="sr" for="gap-in">What you know</label><textarea id="gap-in" placeholder="${it.group === 'probe' ? 'What did you find out?' : 'Add what you know. It will be sorted for you.'}"></textarea>
-      <div class="row"><button class="btn primary sm" data-act="gap-save" data-key="${esc(it.key)}">Add</button><button class="btn quiet sm" data-act="gap-next" data-key="${esc(it.key)}">${it.state === 'next' ? 'Not for next session' : 'Ask next session'}</button>${it.group === 'safety' ? '' : `<button class="btn quiet sm" data-act="gap-na" data-key="${esc(it.key)}">Not relevant</button>`}</div></div>` : ''}</div>`;
+      <label class="sr" for="gap-in">What you know</label><textarea id="gap-in" placeholder="${focus ? 'What did you find out?' : 'Add what you know. It will be sorted for you.'}"></textarea>
+      <div class="row"><button class="btn primary sm" data-act="gap-save" data-key="${esc(it.key)}">Add</button>${focus ? '' : `<button class="btn quiet sm" data-act="gap-next" data-key="${esc(it.key)}">${it.state === 'next' ? 'Not for next session' : 'Ask next session'}</button>`}${it.group === 'safety' ? '' : `<button class="btn quiet sm" data-act="gap-na" data-key="${esc(it.key)}">Not relevant</button>`}</div></div>` : ''}</div>`;
+}
+function nextHTML(c, cl) {
+  if (!c.entries.length) return `<div class="empty"><h2>Nothing to focus on yet</h2><p class="muted">Add notes and this tab lists what to clarify next session, with the research behind each point.</p><div><button class="btn primary" data-act="tab" data-tab="notes">Add notes</button></div></div>`;
+  const sec = (title, cls, list, note) => list.length ? `<section class="gap-group focus-sec"><h3 class="${cls}">${title}</h3>${note ? `<p class="small muted">${note}</p>` : ''}${list.map(i => gapHTML(c, i)).join('')}</section>` : '';
+  const any = cl.safety.length + cl.focusN;
+  return `<div class="focus"><div class="row between"><div class="stack-s"><h2>Focus for next session</h2><p class="small muted">Picked up from your notes, with Australian and NSW sources. Tap an item to record what you find out.</p></div>${any ? `<button class="btn" data-act="copy-next">${icon('copy')}Copy as list</button>` : ''}</div>
+    ${sec('Safety: ask every time', 'risk', cl.safety)}
+    ${sec('Picked up from your notes', '', cl.picks, 'Patterns in your notes that research links to something worth clarifying. They suggest what to ask; they don’t diagnose.')}
+    ${sec('To test the formulation', '', cl.tests, 'Sceptical questions from the AI sort, to check the formulation holds up.')}
+    ${sec('Saved for next session', '', cl.saved)}
+    ${any ? '' : '<p>Nothing to follow up. Everything picked up from your notes has been covered.</p>'}</div>`;
 }
 function coveredHTML(cl) {
   const cov = cl.all.filter(i => i.state === 'covered'), na = cl.all.filter(i => i.state === 'na');
@@ -1163,9 +1243,11 @@ function formHTML(c) {
     <button class="btn" data-act="copy-summary">${icon('copy')}Copy formulation</button></div>
     ${UI.formMode === 'map' ? mapHTML(c) : boardHTML(c)}</div>`;
 }
+/* rules-sorted points show the whole sentence; AI points keep their short wording */
+function boardText(s) { return s.by === 'rules' || !s.short ? shortOf(s.text, 320) : s.short; }
 function itemHTML(s, ch) {
   const t = ch[s.id]; const words = { better: 'Better', worse: 'Worse', resolved: 'Resolved' };
-  return `<li><mark class="hl c-${s.cat}${UI.pop && UI.pop.spanId === s.id ? ' sel' : ''}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(s.short || shortOf(s.text))}</mark>${t ? `<span class="trend ${t.change}">${words[t.change]} · ${fmtShort(t.date)}</span>` : ''}</li>`;
+  return `<li><mark class="hl c-${s.cat}${UI.pop && UI.pop.spanId === s.id ? ' sel' : ''}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark>${t ? `<span class="trend ${t.change}">${words[t.change]} · ${fmtShort(t.date)}</span>` : ''}</li>`;
 }
 function cellHTML(c, cat, spans, ch) {
   const list = spans.filter(s => s.cat === cat); const adding = UI.addCat === cat;
@@ -1187,16 +1269,13 @@ function boardHTML(c) {
 function planHTML(c) {
   const iv = activeInt(c);
   const opts = INTERVENTIONS.map(def => ({ def, fit: fitFor(c, def) })).sort((a, b) => ({ yes: 0, maybe: 1, no: 2 }[a.fit.level] - { yes: 0, maybe: 1, no: 2 }[b.fit.level]));
-  const goals = allSpans(c).filter(s => s.cat === 'goal'); const cl = checklist(c);
-  const next = cl.open.filter(i => i.state === 'next' || i.group === 'safety' || i.group === 'probe');
+  const goals = allSpans(c).filter(s => s.cat === 'goal');
   return `<div class="plan-grid"><section class="stack">
       <h2>Intervention</h2>
       ${iv ? activeHTML(c, iv) : '<p class="muted">None started. Pick one below; the notes you add can then count as sessions.</p>'}
       <div>${opts.map(o => optionHTML(c, o, iv)).join('')}</div>
       <p class="small muted">For medication and the full Australian guidance, open ${link('etg')}.</p></section>
-    <section class="stack"><div class="row between"><h2>Next session</h2>${next.length ? `<button class="btn quiet sm" data-act="copy-next">${icon('copy')}Copy list</button>` : ''}</div>
-      ${next.length ? `<ul class="items listing" style="padding:0">${next.map(i => `<li class="row" style="align-items:flex-start;flex-wrap:nowrap">${i.group === 'safety' ? `<span style="color:var(--redpen)">${icon('alert')}</span>` : `<span class="faint">${icon('next')}</span>`}<span class="grow">${esc(i.title)}${i.why ? `<span class="xs muted" style="display:block">${esc(i.why)}</span>` : ''}</span></li>`).join('')}</ul>` : '<p class="muted small">Nothing queued. Use “Ask next session” in the Still missing list.</p>'}
-      <h2 style="margin-top:12px">Goals</h2>
+    <section class="stack"><h2>Goals</h2>
       ${goals.length ? `<div class="listing">${goals.map(g => { const p = c.goalProgress[g.id] || 'not'; return `<div class="stack-s"><span><mark class="hl c-goal" role="button" tabindex="0" data-act="span" data-id="${esc(g.id)}">${markup(g.short || shortOf(g.text))}</mark></span><div class="seg" role="group" aria-label="Progress">${[['not', 'Not yet'], ['some', 'Some progress'], ['done', 'Achieved']].map(([k, l]) => `<button data-act="goal-progress" data-id="${esc(g.id)}" data-v="${k}" aria-pressed="${p === k}">${l}</button>`).join('')}</div></div>`; }).join('')}</div>` : '<p class="muted small">Goals from your notes appear here. You can also add one on the Formulation board.</p>'}
     </section></div>
     ${caseAdminHTML(c)}`;
@@ -1464,9 +1543,9 @@ function gapSave(c, key, text, quickIdx) {
   let raw = text, neg = false;
   if (quickIdx != null) { raw = it.quick[quickIdx]; neg = it.group === 'safety' && quickIdx === 0; }
   raw = String(raw || '').trim(); if (!raw) { const el = $('#gap-in'); if (el) el.focus(); return; }
-  if (it.group === 'probe' && quickIdx == null) raw = `${it.title.replace(/\?$/, '')}: ${raw}`;
+  if ((it.group === 'pick' || it.group === 'test') && quickIdx == null) raw = `${it.label || it.title.replace(/[.?]$/, '')}: ${raw}`;
   let cat = it.cat || 'context';
-  if (!(it.group === 'formulation' || it.group === 'safety')) { const guess = catOf(raw); if (guess !== 'context') cat = guess; }
+  if (!(it.group === 'formulation' || it.group === 'safety' || it.cat === 'risk')) { const guess = catOf(raw); if (guess !== 'context') cat = guess; }
   const topics = Array.from(new Set([...(it.topics || []), ...topicsOf(raw)]));
   const r = addQuick(c, raw, cat, topics, { neg });
   const prev = c.check[key]; c.check[key] = { s: 'done', date: todayISO() }; touch(c);
@@ -1540,6 +1619,7 @@ const ACT = {
   'del-entry': el => { const c = current(); const e = c.entries.find(x => x.id === el.dataset.id); if (!e) return; if (e.kind === 'quick') removeEntry(c, e.id); else { UI.confirm = 'e:' + e.id; render(); } },
   'del-entry-yes': el => removeEntry(current(), el.dataset.id),
   'cancel-confirm': () => { UI.confirm = null; render(); },
+  'copy-missing': () => { const c = current(); copyText(buildMissingList(c), 'List copied.'); },
   'copy-next': () => { const c = current(); copyText(buildNextList(c), 'List copied.'); },
   gap: el => { const k = el.dataset.key; UI.openGap = UI.openGap === k ? null : k; render(); },
   'gap-quick': el => gapSave(current(), el.dataset.key, null, Number(el.dataset.n)),
