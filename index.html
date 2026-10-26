@@ -1528,7 +1528,7 @@ async function cloudLoad() {
   const [app, auth, fs] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
   const a = app.initializeApp(CLOUD_CONFIG);
   let db = null;
-  try { db = fs.initializeFirestore(a, { localCache: fs.persistentLocalCache({ tabManager: fs.persistentMultipleTabManager() }) }); }
+  try { db = fs.initializeFirestore(a, { experimentalAutoDetectLongPolling: true, localCache: fs.persistentLocalCache({ tabManager: fs.persistentMultipleTabManager() }) }); }
   catch (e) { db = fs.getFirestore(a); }
   CL.fb = { auth, fs }; CL.auth = auth.getAuth(a); CL.db = db;
 }
@@ -1547,7 +1547,10 @@ async function startCloud() {
 function cloudWatch(sp) {
   cloudUnwatch(); if (!CL.user || !CL.db) return;
   const { fs } = CL.fb; CL.watching = sp; S.ready = false;
-  CL.unsub = fs.onSnapshot(fs.collection(CL.db, 'spaces', sp, 'cases'), snap => onCloudSnap(sp, snap), err => {
+  /* includeMetadataChanges: an empty space only says "loaded from the server" through metadata */
+  clearTimeout(CL.dog); CL.dog = setTimeout(() => { if (UI.space === sp && !S.ready) { S.ready = true; render(); showToast('Still connecting to the online space. Cases will appear as soon as it answers.'); } }, 9000);
+  CL.unsub = fs.onSnapshot(fs.collection(CL.db, 'spaces', sp, 'cases'), { includeMetadataChanges: true }, snap => { try { onCloudSnap(sp, snap); } catch (e) { console.warn('Five Ps sync', e); if (!S.ready) { S.ready = true; render(); } } }, err => {
+    console.warn('Five Ps sync error', err && err.code, err && err.message);
     if (sp !== UI.space) return;
     if (err && err.code === 'permission-denied') {
       cloudUnwatch();
@@ -1558,7 +1561,7 @@ function cloudWatch(sp) {
     S.ready = true; render(); showToast('Lost the link to the online space. Changes stay on this device until it’s back.');
   });
 }
-function cloudUnwatch() { if (CL.unsub) { try { CL.unsub(); } catch (e) { /* already closed */ } } CL.unsub = null; CL.watching = null; }
+function cloudUnwatch() { clearTimeout(CL.dog); if (CL.unsub) { try { CL.unsub(); } catch (e) { /* already closed */ } } CL.unsub = null; CL.watching = null; }
 function cloudParse(d) { try { const c = JSON.parse(d.data().data); return c && c.id ? c : null; } catch (e) { return null; } }
 function onCloudSnap(sp, snap) {
   if (sp !== UI.space) return;
@@ -1571,10 +1574,10 @@ function onCloudSnap(sp, snap) {
   });
   if (!snap.metadata.fromCache) {
     const n = S.cases.length; S.cases = S.cases.filter(c => seen.has(c.id) || dirty.has(c.id)); if (n !== S.cases.length) changed = true;
-    cloudMoveIn(sp);
   }
-  if (!S.ready && (!snap.metadata.fromCache || snap.size)) { S.ready = true; changed = true; }
+  if (!S.ready && (!snap.metadata.fromCache || snap.size)) { S.ready = true; changed = true; clearTimeout(CL.dog); }
   if (changed) render();
+  if (!snap.metadata.fromCache) { try { cloudMoveIn(sp); } catch (e) { console.warn('Five Ps move-in', e); } }
 }
 /* The first time a space opens online on a device, bring that device's saved cases into it (newer copy wins). */
 function cloudMoveIn(sp) {
@@ -1638,7 +1641,7 @@ async function cloudSignOut(keepMsg) {
 function cloudProbeS() {
   if (!CL.db || !CL.user) return; const { fs } = CL.fb; let un = null;
   try {
-    un = fs.onSnapshot(fs.collection(CL.db, 'spaces', 's', 'cases'), snap => { if (snap.metadata && snap.metadata.fromCache) return; CL.canS = true; setTimeout(() => un && un(), 0); render(); }, () => { CL.canS = false; });
+    un = fs.onSnapshot(fs.collection(CL.db, 'spaces', 's', 'cases'), { includeMetadataChanges: true }, snap => { if (snap.metadata && snap.metadata.fromCache) return; CL.canS = true; setTimeout(() => un && un(), 0); render(); }, () => { CL.canS = false; });
   } catch (e) { CL.canS = false; }
 }
 function switchSpace(sp) {
@@ -2334,7 +2337,7 @@ const GREETS = [
   { t: 'Azizam, take one slow breath before you start. Stefan’s right there in it with you.' },
   { t: 'Every young person you see is lucky to have you. Stefan is the luckiest of all.' },
   { t: 'Hamechizam. My everything. That’s Stefan’s word for you.' },
-  { t: 'Hi Taylah. Stefan asked me to tell you he loves you. Then he asked again. So: he loves you, twice.' },
+  { t: 'Hi Taylah. Stefan loves you. Then he thought about you again, so: he loves you, twice.' },
   { t: 'Eshgham. My love. You’re his, and he’s yours.' },
   { t: 'Delam barat tang shode. Stefan misses you, even when you’ve only just left.' },
   { t: 'If love were a rating scale, Stefan’s would be off the top. Tick that box.' },
@@ -2446,23 +2449,23 @@ const GREETS = [
   { t: 'Shhh, don’t tell him I told you: he smiled every time your name came up in the code.' },
   { t: 'Shhh! When Stefan got tired of coding, he thought about you, and the code got better.' },
   { t: 'Shhh. I heard Stefan say your name to the screen when something finally worked. It sounded a lot like “Yes! For Taylah!”' },
-  { t: 'Shhh. Stefan wanted this one to be a surprise. Surprise: he loves you.' },
+  { t: 'Shhh. Don’t tell Stefan I said anything. Surprise: he loves you.' },
   { t: 'Between you and me: Stefan tested every button in here twice, just in case you’d be the one to press it.' },
   { t: 'I’m only an app, but I’ve seen every line Stefan wrote, and every one of them was for you.' },
   { t: 'Stefan was up past 3am building me. He said it was worth it, because it’s for you.' },
   { t: 'Psst. Stefan was awake at 5am making sure your cases follow you everywhere. That’s love, with a side of no sleep.' },
-  { t: 'Secret: Stefan asked for this greeting himself. He wanted the first thing you see to be how much he loves you.' },
-  { t: 'One of the first things Stefan asked me to write was “Built by S for T, with Love”. He still means every letter.' },
-  { t: 'Stefan asked me for more than a hundred of these messages. Then he asked for more. That should tell you something.' },
-  { t: 'Fun fact: there are more love notes in me than features. Stefan’s priorities are excellent.' },
+  { t: 'Secret: the first thing Stefan thinks about every morning is you. Now you’re the first thing here, too.' },
+  { t: '“Built by S for T, with Love.” Stefan meant every letter, and he still does.' },
+  { t: 'Stefan has more love for you than this app has room for. Believe me, he tried to fit it all in.' },
+  { t: 'Fun fact: Stefan put more love into me than features. His priorities are excellent.' },
   { t: 'I was built by Stefan, line by line. You’re the reason for every single one.' },
   { t: 'Stefan’s favourite part of making me? Imagining you opening me.' },
-  { t: 'Behind the scenes: Stefan read every one of these before you did, and grinned at all of them.' },
+  { t: 'Behind the scenes: Stefan grinned the whole time he was building me, thinking of you.' },
   { t: 'If I ever glitch, it’s because Stefan put too much love in the code.' },
   { t: 'The glow when you open me is my best attempt at a hug from Stefan. The real one’s better.' },
   { t: 'Fun fact: the pentagon in my logo has five sides. Stefan says you have at least a hundred good ones.' },
   { t: 'I don’t have a heart, but Stefan lent me some of his. All of it points at you.' },
-  { t: 'Note from your app: I’ve been asked to remind you every day that you are loved. I take my job very seriously.' },
+  { t: 'Note from your app: my most important job is reminding you that you are loved. I take it very seriously.' },
   { t: 'Stefan built me to sort notes and to make you smile. Guess which one he tested first.' },
   { t: 'Somewhere in my code there’s a line that only says your name. Stefan won’t tell me where.' },
   { t: 'I’m made of thousands of lines of code and one very big feeling.' },
@@ -2472,13 +2475,13 @@ const GREETS = [
   { t: 'I can sort the 5 Ps. I still can’t measure how much Stefan loves you. Nobody can.' },
   { t: 'When I was being built, Stefan’s rule was simple: if it makes Taylah’s day easier, it goes in.' },
   { t: 'Your app has a confession: I’m a little bit in love with you too. Stefan says I have good taste.' },
-  { t: 'Stefan’s favourite feature isn’t the map or the board. It’s this message, to you.' },
+  { t: 'Stefan’s favourite part of me isn’t the map or the board. It’s this moment, saying hello to you.' },
   { t: 'I keep your notes private to you and Stefan. His heart, though, he keeps only for you.' },
   { t: 'Stefan built me in the middle of the night, between shifts and studio. You were worth every hour.' },
   { t: 'If you’re reading this, Stefan’s plan worked: you opened me, and now you know he loves you.' },
   { t: 'Stefan didn’t just build an app. He built a little place that says your name every time it opens.' },
-  { t: 'Psst, joonam: Stefan taught me “ghorboonet beram”. I’ve been dying to use it. Ghorboonet beram!' },
-  { t: 'Stefan taught me to call you Nafas-e Stefan. It means his breath. Now I understand why he says it so softly.' },
+  { t: 'Psst, joonam. Ghorboonet beram, from Stefan, all the way from his heart.' },
+  { t: 'Nafas-e Stefan means his breath. Now you know why he says it so softly.' },
   { t: 'Shhh. Every so often Stefan stopped coding just to text you. I didn’t mind waiting.' },
   { t: 'Stefan’s heart skipped while he was making me. It does that whenever you’re on his mind, which is always.' },
   { t: 'Behind every button here is Stefan, hoping your day is a little easier and knowing his is better because of you.' },
