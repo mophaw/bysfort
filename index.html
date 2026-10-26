@@ -1494,6 +1494,10 @@ const CLOUD_CONFIG = {
 };
 const FB_VER = '10.14.1';
 const CLOUD_ON = !!(CLOUD_CONFIG && STANDALONE && !FRAMED);
+/* Sign in with a name: "Taylah" becomes taylah@mophaw.github.io (a login address only, not a mailbox). A full email still works. */
+const LOGIN_DOMAIN = 'mophaw.github.io';
+const loginEmail = v => { v = String(v || '').trim(); return v.includes('@') ? v.toLowerCase() : v.toLowerCase().replace(/\s+/g, '') + '@' + LOGIN_DOMAIN; };
+const loginName = e => { e = String(e || ''); return e.endsWith('@' + LOGIN_DOMAIN) ? cap(e.split('@')[0]) : e; };
 const CL = { fb: null, auth: null, db: null, user: null, known: false, unsub: null, watching: null, canS: false };
 /* Online, the account sign-in replaces the passcode: open the last space used on this device. */
 const SPACE_KEY = APP_KEY + '-space';
@@ -1583,7 +1587,7 @@ async function cloudFlush(id) {
 }
 function authErrText(e) {
   const c = e && e.code || '';
-  if (/invalid-credential|wrong-password|user-not-found|invalid-email|invalid-login/.test(c)) return 'That email and password don’t match.';
+  if (/invalid-credential|wrong-password|user-not-found|invalid-email|invalid-login/.test(c)) return 'That name and password don’t match.';
   if (/too-many-requests/.test(c)) return 'Too many tries. Wait a few minutes, or reset the password.';
   if (/network/.test(c)) return 'No internet connection. Try again when you’re online.';
   if (/user-disabled/.test(c)) return 'This account has been turned off.';
@@ -1593,12 +1597,14 @@ async function cloudSignIn(email, pass) {
   const msg = t => { UI.siMsg = t; const el = $('#si-msg'); if (el) el.textContent = t; };
   if (!CL.fb) return msg('Still connecting. Try again in a moment.');
   msg('Signing in…');
-  try { await CL.fb.auth.signInWithEmailAndPassword(CL.auth, email.trim(), pass); UI.siMsg = ''; }
+  if (!String(email).trim()) { const i = $('#si-email'); if (i) i.focus(); return msg('Type your name first.'); }
+  try { await CL.fb.auth.signInWithEmailAndPassword(CL.auth, loginEmail(email), pass); UI.siMsg = ''; }
   catch (e) { msg(authErrText(e)); }
 }
 async function cloudReset(email) {
   const el = $('#si-msg'); const say = t => { UI.siMsg = t; if (el) el.textContent = t; };
-  if (!email.trim()) { say('Type your email first, then press Forgot password.'); const i = $('#si-email'); if (i) i.focus(); return; }
+  if (!email.trim()) { say('Type your name first, then press Forgot password.'); const i = $('#si-email'); if (i) i.focus(); return; }
+  if (!email.includes('@')) { say('Ask Stefan to set a new password for you in Firebase.'); return; }
   try { await CL.fb.auth.sendPasswordResetEmail(CL.auth, email.trim()); say('If that email has an account, a reset link is on its way.'); }
   catch (e) { say(/network/.test(e && e.code || '') ? 'No internet connection.' : 'If that email has an account, a reset link is on its way.'); }
 }
@@ -1627,7 +1633,7 @@ function signinHTML() {
   return `<section class="signin" aria-labelledby="si-title">${logoSVG('draw-logo')}<p class="wordmark">Five Ps</p>
     <div class="stack-s" style="align-items:center"><h1 id="si-title" class="overline" style="font-size:.78rem">Sign in</h1><p class="small muted">Once per device. After that Five Ps opens straight to your cases, on your iPad, your PC and anywhere else you sign in.</p></div>
     <form data-form="signin" class="signin-form">
-      <label class="field"><span>Email</span><input type="email" id="si-email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
+      <label class="field"><span>Name</span><input type="text" id="si-email" autocomplete="username" autocapitalize="words" spellcheck="false" placeholder="Your name" required></label>
       <label class="field"><span>Password</span><input type="password" id="si-pass" autocomplete="current-password" required></label>
       <p class="small" id="si-msg" aria-live="assertive">${esc(UI.siMsg || '')}</p>
       <button class="btn primary" type="submit">Sign in</button>
@@ -2002,7 +2008,7 @@ function settingsHTML() {
   const where = S.mode === 'cloud' ? `Online, in ${sp}’s space, stored in Sydney. Sign in once on any device and the same cases are there. Changes made without internet save when the device is back online.` : S.mode === 'db' ? 'In your Claude account, private to you. Open this page signed in to Claude on your iPad or your PC and the same cases are there. Nobody else can see them, including whoever shared the page.' : 'In this browser on this device only. Clearing website data removes them.';
   return `<section class="stack" style="max-width:760px;gap:0"><div style="padding-bottom:20px"><p class="overline">${sp}’s space</p><h1 class="title">Settings</h1></div>
     <div class="settings-sec stack-s"><h2>Where your cases are saved</h2><p>${where}</p>${S.mode === 'cloud' ? '' : STANDALONE ? '<p class="small muted">To use them on another device, save a backup file below and open it there.</p>' : ''}</div>
-    ${S.mode === 'cloud' && CL.user ? `<div class="settings-sec stack-s"><h2>Account</h2><p>Signed in as <b>${esc(CL.user.email || '')}</b> on this device.</p><p class="small muted">T’s space is shared by Taylah’s and Stefan’s accounts. S’s space is only Stefan’s. There’s no passcode online: anyone using this device while it’s signed in can open the cases, so keep the device locked or sign out.</p><div><button class="btn sm" data-act="sign-out">Sign out of this device</button></div></div>` : ''}
+    ${S.mode === 'cloud' && CL.user ? `<div class="settings-sec stack-s"><h2>Account</h2><p>Signed in as <b>${esc(loginName(CL.user.email))}</b> on this device.</p><p class="small muted">T’s space is shared by Taylah’s and Stefan’s accounts. S’s space is only Stefan’s. There’s no passcode online: anyone using this device while it’s signed in can open the cases, so keep the device locked or sign out.</p><div><button class="btn sm" data-act="sign-out">Sign out of this device</button></div></div>` : ''}
     ${S.mode === 'cloud' ? '' : `<div class="settings-sec stack-s"><h2>Passcode</h2><p class="small muted">Five Ps asks for the passcode each time it opens and locks itself after 15 minutes without use. Each passcode opens its own space with its own cases. The passcode is a screen lock; ${S.mode === 'cloud' ? 'the account sign-in is what keeps the cases private online.' : S.mode === 'db' ? 'your Claude sign-in is what keeps the cases private.' : 'anyone using this browser could still reach the saved data, so use a device only you use.'}</p><div><button class="btn sm" data-act="lock">${icon('lock')}Lock now</button></div></div>`}
     ${STANDALONE ? oaiSettingsHTML() : `<div class="settings-sec stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
       <p class="small muted">${SAMPLE ? 'Claude sorts much more accurately than the built-in rules. Only the hidden version of your notes is sent, using your own Claude account.' : 'Claude is not available on this page right now, so sorting uses the built-in rules on this device.'}</p></div>`}
