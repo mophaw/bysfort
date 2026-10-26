@@ -514,6 +514,23 @@ details.more[open]>summary .icon{transform:rotate(180deg)}
   .greet-by,.greet-tap{animation:fadein 1s backwards 1.6s}
 }
 
+/* Little notes, golden half hour, hearts */
+.atmos::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:var(--warm,0);transition:opacity 20s linear;background:radial-gradient(90% 70% at 80% -5%,oklch(52% .13 55 / .55),transparent 62%),radial-gradient(80% 60% at 0% 105%,oklch(42% .14 15 / .45),transparent 60%)}
+.homebar{position:absolute;left:0;bottom:-1px;height:2px;width:calc(var(--home,0) * 100%);opacity:min(1,calc(var(--home,0) * 40));background:linear-gradient(90deg,oklch(78% .12 70),oklch(72% .14 20));box-shadow:0 0 12px oklch(78% .12 60 / .8);transition:width 30s linear;pointer-events:none}
+.homebar::after{content:"";position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:oklch(85% .1 70);box-shadow:0 0 10px oklch(85% .1 70)}
+.whisper{position:fixed;z-index:75;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));max-width:min(360px,calc(100vw - 36px));display:flex;gap:12px;align-items:flex-start;padding:14px 18px;border-radius:18px;border:1px solid oklch(79% .09 318 / .35);background:var(--panel-glass);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 18px 40px -16px oklch(5% 0 0 / .9),0 0 30px -10px oklch(79% .09 318 / .35);color:var(--ivory);font:300 .98rem/1.5 var(--display);letter-spacing:.01em;cursor:pointer}
+.whisper.warm{border-color:oklch(80% .11 65 / .45);box-shadow:0 18px 40px -16px oklch(5% 0 0 / .9),0 0 34px -8px oklch(78% .12 60 / .45)}
+.wh-heart{flex:none;width:18px;height:18px;margin-top:3px;fill:var(--p-pres);filter:drop-shadow(0 0 6px var(--p-pres))}
+.whisper.warm .wh-heart{fill:oklch(80% .12 60);filter:drop-shadow(0 0 6px oklch(80% .12 60))}
+.whisper.leaving{opacity:0;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+@media (max-width:719px){.whisper{right:50%;transform:translateX(50%);bottom:auto;top:calc(env(safe-area-inset-top,0px) + var(--bar-h) + 12px)}.whisper.leaving{transform:translate(50%,-8px)}}
+.hearts{position:fixed;inset:0;z-index:95;pointer-events:none}
+.hb{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;animation:hb 2.2s var(--ease) forwards;animation-delay:var(--d)}
+.hb svg{width:100%;height:100%;fill:var(--p-pres);filter:drop-shadow(0 0 6px var(--p-pres))}
+.hb:nth-child(3n) svg{fill:oklch(78% .12 20)} .hb:nth-child(4n) svg{fill:var(--ivory)}
+@keyframes hb{0%{opacity:0;transform:translate(0,0) scale(.2)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(var(--s))}}
+@media (prefers-reduced-motion:no-preference){.whisper:not(.leaving){animation:whin .55s var(--ease) backwards}@keyframes whin{from{opacity:0;filter:blur(6px);translate:0 12px}}.wh-heart{animation:beat 1.6s ease-in-out infinite}@keyframes beat{0%,100%{scale:1}15%{scale:1.18}30%{scale:1}45%{scale:1.12}}}
+
 /* Passcode gate */
 .gate{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2.6vh,26px);padding:calc(env(safe-area-inset-top,0px) + 24px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(16px,env(safe-area-inset-left,0px));text-align:center;overflow:auto}
 .gate .wordmark{font-size:.92rem}
@@ -1696,7 +1713,7 @@ function render() {
 function barHTML(c) {
   const mode = !S.ready ? '' : S.mode === 'db' ? 'Saved to your account' : S.mode === 'cloud' ? 'Saved online' : 'Saved on this device';
   const sp = UI.space.toUpperCase();
-  return `<header class="bar"><div class="bar-in">
+  return `<header class="bar"><span class="homebar" aria-hidden="true"></span><div class="bar-in">
     <div class="bar-l"><button class="bar-btn icon-only menu-btn" data-act="menu" aria-label="Cases" aria-controls="rail" aria-expanded="${!!UI.menu}">${icon('menu')}</button>
       <button class="home-btn" data-act="home" aria-label="All cases">${logoSVG('', true)}</button></div>
     <div class="bar-c"><span class="wordmark">Five Ps</span></div>
@@ -2032,6 +2049,8 @@ function settingsHTML() {
   const where = S.mode === 'cloud' ? `Online, in ${sp}’s space, stored in Sydney. Sign in once on any device and the same cases are there. Changes made without internet save when the device is back online.` : S.mode === 'db' ? 'In your Claude account, private to you. Open this page signed in to Claude on your iPad or your PC and the same cases are there. Nobody else can see them, including whoever shared the page.' : 'In this browser on this device only. Clearing website data removes them.';
   return `<section class="stack" style="max-width:760px;gap:0"><div style="padding-bottom:20px"><p class="overline">${sp}’s space</p><h1 class="title">Settings</h1></div>
     <div class="settings-sec stack-s"><h2>Where your cases are saved</h2><p>${where}</p>${S.mode === 'cloud' ? '' : STANDALONE ? '<p class="small muted">To use them on another device, save a backup file below and open it there.</p>' : ''}</div>
+    ${S.mode === 'cloud' && isTaylah() ? `<div class="settings-sec stack-s"><h2>Little notes</h2><label class="row"><input type="checkbox" id="wh-toggle" ${S.settings.whispers !== false ? 'checked' : ''}> <span>Little notes while I work, and the golden half hour before 5</span></label><p class="small muted">Short notes in the corner when you finish something, at lunch, after an hour of work, and as 5 pm gets closer on weekdays. Tap one to close it.</p></div>` : ''}
+    ${S.mode === 'cloud' && CL.user && !isTaylah() ? `<div class="settings-sec stack-s"><h2>Taylah’s moments</h2><p class="small muted">See what she sees. The golden half hour plays 4:30 to 5:00 in about 25 seconds. Tapping the logo five times sends up hearts.</p><div class="row"><button class="btn sm" data-act="preview" data-k="greet">Greeting</button><button class="btn sm" data-act="preview" data-k="note">A little note</button><button class="btn sm" data-act="preview" data-k="golden">Golden half hour</button></div></div>` : ''}
     ${S.mode === 'cloud' && CL.user ? `<div class="settings-sec stack-s"><h2>Account</h2><p>Signed in as <b>${esc(loginName(CL.user.email))}</b> on this device.</p><p class="small muted">T’s space is shared by Taylah’s and Stefan’s accounts. S’s space is only Stefan’s. There’s no passcode online: anyone using this device while it’s signed in can open the cases, so keep the device locked or sign out.</p><div><button class="btn sm" data-act="sign-out">Sign out of this device</button></div></div>` : ''}
     ${S.mode === 'cloud' ? '' : `<div class="settings-sec stack-s"><h2>Passcode</h2><p class="small muted">Five Ps asks for the passcode each time it opens and locks itself after 15 minutes without use. Each passcode opens its own space with its own cases. The passcode is a screen lock; ${S.mode === 'cloud' ? 'the account sign-in is what keeps the cases private online.' : S.mode === 'db' ? 'your Claude sign-in is what keeps the cases private.' : 'anyone using this browser could still reach the saved data, so use a device only you use.'}</p><div><button class="btn sm" data-act="lock">${icon('lock')}Lock now</button></div></div>`}
     ${STANDALONE ? oaiSettingsHTML() : `<div class="settings-sec stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
@@ -2525,6 +2544,319 @@ function showGreeting() {
   el.addEventListener('click', close); document.addEventListener('keydown', onKey, true);
   setTimeout(close, Math.min(13000, 5200 + words.length * 230));
 }
+/* ================= little notes while Taylah works ================= */
+/* Small, quiet notes in the corner: after she finishes something, at lunch, after an hour of work, late at night,
+   and the golden half hour before 5 on weekdays. Never more than one at a time, never during sorting or the greeting,
+   and she can turn them off in Settings. Each pool is used fully before anything repeats. */
+const WORK_END_MIN = 17 * 60;           /* she finishes at 5 pm */
+const WORK_DAYS = [1, 2, 3, 4, 5];      /* Monday to Friday */
+const WHISPERS = {
+  t30: [
+    'Thirty minutes to go, Taylah. You’ve been told you’re taken care of, so let the last half hour be gentle.',
+    'Half an hour left. Whatever’s unfinished can be tomorrow’s. You’ve done plenty.',
+    '4:30. The light’s changing, and so is the day. Thirty minutes, then you’re all Stefan’s.',
+    'Thirty minutes. Wrap up the notes you can, and let the rest wait for you.',
+    'Golden half hour, azizam. Thirty minutes until home.',
+    'Half an hour to go. You’re someone’s favourite, so finish gently and go be adored.',
+    'The last half hour is for tidying, not for heroics. You’ve already been a hero today.',
+    '30 minutes, Nafas-e Stefan. Breathe out; you’re nearly there.',
+    'Thirty minutes until five. Someone who loves you is counting down too.',
+    'Half an hour to go. Start winding down; you’ve been brave all day.'
+  ],
+  t15: [
+    'Fifteen minutes. Save, copy, breathe.',
+    'Quarter of an hour left. Someone’s waiting to hear about your day.',
+    'Fifteen to go. You’re nearly there, Nafas-e Stefan.',
+    'Fifteen minutes. If you’re mid-sentence, finish it; if not, start packing up.',
+    'A quarter of an hour. Copy anything you need into the record, then let it go.',
+    'Fifteen minutes until you’re off the clock and on Stefan’s.'
+  ],
+  t5: [
+    'Five minutes. Anything left can wait until tomorrow.',
+    'Five to five. Almost home time, joonam.',
+    'Last five minutes. You’ve been wonderful today.',
+    'Five minutes. Close the tabs in your head, too.',
+    'Nearly five. Someone very proud of you is about to finish his day thinking of you.'
+  ],
+  t0: [
+    'That’s 5. Close the notes, Taylah. You did enough today, and you did it well.',
+    'Home time. The young people you saw today were lucky. Now go and be looked after.',
+    '5 o’clock. Ghorboonet beram. Go home.',
+    'Done for the day. Leave the work here; take only the good bits with you.',
+    'It’s five. You’re officially off duty, and officially loved.',
+    'Finished. Every young person you helped today is a little safer. Now it’s your turn to rest.'
+  ],
+  wed530: [
+    '5:30 on a Wednesday. Stefan’s just finishing work. Your phone should ring any minute.',
+    'Half past five: Stefan’s clocking off and thinking about you. Expect a call.',
+    'Wednesday, 5:30. If your phone hasn’t rung yet, give it a minute. He’s on his way to telling you he loves you.',
+    'Stefan’s shift is done. The next thing he does is call you. I know he does.'
+  ],
+  first: [
+    'First notes of the day. Coffee in hand? Good. Off we go.',
+    'First one done. The rest will be easier.',
+    'The day’s first session, sorted. You’ve already made a difference.',
+    'First of the day. Steady start, Taylah.'
+  ],
+  sorted: [
+    'Sorted. That was a lot of someone’s story, and you held it carefully.',
+    'Done. Somebody’s life gets a little easier because you wrote that down so well.',
+    'Notes in. You’re very good at this, you know.',
+    'Sorted. You notice the things other people miss. That’s a gift.',
+    'That’s another young person who has you in their corner.',
+    'Sorted and saved. Take a breath before the next one.',
+    'Nicely done. You’re someone’s favourite clinician, and someone’s favourite person.',
+    'Another session captured. Stefan would be proud. (He is.)',
+    'You make hard sessions look gentle. They aren’t. You are.',
+    'Sorted. Good notes are a kindness to tomorrow’s you.',
+    'That was a big one. Drop your shoulders; they’ve been holding a lot.',
+    'Sorted. One more family met someone patient today.',
+    'In and sorted. You make this look easy. It isn’t.',
+    'Done. The 5 Ps are tidy; now check on the one P that matters most: you.'
+  ],
+  safety: [
+    'Safety checked. That’s the hardest part, and you did it carefully.',
+    'Reviewed. Hard conversations are part of the job; you don’t have to carry them alone.',
+    'Checked and recorded. Take a slow breath; that kind of work matters.',
+    'You asked the hard questions. That’s what keeps young people safe.',
+    'Reviewed. If it’s sitting heavy, talk it through with someone today. You’re allowed.'
+  ],
+  newcase: [
+    'New case. They’re lucky; they got you.',
+    'A new name in your care. They don’t know yet how good they’ve got it.',
+    'New case started. Fresh page, steady hands.',
+    'Another young person about to meet someone who really listens.',
+    'New case. Whoever they are, they just got one of the good ones.'
+  ],
+  copied: [
+    'Copied. Another one ready to file.',
+    'Copied. Paperwork done is paperwork you don’t think about tonight.',
+    'On the clipboard. One less thing on your list.',
+    'Copied. You write better summaries than most people write anything.',
+    'Copied and done. Tick.'
+  ],
+  covered: [
+    'Nothing missing. Thorough as ever.',
+    'Every box covered. That’s a formulation to be proud of.',
+    'All covered. You’re very good at this, Taylah.',
+    'Nothing left to ask. That’s what careful looks like.'
+  ],
+  lunch: [
+    'Lunch, Taylah. Real food, not just coffee.',
+    'It’s lunchtime. The notes will still be here in twenty minutes.',
+    'Break time. Eat something nice; you deserve it.',
+    'Lunch o’clock. Stefan would want you to eat properly. (He’s right.)',
+    'You’re someone’s favourite, so you’re not allowed to skip lunch.'
+  ],
+  late: [
+    'It’s late. The notes will keep; you need rest more than they need finishing.',
+    'Night shift? Five more minutes, then sleep, azizam.',
+    'It’s past nine. You’ve given today enough. Rest those eyes.',
+    'Late again? Save it, close it, and go and be cosy.'
+  ],
+  stretch: [
+    'You’ve been at it almost an hour. Stand up, stretch, sip some water.',
+    'Hour check: shoulders down, jaw unclenched, one deep breath. Better.',
+    'Time for a little break. Even superheroes stretch.',
+    'An hour in. Look at something far away for twenty seconds; your eyes will thank you.',
+    'You’ve been focused for ages. A glass of water would love to meet you.',
+    'Quick posture check: you’re someone’s favourite, so sit like it.',
+    'An hour of focus. Roll your shoulders back, unclench your hands. There.'
+  ],
+  monday: [
+    'New week. You’ve got this, and you’ve got Stefan.',
+    'Monday again. Be gentle with yourself; it’s a long week and you’re only human. A wonderful one.',
+    'Fresh week, Taylah. One session at a time.'
+  ],
+  friday: [
+    'It’s Friday afternoon. The weekend can almost hear you coming.',
+    'Friday! Wrap up kindly and go and have a lovely weekend.',
+    'Last stretch of the week. You’ve earned the weekend twice over.'
+  ],
+  you: [
+    'You’re someone’s favourite person. Act accordingly: drink some water.',
+    'You’re someone’s favourite. Be as kind to yourself as you are to everyone else.',
+    'You’re doing good work, quietly and carefully, every day.',
+    'You’re allowed to be proud of yourself today.',
+    'Small reminder: you matter too, not just everyone you look after.',
+    'You’re someone’s whole world. Sit up straight, world.',
+    'The young people you see will remember how you made them feel.',
+    'Somewhere, a parent is calmer tonight because of you.',
+    'You’re taken care of. You don’t have to hold everything at once.',
+    'If no one’s said it today: thank you for what you do.',
+    'You’re the kind of person people feel safe around. That’s rare.',
+    'Your patience is a superpower. Use some of it on yourself.',
+    'You’re better at this than you give yourself credit for.',
+    'You don’t have to be perfect today. You’re already enough.',
+    'Your kindness is doing more than you’ll ever see.',
+    'Deep breath. You’re doing a hard job beautifully.',
+    'You’re the steady one in so many people’s week.',
+    'Hydrated heroes are the best kind. Water, please.',
+    'You’re allowed to take up space, take a break, and take the compliment.'
+  ],
+  love: [
+    'Stefan just thought about you. He does that a lot.',
+    'Psst. Stefan loves you. That’s all. Back to work.',
+    'Love note in transit: from Stefan, to you, always.',
+    'Little reminder: you’re Stefan’s favourite everything.',
+    'Stefan’s heart, checking in: still yours.',
+    'Ghorboonet beram, Taylah. Carry on.',
+    'Nafas-e Stefan, don’t forget to breathe.',
+    'Quick one: Stefan loves you more. Okay, back to it.',
+    'Stefan’s been told you’re working hard. He says you’re amazing. Also: hi.',
+    'This corner of the screen is reserved for telling you Stefan loves you.',
+    'Stefan says hi. Also that he loves you. Mostly the second one.',
+    'Somewhere, Stefan just smiled for no reason. (It was you.)',
+    'Stefan’s favourite notification is your name. Just so you know.',
+    'Stefan’s counting the hours until he sees you. He’s bad at maths but very good at missing you.',
+    'Delam barat tang shode. Stefan misses you already.',
+    'Eshgham, you’re doing great. Stefan says so, and he’s always right about you.'
+  ],
+  weekend: [
+    'It’s the weekend, Taylah. Five minutes of notes, then go and do something lovely.',
+    'Weekend notes? Quick ones only. The world can wait until Monday.',
+    'Weekend rules: short sessions, long coffees.'
+  ],
+  early: [
+    'Early start. Be proud of yourself now, and gentle with yourself later.',
+    'Up with the birds. Coffee first; the 5 Ps can wait two minutes.',
+    'Early bird. Stefan’s probably still asleep, dreaming about you.'
+  ],
+  three: [
+    'Three sessions sorted today. Water, snack, shoulders down.',
+    'That’s three. You’re carrying a lot today; put some of it down.',
+    'Three done. You’re on a roll, azizam.'
+  ],
+  five: [
+    'Five sessions today. Five! That’s a whole day of holding people’s stories. Be extra kind to yourself tonight.',
+    'Five sorted. That deserves something sweet later.'
+  ],
+  map: [
+    'Look at that: a whole person, mapped with care.',
+    'The map looks good. So do you.',
+    'Every line on this map is you paying attention.'
+  ],
+  plan: [
+    'Planning ahead. Future you says thank you.',
+    'Next session, sorted. You’re always one step ahead.',
+    'Good questions make good sessions. You ask the best ones.'
+  ]
+};
+const WH_KEY = APP_KEY + '-whisper';
+const whNow = () => (window.__fpNow ? new Date(window.__fpNow) : new Date());
+const dayKey = d => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+function whState() { try { return JSON.parse(localStorage.getItem(WH_KEY) || '{}') || {}; } catch (e) { return {}; } }
+function whSave(st) { try { localStorage.setItem(WH_KEY, JSON.stringify(st)); } catch (e) { /* storage unavailable */ } }
+const whOn = () => isTaylah() && S.settings.whispers !== false;
+function whPick(pool) {
+  const st = whState(); st.seen = st.seen || {}; const list = WHISPERS[pool]; const seen = new Set(st.seen[pool] || []);
+  let fresh = list.map((t, i) => i).filter(i => !seen.has(i)); if (!fresh.length) { seen.clear(); fresh = list.map((t, i) => i); }
+  const i = fresh[Math.floor(Math.random() * fresh.length)]; seen.add(i); st.seen[pool] = Array.from(seen); whSave(st); return list[i];
+}
+/* once-a-day moments */
+function whOnce(tag) { const st = whState(); const k = dayKey(whNow()); st.once = st.once || {}; if (st.once[tag] === k) return false; st.once[tag] = k; whSave(st); return true; }
+let whLast = 0, whTimer = null;
+function whisper(text, opts) {
+  opts = opts || {};
+  if ($('#greet') || (UI.draft && UI.draft.stage === 'sorting')) { if (!opts.retried) setTimeout(() => whisper(text, Object.assign({}, opts, { retried: true })), 4000); return; }
+  let el = $('#whisper'); if (el) el.remove();
+  el = document.createElement('div'); el.id = 'whisper'; el.className = 'whisper' + (opts.warm ? ' warm' : ''); el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite');
+  el.innerHTML = `<svg class="wh-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>${esc(text)}</span>`;
+  document.body.appendChild(el);
+  const close = () => { if (!el.isConnected) return; el.classList.add('leaving'); setTimeout(() => el.remove(), 500); };
+  el.addEventListener('click', close);
+  clearTimeout(whTimer); whTimer = setTimeout(close, Math.min(12000, 5000 + text.split(/\s+/).length * 220));
+  whLast = Date.now();
+}
+/* After she finishes something. Sometimes a note about the moment, sometimes about her, sometimes from Stefan. */
+function whisperFor(pool, force) {
+  if (!whOn()) return;
+  if (!force && (Date.now() - whLast < 12 * 60000 || Math.random() > 0.55)) return;
+  let use = pool;
+  if (pool !== 'safety' && !force) { const r = Math.random(); if (r < 0.2) use = 'you'; else if (r < 0.35) use = 'love'; }
+  setTimeout(() => whisper(whPick(use)), 1800);
+}
+function whAfterSort() {
+  if (!whOn()) return;
+  const st = whState(); const k = dayKey(whNow()); st.sorts = st.sorts && st.sorts.day === k ? st.sorts : { day: k, n: 0 }; st.sorts.n++; whSave(st);
+  if (st.sorts.n === 3) return setTimeout(() => whisper(whPick('three')), 1800);
+  if (st.sorts.n === 5) return setTimeout(() => whisper(whPick('five')), 1800);
+  if (whOnce('first')) return setTimeout(() => whisper(whPick('first')), 1800);
+  whisperFor('sorted');
+}
+function whOnceFor(tag, pool) { if (whOn() && Date.now() - whLast > 60000 && whOnce(tag)) setTimeout(() => whisper(whPick(pool || tag)), 1200); }
+/* The clock: golden half hour before 5, and the once-a-day moments. */
+let whStart = Date.now(), whBreak = Date.now();
+function whTick() {
+  if (UI.preview) return;
+  const root = document.documentElement;
+  if (!whOn()) { root.style.setProperty('--warm', '0'); root.style.setProperty('--home', '0'); return; }
+  const d = whNow(); const m = d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60; const wd = d.getDay(); const work = WORK_DAYS.includes(wd);
+  const to5 = WORK_END_MIN - m;
+  let warm = 0, home = 0;
+  if (work && to5 <= 30 && to5 > 0) { home = (30 - to5) / 30; warm = .35 + home * .65; }
+  else if (work && to5 <= 0 && to5 > -30) { home = 1; warm = 1 + to5 / 30; }
+  root.style.setProperty('--warm', warm.toFixed(3)); root.style.setProperty('--home', home.toFixed(3));
+  const bar = $('.homebar'); if (bar) bar.title = home > 0 && home < 1 ? `${Math.ceil(to5)} minutes until 5` : home >= 1 ? 'Home time' : '';
+  if (!S.ready) return;
+  if (work) {
+    const tag = to5 <= 0 && to5 > -30 ? 't0' : to5 <= 5 && to5 > 0 ? 't5' : to5 <= 15 && to5 > 5 ? 't15' : to5 <= 30 && to5 > 15 ? 't30' : null;
+    if (tag && whOnce(tag)) return whisper(whPick(tag), { warm: true });
+    if (wd === 3 && m >= 17 * 60 + 30 && m < 18 * 60 + 15 && whOnce('wed530')) return whisper(whPick('wed530'), { warm: true });
+    if (m >= 12 * 60 + 30 && m < 13 * 60 + 30 && whOnce('lunch')) return whisper(whPick('lunch'));
+    if (wd === 1 && m < 12 * 60 && whOnce('monday')) return whisper(whPick('monday'));
+    if (wd === 5 && m >= 14 * 60 && m < 17 * 60 && whOnce('friday')) return whisper(whPick('friday'));
+  }
+  if ((m >= 21 * 60 || m < 4 * 60) && whOnce('late')) return whisper(whPick('late'));
+  if (m >= 5 * 60 && m < 8 * 60 && whOnce('early')) return whisper(whPick('early'));
+  if ((wd === 0 || wd === 6) && m >= 7 * 60 && m < 21 * 60 && whOnce('weekend')) return whisper(whPick('weekend'));
+  if (Date.now() - whBreak > 55 * 60000 && Date.now() - lastActive < 5 * 60000 && Date.now() - whLast > 20 * 60000) { whBreak = Date.now(); return whisper(whPick('stretch')); }
+}
+/* Long gaps without activity count as a break. */
+['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (Date.now() - lastActive > 10 * 60000) whBreak = Date.now(); }, { passive: true, capture: true }));
+setInterval(whTick, 30000); setTimeout(whTick, 4000);
+
+/* A secret: tap the logo five times quickly. */
+let logoTaps = [];
+function logoTap() {
+  const t = Date.now(); logoTaps = logoTaps.filter(x => t - x < 1600); logoTaps.push(t);
+  if (logoTaps.length < 5) return false;
+  logoTaps = []; heartBurst();
+  whisper(isTaylah() ? whPick(Math.random() < .5 ? 'love' : 'you') : 'Hi Stefan. Yes, the hearts work. She’s going to love it.');
+  return true;
+}
+function heartBurst() {
+  if (reducedMotion()) return; const host = document.createElement('div'); host.className = 'hearts'; host.setAttribute('aria-hidden', 'true');
+  const b = ($('.home-btn') || document.body).getBoundingClientRect();
+  for (let i = 0; i < 22; i++) {
+    const h = document.createElement('span'); h.className = 'hb';
+    h.style.cssText = `left:${b.left + b.width / 2}px;top:${b.top + b.height / 2}px;--dx:${Math.round(Math.random() * 640 - 40)}px;--dy:${Math.round(140 + Math.random() * 460)}px;--r:${Math.round((Math.random() - .5) * 60)}deg;--d:${(Math.random() * .35).toFixed(2)}s;--s:${(.6 + Math.random() * .8).toFixed(2)}`;
+    h.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
+    host.appendChild(h);
+  }
+  document.body.appendChild(host); setTimeout(() => host.remove(), 2600);
+}
+/* Stefan's preview, from his Settings */
+function previewMoment(kind) {
+  if (kind === 'greet') { UI.greeting = pickGreeting(); const g = $('#greet'); if (g) g.remove(); showGreeting(); return; }
+  if (kind === 'golden') {
+    UI.preview = true; const base = whNow(); const d = new Date(base); d.setHours(16, 30, 0, 0); if (!WORK_DAYS.includes(d.getDay())) d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 1));
+    const steps = [[16, 30, 't30'], [16, 45, 't15'], [16, 55, 't5'], [17, 0, 't0']]; let i = 0;
+    const run = () => {
+      const [h, mi, tag] = steps[i]; d.setHours(h, mi, 0, 0); window.__fpNow = d.getTime(); whTickPreview(tag); i++;
+      if (i < steps.length) setTimeout(run, 6500);
+      else setTimeout(() => { window.__fpNow = 0; UI.preview = false; document.documentElement.style.setProperty('--warm', '0'); document.documentElement.style.setProperty('--home', '0'); }, 7000);
+    };
+    run(); return;
+  }
+  const pools = ['sorted', 'safety', 'newcase', 'copied', 'covered', 'lunch', 'stretch', 'you', 'love'];
+  whisper(whPick(pools[Math.floor(Math.random() * pools.length)]));
+}
+function whTickPreview(tag) {
+  const d = whNow(); const m = d.getHours() * 60 + d.getMinutes(); const to5 = WORK_END_MIN - m; const root = document.documentElement;
+  const home = to5 > 0 ? (30 - to5) / 30 : 1; root.style.setProperty('--home', home.toFixed(3)); root.style.setProperty('--warm', (to5 > 0 ? .35 + home * .65 : 1).toFixed(3));
+  whisper(whPick(tag), { warm: true });
+}
 /* ================= example notes (fictional) ================= */
 const EXAMPLE = `Initial assessment 21/10/2026 with Jordan (15, Year 9 at Westfield High School) and his mum Sarah. Referred by GP Dr Patel for low mood and school refusal since Term 3.
 Jordan said "I just can't be bothered with anything anymore". Sleeping 2am to 11am most days, gaming late. Lost interest in basketball, which he used to love.
@@ -2607,8 +2939,10 @@ async function runSort(c) {
   if (UI.view === 'case' && UI.caseId === c.id) { render(); const el = document.getElementById('sheet-' + last.id); if (el && el.getBoundingClientRect().top > innerHeight * 0.55) el.scrollIntoView({ block: 'start' }); }
   const ids = new Set(added.map(e => e.id)); const undo = { label: 'Undo', run: () => { c.entries = c.entries.filter(x => !ids.has(x.id)); touch(c); UI.draft = keep; render(); } };
   const left = checklist(c).open.filter(i => !i.optional).length;
+  if (added.length > 1) whAfterSort();
   if (added.length > 1) { const moved = added.reduce((n, e) => n + e.spans.filter(s => s.rel).length, 0); return showToast(note || `Sorted ${added.length} sessions, ${fmtShort(added[0].date)} to ${fmtShort(last.date)}.${moved ? ` ${plural(moved, 'change')} tracked.` : ''} ${left ? `${left} still missing.` : 'Nothing missing.'}`, undo); }
   const n = last.spans.filter(s => s.cat !== 'context').length;
+  whAfterSort();
   showToast(note || `Sorted ${plural(n || last.spans.length, n ? 'point' : 'line')}${n ? '' : ' as background'}${last.date !== todayISO() ? ` for ${fmtShort(last.date)}` : ''}. ${left ? `${left} still missing.` : 'Nothing missing.'}`, undo);
 }
 function stopSort() {
@@ -2630,6 +2964,7 @@ function gapSave(c, key, text, quickIdx) {
   const r = addQuick(c, raw, cat, topics, { neg });
   const prev = c.check[key]; c.check[key] = { s: 'done', date: todayISO() }; touch(c);
   UI.openGap = null; render();
+  if (!checklist(c).open.filter(i => !i.optional).length) whisperFor('covered', true);
   showToast(r.hidden ? `Added, with ${plural(r.hidden, 'detail')} hidden.` : 'Added.', { label: 'Undo', run: () => { c.entries = c.entries.filter(x => x.id !== r.entry.id); if (prev) c.check[key] = prev; else delete c.check[key]; touch(c); render(); } });
 }
 function setCheck(c, key, s) {
@@ -2682,7 +3017,8 @@ function setMenu(open) {
 }
 const railShown = () => matchMedia('(min-width:1360px)').matches;
 const ACT = {
-  home: () => go('home'),
+  home: () => { logoTap(); go('home'); },
+  preview: el => previewMoment(el.dataset.k),
   settings: () => go('settings'),
   'new-case': () => { UI.newCase = true; UI.focus = 'nc-label'; UI.menu = false; if (UI.view !== 'home') { UI.view = 'home'; UI.caseId = null; } render(); },
   menu: () => setMenu(!UI.menu),
@@ -2702,9 +3038,9 @@ const ACT = {
   'cancel-new': () => { UI.newCase = false; render(); },
   example: () => { const c = newCase('J.M. (example)', 15); S.cases.push(c); touch(c); openCase(c.id); const d = draftOf(c); d.text = EXAMPLE; refreshDraftDate(d); render(); },
   'open-case': el => openCase(el.dataset.id),
-  'copy-summary': () => { const c = current(); if (c) copyText(buildSummary(c), 'Summary copied. Paste it into your notes.'); },
-  tab: el => { const fromEnd = el.classList.contains('next-ch'); UI.tab = el.dataset.tab; UI.pop = null; UI.confirm = null; render(); if (fromEnd) { const t = $('.case-hero'); if (t) window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + scrollY - 90), behavior: reducedMotion() ? 'auto' : 'smooth' }); } },
-  'risk-reviewed': () => { const c = current(); c.riskSeen = Array.from(new Set([...(c.riskSeen || []), ...riskSpans(c).map(s => s.id)])); c.safetyReviewed = todayISO(); touch(c); render(); },
+  'copy-summary': () => { const c = current(); if (c) { copyText(buildSummary(c), 'Summary copied. Paste it into your notes.'); whisperFor('copied'); } },
+  tab: el => { const fromEnd = el.classList.contains('next-ch'); UI.tab = el.dataset.tab; UI.pop = null; UI.confirm = null; render(); if (UI.tab === 'next') whOnceFor('plan'); if (fromEnd) { const t = $('.case-hero'); if (t) window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + scrollY - 90), behavior: reducedMotion() ? 'auto' : 'smooth' }); } },
+  'risk-reviewed': () => { const c = current(); c.riskSeen = Array.from(new Set([...(c.riskSeen || []), ...riskSpans(c).map(s => s.id)])); c.safetyReviewed = todayISO(); touch(c); render(); whisperFor('safety', true); },
   'add-open': () => { UI.addOpen = true; UI.focus = 'paste'; render(); },
   'example-fill': () => { const c = current(); const d = draftOf(c); d.text = EXAMPLE; refreshDraftDate(d); UI.focus = null; render(); },
   'to-review': () => { const c = current(); const d = draftOf(c); const ta = $('#paste'); if (ta) d.text = ta.value; if (!d.text.trim()) return; d.stage = 'review'; render(); window.scrollTo(0, Math.min(scrollY, $('#main').offsetTop)); },
@@ -2739,7 +3075,7 @@ const ACT = {
   'cancel-confirm': () => { UI.confirm = null; render(); },
   'copy-missing': () => { const c = current(); copyText(buildMissingList(c), 'List copied.'); },
   'copy-next': () => { const c = current(); copyText(buildNextList(c), 'List copied.'); },
-  'copy-progress': () => { const c = current(); copyText(buildProgress(c), 'Progress copied. Paste it into your notes.'); },
+  'copy-progress': () => { const c = current(); copyText(buildProgress(c), 'Progress copied. Paste it into your notes.'); whisperFor('copied'); },
   'edit-date': el => { UI.editDate = el.dataset.id; UI.focus = 'ed-date'; render(); },
   'cancel-date': () => { UI.editDate = null; render(); },
   'save-date': el => {
@@ -2754,7 +3090,7 @@ const ACT = {
   'gap-next': el => { const c = current(); const k = el.dataset.key; setCheck(c, k, c.check[k] && c.check[k].s === 'next' ? null : 'next'); },
   'gap-na': el => setCheck(current(), el.dataset.key, 'na'),
   'gap-undo': el => setCheck(current(), el.dataset.key, null),
-  'form-mode': el => { UI.formMode = el.dataset.mode; UI.pop = null; render(); },
+  'form-mode': el => { UI.formMode = el.dataset.mode; UI.pop = null; render(); if (UI.formMode === 'map') whOnceFor('map'); },
   'add-cat': el => { UI.addCat = el.dataset.cat; UI.focus = 'add-' + el.dataset.cat; render(); },
   'map-toggle': el => { const c = current(); const k = c.id + ':' + el.dataset.cat; UI.mapOpen[k] = UI.mapOpen[k] === false; render(); },
   'map-missing': el => { UI.tab = 'notes'; UI.openGap = el.dataset.key; render(); const g = $('.gap-row[aria-expanded="true"]'); if (g) g.scrollIntoView({ block: 'center' }); },
@@ -2842,13 +3178,14 @@ document.addEventListener('change', e => {
   else if (t.id === 'note-date' && c) { const d = draftOf(c); const v = t.value; d.date = !v ? todayISO() : v > todayISO() ? todayISO() : v; d.dateSet = v ? 'manual' : 'today'; if (t.value !== d.date) t.value = d.date; const h = $('#date-hint'); if (h) h.textContent = dateHint(d); }
   else if (t.id === 'split-toggle' && c) { draftOf(c).split = t.checked; render(); }
   else if (t.id === 'use-claude') { S.settings.useClaude = t.checked; saveSettings(); }
+  else if (t.id === 'wh-toggle') { S.settings.whispers = t.checked; saveSettings(); whTick(); showToast(t.checked ? 'Little notes are on.' : 'Little notes are off.'); }
   else if (t.id === 'import-file' && t.files && t.files[0]) { const f = t.files[0]; const rd = new FileReader(); rd.onload = () => importCases(String(rd.result || '')); rd.onerror = () => showToast('That file could not be opened.'); rd.readAsText(f); t.value = ''; }
 });
 document.addEventListener('submit', e => {
   const f = e.target; e.preventDefault();
   if (f.dataset.form === 'new-case') {
     const label = $('#nc-label').value.trim(); if (!label) return $('#nc-label').focus();
-    const c = newCase(label, $('#nc-age').value); S.cases.push(c); touch(c); UI.newCase = false; UI.focus = 'paste'; openCase(c.id);
+    const c = newCase(label, $('#nc-age').value); S.cases.push(c); touch(c); UI.newCase = false; UI.focus = 'paste'; openCase(c.id); whisperFor('newcase');
   } else if (f.dataset.form === 'add-item') {
     const c = current(); const cat = f.dataset.cat; const inp = f.querySelector('input'); const v = inp.value.trim(); if (!v) return inp.focus();
     const r = addQuick(c, v, cat); UI.addCat = cat; UI.focus = inp.id; render();
