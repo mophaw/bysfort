@@ -83,6 +83,8 @@ button{cursor:pointer}
 .bar-btn:hover{border-color:var(--line-3);background:oklch(94% .016 80 / .06)}
 .bar-btn.icon-only{padding:0;border-color:transparent}
 .bar-btn .wide{display:none} @media (min-width:700px){.bar-btn .wide{display:inline}}
+.space-switch{padding:6px 12px 6px 6px}
+.space-chip.on{background:var(--ivory);color:var(--on-ivory);border-color:var(--ivory)}
 .space-chip{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1px solid var(--line-3);font:500 .72rem/1 var(--display);letter-spacing:0}
 .save-state{font:500 .66rem/1.2 var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--ivory-3);white-space:nowrap}
 @media (max-width:719px){.bar .wordmark{display:none}.bar-in{grid-template-columns:auto minmax(0,1fr)}.bar-c{display:none}.save-state{display:none}}
@@ -1213,7 +1215,7 @@ async function flush(id) {
 function setSaveState(t) { const el = $('#save-state'); if (el) el.textContent = t; }
 
 async function boot() {
-  loadSettings(); initFX(); restoreUnlock(); render();
+  loadSettings(); initFX(); if (!CLOUD_ON) restoreUnlock(); render();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (UI.view === 'case' && UI.tab === 'form' && UI.formMode === 'map') render(); });
   const cl = window.claude;
   if (!cl || typeof cl.use !== 'function') return CLOUD_ON ? startCloud() : startLocal();
@@ -1492,7 +1494,11 @@ const CLOUD_CONFIG = {
 };
 const FB_VER = '10.14.1';
 const CLOUD_ON = !!(CLOUD_CONFIG && STANDALONE && !FRAMED);
-const CL = { fb: null, auth: null, db: null, user: null, known: false, unsub: null, watching: null };
+const CL = { fb: null, auth: null, db: null, user: null, known: false, unsub: null, watching: null, canS: false };
+/* Online, the account sign-in replaces the passcode: open the last space used on this device. */
+const SPACE_KEY = APP_KEY + '-space';
+function lastSpace() { try { return localStorage.getItem(SPACE_KEY) === 's' ? 's' : 't'; } catch (e) { return 't'; } }
+function rememberSpace(sp) { try { localStorage.setItem(SPACE_KEY, sp); } catch (e) { /* storage unavailable */ } }
 
 async function cloudLoad() {
   const base = `https://www.gstatic.com/firebasejs/${FB_VER}/`;
@@ -1509,8 +1515,9 @@ async function startCloud() {
   catch (e) { CL.known = true; startLocal(); showToast('Couldn’t reach the online space. Cases are saving on this device for now.'); return; }
   CL.fb.auth.onAuthStateChanged(CL.auth, u => {
     const had = !!CL.user; CL.user = u || null; CL.known = true;
+    if (u && !had) { if (!UI.space) openSpace(lastSpace()); cloudProbeS(); }
     if (u && UI.space && CL.watching !== UI.space) cloudWatch(UI.space);
-    if (!u) { cloudUnwatch(); if (had) { S.cases = []; S.ready = false; } }
+    if (!u) { cloudUnwatch(); CL.canS = false; if (had) { S.cases = []; S.ready = false; Object.assign(UI, { view: 'home', caseId: null, draft: null, pop: null, menu: false }); } }
     render();
   });
 }
@@ -1519,7 +1526,12 @@ function cloudWatch(sp) {
   const { fs } = CL.fb; CL.watching = sp; S.ready = false;
   CL.unsub = fs.onSnapshot(fs.collection(CL.db, 'spaces', sp, 'cases'), snap => onCloudSnap(sp, snap), err => {
     if (sp !== UI.space) return;
-    if (err && err.code === 'permission-denied') { cloudUnwatch(); lockNow('That passcode’s space isn’t shared with the account signed in on this device.'); return; }
+    if (err && err.code === 'permission-denied') {
+      cloudUnwatch();
+      if (sp === 's') { CL.canS = false; switchSpace('t'); showToast('S’s space is only on Stefan’s account.'); }
+      else { UI.siMsg = 'This account isn’t set up for Five Ps yet. Check its email is in the database rules.'; cloudSignOut(true); }
+      return;
+    }
     S.ready = true; render(); showToast('Lost the link to the online space. Changes stay on this device until it’s back.');
   });
 }
@@ -1590,20 +1602,36 @@ async function cloudReset(email) {
   try { await CL.fb.auth.sendPasswordResetEmail(CL.auth, email.trim()); say('If that email has an account, a reset link is on its way.'); }
   catch (e) { say(/network/.test(e && e.code || '') ? 'No internet connection.' : 'If that email has an account, a reset link is on its way.'); }
 }
-async function cloudSignOut() {
+async function cloudSignOut(keepMsg) {
   Array.from(dirty).forEach(id => flush(id)); cloudUnwatch();
+  if (!keepMsg) UI.siMsg = 'Signed out of this device.';
+  const t = $('#toast'); if (t) t.hidden = true;
   try { await CL.fb.auth.signOut(CL.auth); } catch (e) { /* already signed out */ }
-  await lockNow('Signed out of this device.');
+  render();
 }
+/* Can this account open S's space? Ask once, quietly; only then show the switch. */
+function cloudProbeS() {
+  if (!CL.db || !CL.user) return; const { fs } = CL.fb; let un = null;
+  try {
+    un = fs.onSnapshot(fs.collection(CL.db, 'spaces', 's', 'cases'), snap => { if (snap.metadata && snap.metadata.fromCache) return; CL.canS = true; setTimeout(() => un && un(), 0); render(); }, () => { CL.canS = false; });
+  } catch (e) { CL.canS = false; }
+}
+function switchSpace(sp) {
+  if (sp === UI.space) return;
+  Object.keys(timers).forEach(id => clearTimeout(timers[id])); Array.from(dirty).forEach(id => flush(id));
+  Object.assign(UI, { view: 'home', caseId: null, tab: 'notes', draft: null, openGap: null, pop: null, confirm: null, newCase: false, menu: false, addOpen: false });
+  rememberSpace(sp); openSpace(sp); UI.lastKey = ''; render(); window.scrollTo(0, 0);
+}
+function cloudSplashHTML() { return `<section class="signin">${logoSVG('draw-logo')}<p class="wordmark">Five Ps</p><p class="small muted">Opening your cases…</p></section>`; }
 function signinHTML() {
   return `<section class="signin" aria-labelledby="si-title">${logoSVG('draw-logo')}<p class="wordmark">Five Ps</p>
-    <div class="stack-s" style="align-items:center"><h1 id="si-title" class="overline" style="font-size:.78rem">Sign in on this device</h1><p class="small muted">Once per device. After that your cases are on your iPad, your PC and anywhere else you sign in.</p></div>
+    <div class="stack-s" style="align-items:center"><h1 id="si-title" class="overline" style="font-size:.78rem">Sign in</h1><p class="small muted">Once per device. After that Five Ps opens straight to your cases, on your iPad, your PC and anywhere else you sign in.</p></div>
     <form data-form="signin" class="signin-form">
       <label class="field"><span>Email</span><input type="email" id="si-email" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
       <label class="field"><span>Password</span><input type="password" id="si-pass" autocomplete="current-password" required></label>
       <p class="small" id="si-msg" aria-live="assertive">${esc(UI.siMsg || '')}</p>
       <button class="btn primary" type="submit">Sign in</button>
-      <div class="row between"><button class="btn quiet sm" type="button" data-act="si-reset">Forgot password</button><button class="btn quiet sm" type="button" data-act="lock">Back</button></div>
+      <div class="row"><button class="btn quiet sm" type="button" data-act="si-reset">Forgot password</button></div>
     </form>
     <p class="dedication">Built by S for T, ${circled('with Love')}</p></section>`;
 }
@@ -1611,8 +1639,11 @@ function signinHTML() {
 const CHAPTERS = ['notes', 'form', 'next', 'plan'];
 function render() {
   const app = $('#app'); if (!app) return;
-  if (!UI.space) { app.innerHTML = ''; showGate(); renderPop(); return; }
-  if (S.mode === 'cloud' && CL.known && !CL.user) {
+  const online = CLOUD_ON && S.mode !== 'local';
+  if (online && !CL.known) { app.innerHTML = cloudSplashHTML(); renderPop(); return; }
+  if (online && CL.user && !UI.space) openSpace(lastSpace());
+  if (!online && !UI.space) { app.innerHTML = ''; showGate(); renderPop(); return; }
+  if (online && !CL.user) {
     const em = $('#si-email'), pw = $('#si-pass'); const keep = em ? [em.value, pw ? pw.value : ''] : null;
     app.innerHTML = signinHTML(); renderPop();
     if (keep) { $('#si-email').value = keep[0]; $('#si-pass').value = keep[1]; } else if (!matchMedia('(pointer:coarse)').matches) { const e = $('#si-email'); if (e) e.focus(); }
@@ -1643,7 +1674,7 @@ function barHTML(c) {
     <div class="bar-r"><span class="save-state" id="save-state" aria-live="polite">${UI.view === 'case' ? '' : esc(mode)}</span>
       ${UI.view === 'case' && c ? `<button class="bar-btn" data-act="copy-summary">${icon('copy')}<span>Copy<span class="wide"> summary</span></span></button>` : ''}
       <button class="bar-btn icon-only" data-act="settings" aria-label="Settings">${icon('gear')}</button>
-      <button class="bar-btn icon-only" data-act="lock" aria-label="Lock ${sp}’s space" title="Lock"><span class="space-chip" aria-hidden="true">${sp}</span></button></div>
+      ${S.mode === 'cloud' ? (CL.canS ? `<button class="bar-btn space-switch" data-act="switch-space" aria-label="Switch to ${sp === 'T' ? 'S' : 'T'}’s space" title="Switch space"><span class="space-chip on" aria-hidden="true">${sp}</span><span class="wide">${sp === 'T' ? 'S' : 'T'}’s space</span></button>` : '') : `<button class="bar-btn icon-only" data-act="lock" aria-label="Lock ${sp}’s space" title="Lock"><span class="space-chip" aria-hidden="true">${sp}</span></button>`}</div>
   </div></header>`;
 }
 function railHTML(c) {
@@ -1653,7 +1684,7 @@ function railHTML(c) {
     ${list.length > 3 ? `<label class="search">${icon('search')}<span class="sr">Find a case</span><input type="search" id="case-q" placeholder="Find a case" autocomplete="off" spellcheck="false"></label>` : ''}
     <div class="rail-list" id="rail-list">${list.length ? list.map(x => railRowHTML(x, c)).join('') : '<p class="small faint" style="padding:14px 4px">No cases yet.</p>'}</div>
     <div><button class="btn sm" data-act="new-case">${icon('plus')}New case</button></div>
-    <div class="rail-foot"><button class="rail-link" data-act="settings">${icon('gear')}Settings</button><button class="rail-link" data-act="lock">${icon('lock')}Lock</button>
+    <div class="rail-foot"><button class="rail-link" data-act="settings">${icon('gear')}Settings</button>${S.mode === 'cloud' ? `${CL.canS ? `<button class="rail-link" data-act="switch-space">${icon('next')}${UI.space === 't' ? 'S' : 'T'}’s space</button>` : ''}<button class="rail-link" data-act="sign-out">${icon('lock')}Sign out</button>` : `<button class="rail-link" data-act="lock">${icon('lock')}Lock</button>`}
       <p class="xs faint" style="letter-spacing:.06em">Built by S for T, with Love</p></div></nav>`;
 }
 function railRowHTML(x, c) {
@@ -1971,8 +2002,8 @@ function settingsHTML() {
   const where = S.mode === 'cloud' ? `Online, in ${sp}’s space, stored in Sydney. Sign in once on any device and the same cases are there. Changes made without internet save when the device is back online.` : S.mode === 'db' ? 'In your Claude account, private to you. Open this page signed in to Claude on your iPad or your PC and the same cases are there. Nobody else can see them, including whoever shared the page.' : 'In this browser on this device only. Clearing website data removes them.';
   return `<section class="stack" style="max-width:760px;gap:0"><div style="padding-bottom:20px"><p class="overline">${sp}’s space</p><h1 class="title">Settings</h1></div>
     <div class="settings-sec stack-s"><h2>Where your cases are saved</h2><p>${where}</p>${S.mode === 'cloud' ? '' : STANDALONE ? '<p class="small muted">To use them on another device, save a backup file below and open it there.</p>' : ''}</div>
-    ${S.mode === 'cloud' && CL.user ? `<div class="settings-sec stack-s"><h2>Account</h2><p>Signed in as <b>${esc(CL.user.email || '')}</b> on this device.</p><p class="small muted">T’s space is shared by Taylah’s and Stefan’s accounts. S’s space is only Stefan’s.</p><div><button class="btn sm" data-act="sign-out">Sign out of this device</button></div></div>` : ''}
-    <div class="settings-sec stack-s"><h2>Passcode</h2><p class="small muted">Five Ps asks for the passcode each time it opens and locks itself after 15 minutes without use. Each passcode opens its own space with its own cases. The passcode is a screen lock; ${S.mode === 'cloud' ? 'the account sign-in is what keeps the cases private online.' : S.mode === 'db' ? 'your Claude sign-in is what keeps the cases private.' : 'anyone using this browser could still reach the saved data, so use a device only you use.'}</p><div><button class="btn sm" data-act="lock">${icon('lock')}Lock now</button></div></div>
+    ${S.mode === 'cloud' && CL.user ? `<div class="settings-sec stack-s"><h2>Account</h2><p>Signed in as <b>${esc(CL.user.email || '')}</b> on this device.</p><p class="small muted">T’s space is shared by Taylah’s and Stefan’s accounts. S’s space is only Stefan’s. There’s no passcode online: anyone using this device while it’s signed in can open the cases, so keep the device locked or sign out.</p><div><button class="btn sm" data-act="sign-out">Sign out of this device</button></div></div>` : ''}
+    ${S.mode === 'cloud' ? '' : `<div class="settings-sec stack-s"><h2>Passcode</h2><p class="small muted">Five Ps asks for the passcode each time it opens and locks itself after 15 minutes without use. Each passcode opens its own space with its own cases. The passcode is a screen lock; ${S.mode === 'cloud' ? 'the account sign-in is what keeps the cases private online.' : S.mode === 'db' ? 'your Claude sign-in is what keeps the cases private.' : 'anyone using this browser could still reach the saved data, so use a device only you use.'}</p><div><button class="btn sm" data-act="lock">${icon('lock')}Lock now</button></div></div>`}
     ${STANDALONE ? oaiSettingsHTML() : `<div class="settings-sec stack-s"><h2>Sorting</h2><label class="row"><input type="checkbox" id="use-claude" ${S.settings.useClaude ? 'checked' : ''} ${SAMPLE ? '' : 'disabled'}> <span>Sort with Claude</span></label>
       <p class="small muted">${SAMPLE ? 'Claude sorts much more accurately than the built-in rules. Only the hidden version of your notes is sent, using your own Claude account.' : 'Claude is not available on this page right now, so sorting uses the built-in rules on this device.'}</p></div>`}
     <div class="settings-sec stack-s"><h2>${S.mode === 'cloud' ? 'Backups' : 'Move cases between devices'}</h2>
@@ -2185,7 +2216,7 @@ async function lockNow(msg) {
   const t = $('#toast'); if (t) t.hidden = true; const cp = $('#copy-panel'); if (cp) cp.remove();
   await closeSpace(); forgetUnlock(); render(); if (msg) gateMsg(msg);
 }
-setInterval(() => { if (UI.space && Date.now() - lastActive > IDLE_LOCK_MS) lockNow('Locked after 15 minutes without use.'); }, 20000);
+setInterval(() => { if (UI.space && S.mode !== 'cloud' && !CLOUD_ON && Date.now() - lastActive > IDLE_LOCK_MS) lockNow('Locked after 15 minutes without use.'); }, 20000);
 
 function gateHTML() {
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'];
@@ -2420,6 +2451,7 @@ const ACT = {
   lock: () => lockNow(),
   'si-reset': () => cloudReset(($('#si-email') || {}).value || ''),
   'sign-out': () => cloudSignOut(),
+  'switch-space': () => switchSpace(UI.space === 't' ? 's' : 't'),
   'gate-key': el => { el.classList.add('hit'); setTimeout(() => el.classList.remove('hit'), 160); gateKey(el.dataset.k); },
   'download-export': () => {
     try {
