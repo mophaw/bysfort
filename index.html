@@ -495,6 +495,25 @@ details.more[open]>summary .icon{transform:rotate(180deg)}
 .signin-form .btn.primary{width:100%}
 #si-msg{min-height:1.4em;color:var(--ivory-2)}
 
+/* Greeting for Taylah */
+.greet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:calc(env(safe-area-inset-top,0px) + 24px) max(20px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(20px,env(safe-area-inset-left,0px));background:radial-gradient(70% 60% at 50% 45%,oklch(20% .03 330 / .92),oklch(11% .01 290 / .97) 70%);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);cursor:pointer;text-align:center}
+.greet-in{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:34rem}
+.greet .logo{width:64px;height:64px;stroke-width:2;color:var(--p-pres);filter:drop-shadow(0 0 14px var(--p-pres))}
+.greet-hello{font:400 .86rem/1.3 var(--display);letter-spacing:.34em;text-transform:uppercase;color:var(--p-pres)}
+.greet-msg{font:300 clamp(1.3rem,3.6vw,2rem)/1.5 var(--display);letter-spacing:.02em;color:var(--ivory);text-wrap:balance}
+.greet-by{font:500 .72rem/1.4 var(--display);letter-spacing:.24em;text-transform:uppercase;color:var(--ivory-3)}
+.greet-tap{font:500 .64rem/1 var(--display);letter-spacing:.24em;text-transform:uppercase;color:var(--ivory-3);margin-top:10px}
+.greet.leaving{opacity:0;transition:opacity .6s var(--ease),filter .6s var(--ease);filter:blur(8px)}
+.hero-greet{display:flex;flex-direction:column;gap:6px;max-width:44ch;margin-top:4px;color:var(--ivory-2);font:300 1.02rem/1.55 var(--display);letter-spacing:.02em}
+.hero-greet .overline{color:var(--p-pres)}
+.hero-greet i{font-style:normal;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory-3)}
+@media (prefers-reduced-motion:no-preference){
+  .greet{animation:fadein .7s backwards}
+  .greet-hello{animation:mirror 1.2s var(--ease) backwards .3s}
+  .greet-msg span{display:inline-block;animation:rise .7s var(--ease) backwards;animation-delay:calc(var(--w,0) * 70ms + .7s)}
+  .greet-by,.greet-tap{animation:fadein 1s backwards 1.6s}
+}
+
 /* Passcode gate */
 .gate{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2.6vh,26px);padding:calc(env(safe-area-inset-top,0px) + 24px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(16px,env(safe-area-inset-left,0px));text-align:center;overflow:auto}
 .gate .wordmark{font-size:.92rem}
@@ -1669,6 +1688,7 @@ function render() {
   if (UI.view === 'case') { const tb = $('.tab[aria-selected="true"]'), bar = $('.tabs'); if (tb && bar && bar.scrollWidth > bar.clientWidth) bar.scrollLeft = Math.max(0, tb.offsetLeft - 24); }
   if (UI.focus) { const el = document.getElementById(UI.focus); if (el) { el.focus({ preventScroll: false }); if (el.setSelectionRange && el.value && /^(text|search|textarea)$/.test(el.type)) el.setSelectionRange(el.value.length, el.value.length); } UI.focus = null; }
   UI.justSorted = null;
+  if (online && CL.user && S.ready) maybeGreet();
 }
 function barHTML(c) {
   const mode = !S.ready ? '' : S.mode === 'db' ? 'Saved to your account' : S.mode === 'cloud' ? 'Saved online' : 'Saved on this device';
@@ -1701,7 +1721,8 @@ const NOTICE = `<p class="notice">Prototype for testing with de-identified or ex
 
 /* ================= home ================= */
 function heroHTML(compact) {
-  return `<section class="hero${compact ? ' compact' : ''}">${logoSVG(UI.entering ? 'draw-logo' : '')}<p class="wordmark">Five Ps</p><p class="dedication">Built by S for T, ${circled('with Love')}</p></section>`;
+  const g = UI.greeting && isTaylah() ? UI.greeting : null;
+  return `<section class="hero${compact ? ' compact' : ''}">${logoSVG(UI.entering ? 'draw-logo' : '')}<p class="wordmark">Five Ps</p><p class="dedication">Built by S for T, ${circled('with Love')}</p>${g ? `<p class="hero-greet"><span class="overline">${esc(g.hello)}</span><span>${esc(g.text)}${g.by ? ` <i>${esc(g.by)}</i>` : ''}</span></p>` : ''}</section>`;
 }
 /* Website only: cases live in this browser, so offer a file to carry them to her other device. */
 function everywhereHTML() {
@@ -2291,6 +2312,167 @@ async function gateCheck() {
   await wait(700);
   g.classList.remove('wrong', 'shake'); GATE.code = ''; gatePaint(); GATE.busy = false;
   if (GATE.fails >= 5) { GATE.fails = 0; GATE.until = Date.now() + 30000; gateLockout(); }
+}
+/* ================= a greeting for Taylah, from Stefan ================= */
+/* Shown once each time she opens Five Ps signed in as Taylah. Never the same twice in a row:
+   every message is used once before any comes back. s = time of day only (m, a, e, n); d = weekday only (3 = Wednesday).
+   Poems are fresh English renderings of classical Persian verse (Rumi, Hafez, Saadi), plus FitzGerald's 1859 Khayyam. */
+const GREETS = [
+  { t: 'Stefan loves you. Not a little, not quietly. Completely.' },
+  { t: 'Hi Taylah, did you know Stefan loves you more? He says it isn’t even close.' },
+  { t: 'Of all the cases in here, you’re the one Stefan studies most closely. Formulation: hopelessly in love.' },
+  { t: 'Stefan’s breath is tied to yours. Breathe easy today, Nafas-e Stefan.' },
+  { t: 'Ghorboonet beram, Taylah. That’s Stefan, meaning every word.' },
+  { t: 'You carry a lot of other people’s hard days. Stefan would love to carry some of yours.' },
+  { t: 'Five Ps, one Taylah. Stefan built this so your days feel a little lighter.' },
+  { t: 'You’re doing better than you think, and you’re loved more than you know. Love, Stefan.' },
+  { t: 'Somewhere right now, Stefan is thinking about you. Statistically, that’s almost always true.' },
+  { t: 'Protective factor on file: Stefan. Strengths noted: everything about you.' },
+  { t: 'Nafas-e Stefan. His breath. That’s what you are to him.' },
+  { t: 'Joon-e Stefan. His life, and his favourite person to come home to.' },
+  { t: 'Before the notes, a note: Stefan loves you.' },
+  { t: 'Azizam, take one slow breath before you start. Stefan’s right there in it with you.' },
+  { t: 'Every young person you see is lucky to have you. Stefan is the luckiest of all.' },
+  { t: 'Hamechizam. My everything. That’s Stefan’s word for you.' },
+  { t: 'Hi Taylah. Stefan asked me to tell you he loves you. Then he asked again. So: he loves you, twice.' },
+  { t: 'Eshgham. My love. You’re his, and he’s yours.' },
+  { t: 'Delam barat tang shode. Stefan misses you, even when you’ve only just left.' },
+  { t: 'If love were a rating scale, Stefan’s would be off the top. Tick that box.' },
+  { t: 'Taylah, you’re the calm in every one of Stefan’s days.' },
+  { t: 'Mah-e man. My moon. You light up even his darkest nights.' },
+  { t: 'Fadat sham, Taylah. He’d give anything for you, and he means anything.' },
+  { t: 'Nothing missing here: Stefan’s love is fully covered.' },
+  { t: 'You make hard things feel possible, for the young people you see and for Stefan.' },
+  { t: 'Khoshgel-e man. Stefan’s beautiful one, inside and out.' },
+  { t: 'Noor-e cheshmam. Light of my eyes. That’s you, to Stefan.' },
+  { t: 'Stefan loves the way you care. He loves the way you laugh even more.' },
+  { t: 'Did you know Stefan loves you more? He’s been telling the walls about it.' },
+  { t: 'Breathe in. Stefan’s breath is tied to yours. Breathe out. You’ve got this, Taylah.' },
+  { t: 'Some people are a place. For Stefan, you are home.' },
+  { t: 'Hey Taylah. You’re someone’s favourite notification. (Stefan’s.)' },
+  { t: 'Joonam, may today be gentle with you.' },
+  { t: 'Every pentagon in here has five points. Stefan’s heart has only one: you.' },
+  { t: 'Setareh-ye man. My star. Stefan finds his way by you.' },
+  { t: 'Del-e man. My heart. Look after it today; it’s his too.' },
+  { t: 'Taylah, you are loved on your best days and your hardest ones. Especially the hardest ones.' },
+  { t: 'Built by S for T, with love, and that love is still growing.' },
+  { t: 'Omr-e man. My life. Stefan says that’s not an exaggeration.' },
+  { t: 'The best thing Stefan ever wrote is your name into his life.' },
+  { t: 'Fereshte-ye man. My angel. You turn up for everyone. Stefan turns up for you.' },
+  { t: 'If you need a reason to smile: Stefan, thinking about you right now, grinning like an idiot.' },
+  { t: 'Tasadoghet beram, Taylah. Persian love doesn’t do halves, and neither does Stefan.' },
+  { t: 'Kheili dooset daram. I love you so, so much. From Stefan, always.' },
+  { t: 'Hi Taylah. Quick reminder: Stefan loves you more. That’s settled, so no need to argue.' },
+  { t: 'You listen to everyone. Stefan would listen to you forever.' },
+  { t: 'In every version of the story, Stefan chooses you.' },
+  { t: 'Asal-e Stefan. Stefan’s honey: sweet, strong, and his absolute favourite.' },
+  { t: 'Taylah, you’re allowed to rest. The notes will wait. So will Stefan, with open arms.' },
+  { t: 'Stefan’s heart called. It said it’s yours. It also said hi.' },
+  { t: 'Ghorboon-e oon cheshmat beram. Stefan would give anything for those eyes.' },
+  { t: 'Elahi ghorboonet beram, Taylah. Stefan’s favourite Persian sentence is any sentence about you.' },
+  { t: 'Nafasam. My breath. Without you, Stefan forgets how.' },
+  { t: 'Delbaram. The one who stole my heart. Case closed.' },
+  { t: 'Jigaram. When Persian love goes deepest it says “my liver”. Stefan says it to you.' },
+  { t: 'Without everyone, I can manage. Without you, I cannot.', by: 'after Rumi' },
+  { t: 'I was lifeless, and came alive. I was tears, and turned to laughter. Love arrived, and I became something that lasts.', by: 'after Rumi' },
+  { t: 'I belong to the moon. Speak to me of nothing but the moon. (Stefan means you.)', by: 'after Rumi' },
+  { t: 'My friend, my shelter, my love that takes all of me.', by: 'after Rumi' },
+  { t: 'Your love taught me to speak in poems.', by: 'after Rumi' },
+  { t: 'Whoever is kept far from where they belong keeps searching for the day they are together again.', by: 'after Rumi' },
+  { t: 'Listen to the reed: how it tells its story, singing of every time it was kept apart.', by: 'after Rumi' },
+  { t: 'Whoever’s heart is brought alive by love will never die.', by: 'after Hafez' },
+  { t: 'Come, let’s scatter roses and fill the cup, split open the roof of the sky and build something new.', by: 'after Hafez' },
+  { t: 'Though we’re apart, we raise a cup to the thought of you.', by: 'after Hafez' },
+  { t: 'Fall in love, or one day the world’s work will end and you’ll leave without ever reading what it was made for.', by: 'after Hafez' },
+  { t: 'At the very beginning your beauty’s light shone out. Love was born, and set the whole world alight.', by: 'after Hafez' },
+  { t: 'In the cup, we have seen the reflection of the one we love.', by: 'after Hafez' },
+  { t: 'Since the day I was bound to you, I have been free.', by: 'after Saadi' },
+  { t: 'Go slowly, camel driver: the calm of my soul is travelling with you.', by: 'after Saadi' },
+  { t: 'A Book of Verses underneath the Bough, a Jug of Wine, a Loaf of Bread, and Thou beside me singing in the Wilderness. Oh, Wilderness were Paradise enow!', by: 'Omar Khayyam, tr. Edward FitzGerald' },
+  { t: 'Morning, Taylah. Coffee first, the 5 Ps second, and Stefan’s love all day.', s: 'm' },
+  { t: 'Sobh bekheir, azizam. Good morning, my dear. Stefan woke up loving you.', s: 'm' },
+  { t: 'A new day, a clean page. Stefan’s love is already written on it.', s: 'm' },
+  { t: 'Rise slowly, Nafas-e Stefan. The world can wait one more breath.', s: 'm' },
+  { t: 'Good morning to the person Stefan thinks about before his eyes are even open.', s: 'm' },
+  { t: 'May everyone you meet today get even a little of the kindness Stefan gets from you.', s: 'm' },
+  { t: 'Halfway there, Taylah. Drink some water. Stefan loves you (and also: water).', s: 'a' },
+  { t: 'Afternoon check-in: you’re doing beautifully, and you’re loved enormously.', s: 'a' },
+  { t: 'If the afternoon is heavy, put some of it down. Stefan will help carry the rest tonight.', s: 'a' },
+  { t: 'Ghorboonet beram. A little afternoon love, delivered from Stefan.', s: 'a' },
+  { t: 'Evening, Taylah. Whatever today was, Stefan is proud of you.', s: 'e' },
+  { t: 'Shab bekheir soon, azizam. Stefan can’t wait to hear about your day.', s: 'e' },
+  { t: 'The day is done enough. Stefan’s love isn’t. It never finishes.', s: 'e' },
+  { t: 'Close the notes when you’re ready; Stefan’s arms are open either way.', s: 'e' },
+  { t: 'It’s late, Taylah. Rest those beautiful eyes. Stefan’s love keeps watch tonight.', s: 'n' },
+  { t: 'Shab bekheir, Nafas-e Stefan. Goodnight, Stefan’s breath.', s: 'n' },
+  { t: 'Late notes? Five more minutes, then sleep. Stefan’s orders, given with love.', s: 'n' },
+  { t: 'Who knows how long a night apart lasts until dawn? Only someone held in love’s prison.', by: 'after Saadi', s: 'n' },
+  { t: 'The moon is out, mah-e man, and Stefan still thinks you’re the brighter one.', s: 'n' },
+  { t: 'It’s Wednesday, so Stefan’s at work until about 5:30. Make sure he calls you and tells you he loves you so much, because he does. I know he does.', d: 3 },
+  { t: 'Wednesday: Stefan’s on shift until around 5:30. When your phone rings after that, it’s him, and it’s to say he loves you.', d: 3 },
+  { t: 'Hump day, Taylah. Stefan works until about 5:30 today, so hold him to that call. He’s thinking about you between customers.', d: 3 },
+  { t: 'Wednesday note: Stefan’s busy until around 5:30, but his heart clocked off early and came looking for you.', d: 3 },
+  { t: 'It’s Wednesday. Stefan finishes around 5:30. Expect a call, and expect it to end with “I love you”. He means it.', d: 3 },
+  { t: 'Wednesday: somewhere between the sofas, Stefan is thinking about you. He calls at 5:30 or so. Love, all day.', d: 3 },
+  { t: 'Hi Taylah, did you know Stefan loves you more? He’s keeping score, and he’s winning.' },
+  { t: 'Did you know Stefan loves you more? Don’t argue; it’s in the notes.' },
+  { t: 'Hi Taylah. For the record, Stefan loves you more. Signed, dated, de-identified.' },
+  { t: 'Nafas-e Stefan: every breath he takes has a little of you in it.' },
+  { t: 'Stefan’s breath is tied to yours. When you’re calm, he’s calm, so be gentle with yourself today.' },
+  { t: 'Nafas-e Stefan. Two words, one meaning: you’re what keeps him going.' },
+  { t: 'If Stefan could formulate you: presenting, beautiful. Predisposing, kind. Perpetuating, his love. Protective, always.' },
+  { t: 'Focus for next session: let Stefan spoil you. Evidence base: strong.' },
+  { t: 'Strengths noted: patience, warmth, brilliance, that laugh. Source: Stefan, first-hand.' },
+  { t: 'Stefan made a whole website just to tell you this: he loves you.' },
+  { t: 'You’re the one case Stefan never wants to close.' },
+  { t: 'Every day with you is Stefan’s favourite session.' },
+  { t: 'Taylah, you’re his calm, his chaos, his home. Mostly his home.' },
+  { t: 'Ghorboonet beram, Taylah. Today, and every day after it.' },
+  { t: 'Stefan loves you in English, in Farsi, and in every language he hasn’t learned yet.' },
+  { t: 'Dooset daram, Taylah. And that’s an understatement.' },
+  { t: 'There are a thousand reasons Stefan loves you. Today he’s on number one: just being you.' },
+  { t: 'The best part of Stefan’s day hasn’t happened yet. It’s seeing you.' },
+  { t: 'Azizam, whatever comes through the door today, you don’t face it alone.' },
+  { t: 'Somewhere a Persian grandmother would call you “ghorboonet beram” and mean it. Stefan does too.' },
+  { t: 'You give everyone your full attention. Stefan gives you his whole heart.' },
+  { t: 'Joonam, you’re the reason Stefan believes in good days.' }
+];
+const GREET_KEY = APP_KEY + '-greet';
+function greetSlot(h) { return h < 5 || h >= 22 ? 'n' : h < 12 ? 'm' : h < 17 ? 'a' : 'e'; }
+const GREET_HELLO = { m: 'Good morning, Taylah', a: 'Good afternoon, Taylah', e: 'Good evening, Taylah', n: 'Hello, Taylah' };
+function pickGreeting(now) {
+  now = now || new Date(); const slot = greetSlot(now.getHours()); const day = now.getDay();
+  const today = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate());
+  let st = {}; try { st = JSON.parse(localStorage.getItem(GREET_KEY) || '{}') || {}; } catch (e) { st = {}; }
+  const seen = new Set(st.seen || []);
+  const all = GREETS.map((g, id) => Object.assign({ id }, g));
+  let pool;
+  if (day === 3 && st.wed !== today) { pool = all.filter(g => g.d === 3); st.wed = today; }
+  else pool = all.filter(g => !g.d && (!g.s || g.s === slot));
+  let fresh = pool.filter(g => !seen.has(g.id) && g.id !== st.last);
+  if (!fresh.length) { pool.forEach(g => seen.delete(g.id)); fresh = pool.filter(g => g.id !== st.last); if (!fresh.length) fresh = pool; }
+  const g = fresh[Math.floor(Math.random() * fresh.length)];
+  seen.add(g.id); st.seen = Array.from(seen); st.last = g.id;
+  try { localStorage.setItem(GREET_KEY, JSON.stringify(st)); } catch (e) { /* storage unavailable */ }
+  return { hello: GREET_HELLO[slot], text: g.t, by: g.by || '' };
+}
+const isTaylah = () => !!(CL.user && loginName(CL.user.email).toLowerCase() === 'taylah');
+function maybeGreet() {
+  if (UI.greeted || !isTaylah() || !S.ready) return;
+  UI.greeted = true; UI.greeting = pickGreeting(); setTimeout(() => { if (UI.view === 'home') render(); showGreeting(); }, 250);
+}
+function showGreeting() {
+  const g = UI.greeting; if (!g || $('#greet')) return;
+  const words = g.text.split(/\s+/);
+  const el = document.createElement('div'); el.id = 'greet'; el.className = 'greet'; el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite');
+  el.innerHTML = `<div class="greet-in">${logoSVG('draw-logo')}<p class="greet-hello">${esc(g.hello)}</p>
+    <p class="greet-msg">${words.map((w, i) => `<span style="--w:${i}">${esc(w)}</span>`).join(' ')}</p>${g.by ? `<p class="greet-by">${esc(g.by)}</p>` : ''}
+    <span class="greet-tap">Tap anywhere to continue</span></div>`;
+  document.body.appendChild(el);
+  const close = () => { if (!el.isConnected || el.classList.contains('leaving')) return; el.classList.add('leaving'); document.removeEventListener('keydown', onKey, true); setTimeout(() => el.remove(), reducedMotion() ? 0 : 650); };
+  const onKey = e => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); close(); } };
+  el.addEventListener('click', close); document.addEventListener('keydown', onKey, true);
+  setTimeout(close, Math.min(13000, 5200 + words.length * 230));
 }
 /* ================= example notes (fictional) ================= */
 const EXAMPLE = `Initial assessment 21/10/2026 with Jordan (15, Year 9 at Westfield High School) and his mum Sarah. Referred by GP Dr Patel for low mood and school refusal since Term 3.
