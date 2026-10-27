@@ -380,6 +380,37 @@ input[type=date]:focus-visible{outline:none;border-bottom-color:var(--ivory)}
 .scrub-months span:first-child{transform:translateX(-5px)}
 .scrub-sum{margin:0;padding:2px 0 4px}
 @media (max-width:599px){.scrub{padding:12px 12px 8px}.scrub-step{width:36px;height:36px}.scrub-head .overline{display:none}.scrub-now{flex-basis:100%}.scrub-acts{margin-left:-12px}}
+/* Popovers: what a theme means, what happened at a dot */
+.tip{position:fixed;z-index:70;max-width:calc(100vw - 24px);padding:14px 16px 12px;border:1px solid var(--line-3);border-radius:16px;background:var(--panel);box-shadow:0 18px 50px oklch(5% .01 290 / .6);color:var(--ivory);display:flex;flex-direction:column;gap:8px;font-size:var(--t-s);line-height:1.5}
+.tip.pinned{padding-right:44px}
+.tip p{margin:0}
+.tip-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.tip-head b{font:500 .8rem/1.2 var(--display);letter-spacing:.18em;text-transform:uppercase}
+.tip .th-d,.tip .sp-pt{position:relative;top:auto;left:auto;margin:0;display:inline-block;--hlc:var(--ivory-2);flex:none}
+.tip-when{font:500 .64rem/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-3)}
+.tip-sess{margin-top:-4px!important;color:var(--ivory-2)}
+.tip-why{padding:7px 10px;border-radius:10px;background:oklch(94% .016 80 / .05);color:var(--ivory-2)}
+.tip-why b{color:var(--ivory)}
+.tip-why.k-worse b,.tip-why.k-concern b{color:var(--risk)}
+.tip-why.k-better b,.tip-why.k-resolved b{color:var(--ok)}
+.tip-notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.tip-notes li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:baseline}
+.tip-cat{font:500 .56rem/1.5 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--hlc);border:1px solid color-mix(in oklch,var(--hlc) 45%,transparent);border-radius:999px;padding:0 7px;white-space:nowrap}
+.tip-said{display:block;font-size:var(--t-xs);color:var(--ivory-3)}
+.tip-stats{color:var(--ivory-2)}
+.tip-now .overline{margin-right:6px}
+.tip .btn{align-self:flex-start;margin-left:-12px}
+.tip-x{position:absolute;top:8px;right:8px;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--ivory-3);cursor:pointer}
+.tip-x:hover{color:var(--ivory);background:oklch(94% .016 80 / .06)}
+.th-d[data-tip],.sp-pt[data-tip]{cursor:pointer}
+.th-d[data-tip]::after,.sp-pt[data-tip]::after{content:"";position:absolute;inset:-7px}
+@media (max-width:599px){.th-d[data-tip]::after{inset:-4px}}
+.th-d.tip-on,.sp-pt.tip-on{transform:scale(1.5);outline:1px solid var(--ivory);outline-offset:2px}
+.tl-nm{border:0;background:none;padding:0;font:500 .7rem/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-2);cursor:pointer;text-align:left;text-decoration:underline dotted var(--line-3);text-underline-offset:.4em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-nm:hover,.tl-nm.tip-on{color:var(--ivory);text-decoration-color:var(--ivory-2)}
+@media (max-width:599px){.tl-nm{letter-spacing:.06em;font-size:.64rem}}
+.hl-def{display:block;font-size:var(--t-xs);color:var(--ivory-3)}
+@media (prefers-reduced-motion:no-preference){.tip:not([hidden]){animation:popin .2s var(--ease)}}
 /* Plan: go into the next session with this */
 .prep{display:flex;flex-direction:column;gap:18px;padding:22px 24px 24px;border:1px solid var(--line-2);border-radius:20px;background:linear-gradient(140deg,oklch(19% .02 300 / .55),oklch(14% .012 220 / .45));margin-bottom:36px}
 .prep-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
@@ -1623,16 +1654,17 @@ function threadsOf(c, upto) {
   const sp = allSpans(c, upto); const byId = {}; sp.forEach(s => { byId[s.id] = s; });
   const cols = Array.from(new Set(chronEntries(c).filter(e => !upto || e.date <= upto).map(e => e.date))).sort();
   const n = cols.length; const ix = d => cols.indexOf(d); const T = {};
-  const mark = (k, date, kind, s) => {
-    if (!k) return; const t = T[k] || (T[k] = { key: k, label: themeName(k), marks: {}, cats: {}, prob: {}, problem: false, risk: RISK_KEYS.has(k) });
+  const mark = (k, date, kind, s, linked) => {
+    if (!k) return; const t = T[k] || (T[k] = { key: k, label: themeName(k), marks: {}, cats: {}, notes: {}, prob: {}, problem: false, risk: RISK_KEYS.has(k) });
     if (!t.marks[date] || MARK_RANK[kind] > MARK_RANK[t.marks[date]]) t.marks[date] = kind;
-    if (s) (t.cats[date] = t.cats[date] || new Set()).add(s.cat);
+    if (s && !linked) (t.cats[date] = t.cats[date] || new Set()).add(s.cat);
+    if (s) (t.notes[date] = t.notes[date] || []).push({ s, kind, linked: !!linked, of: s.rel && byId[s.rel.id] || null });
   };
   sp.forEach(s => {
     const k = themeOf(s); const ch = s.rel && s.rel.change && byId[s.rel.id] ? s.rel.change : null;
     const neg = s.cat === 'risk' && isNegScreen(s); mark(k, s.date, s.cat === 'risk' ? (neg ? 'clear' : 'concern') : ch || 'on', s);
     if (k && (PROBLEM_CATS.includes(s.cat) || (s.cat === 'risk' && !neg))) { T[k].problem = true; if (ch !== 'better' && ch !== 'resolved' && !IMPROVING.test(plainText(s.short || s.text))) T[k].prob[s.date] = true; }
-    if (ch) { const k2 = themeOf(byId[s.rel.id]); if (k2 && k2 !== k) mark(k2, s.date, ch, null); }
+    if (ch) { const k2 = themeOf(byId[s.rel.id]); if (k2 && k2 !== k) mark(k2, s.date, ch, s, true); }
   });
   const list = Object.values(T); const lastCol = cols[n - 1];
   const fmtGap = (a, b) => { const d = daysBetween(a, b); return d >= 56 ? `${Math.round(d / 30.4)} months` : `${Math.round(d / 7)} weeks`; };
@@ -1681,7 +1713,7 @@ function threadsOf(c, upto) {
       a.same = [...seen.values()].sort((x, y) => y.worse - x.worse).slice(0, 4);
     }
   });
-  return { cols, map: T, list };
+  return { cols, map: T, list, upto: upto || '' };
 }
 /* what to tell her, as of a session: what came back, got worse, went quiet or settled */
 function watchList(th) {
@@ -2082,7 +2114,7 @@ function signinHTML() {
 /* ================= render root ================= */
 const CHAPTERS = ['notes', 'form', 'next', 'plan'];
 function render() {
-  const app = $('#app'); if (!app) return;
+  const app = $('#app'); if (!app) return; hideTip(true);
   const online = CLOUD_ON && S.mode !== 'local';
   if (online && !CL.known) { app.innerHTML = cloudSplashHTML(); renderPop(); return; }
   if (online && CL.user && !UI.space) openSpace(lastSpace());
@@ -2476,12 +2508,12 @@ function briefLines(b) {
 /* ---- threads: one line per theme across every session; solid where it keeps coming up, dotted where it went quiet ---- */
 const MARK_WORD = { on: 'came up', better: 'better', worse: 'worse', resolved: 'resolved', concern: 'concern noted', clear: 'asked, nothing reported' };
 const ST_GLYPH = { back: '↺', worse: '▼', concern: '●', unasked: '!', better: '▲', resolved: '✓', settled: '✓', new: '+', quiet: '┄', ongoing: '', still: '' };
-function threadHTML(t, cols, open) {
+function threadHTML(t, cols, open, upto) {
   const n = cols.length; if (!t || n < 2) return '';
   const x = d => (cols.indexOf(d) / (n - 1) * 100).toFixed(2); const ds = t.dates; let segs = '';
   for (let i = 1; i < ds.length; i++) { const gap = cols.indexOf(ds[i]) - cols.indexOf(ds[i - 1]) > 1; segs += `<span class="th-seg${gap ? ' gap' : ''}" style="left:${x(ds[i - 1])}%;width:${(x(ds[i]) - x(ds[i - 1])).toFixed(2)}%"></span>`; }
   const last = ds[ds.length - 1]; if (last && last !== cols[n - 1]) segs += `<span class="th-seg tail" style="left:${x(last)}%;width:${(100 - x(last)).toFixed(2)}%"></span>`;
-  return `<span class="thread${open ? ' open' : ''}" aria-hidden="true"><span class="th-in"><span class="th-base"></span>${segs}${ds.map(d => `<i class="th-d ${t.marks[d]}" style="left:${x(d)}%" title="${esc(fmtShort(d))}: ${MARK_WORD[t.marks[d]]}"${open ? ` data-act="jn-open" data-date="${d}"` : ''}></i>`).join('')}</span></span>`;
+  return `<span class="thread${open ? ' open' : ''}"><span class="th-in"><span class="th-base"></span>${segs}${ds.map(d => `<i class="th-d ${t.marks[d]}" style="left:${x(d)}%" data-tip="dot" data-k="${esc(t.key || '')}" data-date="${d}"${upto ? ` data-upto="${upto}"` : ''}></i>`).join('')}</span></span>`;
 }
 function stChipHTML(t) { const st = t && t.status; if (!st) return ''; return `<span class="th-st k-${st.kind}" title="${esc(st.long)}">${ST_GLYPH[st.kind] ? `<b aria-hidden="true">${ST_GLYPH[st.kind]}</b>` : ''}${esc(st.short)}<span class="sr">. ${esc(st.long)}</span></span>`; }
 function linkChip(l, title, dir) { return `<button class="lk${dir ? ' ' + dir : ''}${UI.hlTheme === l.key ? ' on' : ''}" data-act="hl-theme" data-k="${esc(l.key)}" data-hl-k="${esc(l.key)}" title="${esc(title)}">${dir ? `<b aria-hidden="true">${dir === 'down' ? '▼' : '▲'}</b>` : ''}${esc(l.label)}<span class="sr">, ${esc(title)}</span></button>`; }
@@ -2501,7 +2533,7 @@ function sparkRow(js) {
   return `<div class="tl-row tl-spark"><span class="tl-name"><b>Overall</b><span class="xs faint">better minus worse</span></span>
     <span class="tl-plot spark-plot" role="img" aria-label="Running total of changes noted as better minus worse: ${esc(pts.map(p => `${fmtShort(p.j.date)} ${p.run}`).join(', '))}"><span class="th-in">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line class="sp-axis" vector-effect="non-scaling-stroke" x1="0" x2="100" y1="50" y2="50"/><polyline class="sp-line" vector-effect="non-scaling-stroke" points="${pts.map(p => `${p.x.toFixed(2)},${y(p.run).toFixed(2)}`).join(' ')}"/></svg>
-      ${pts.map((p, k) => `<i class="sp-pt${p.net > 0 ? ' up' : p.net < 0 ? ' down' : ''}" style="--k:${k};left:${p.x.toFixed(2)}%;top:${y(p.run).toFixed(2)}%" data-act="jn-open" data-date="${p.j.date}" title="${esc(fmtShort(p.j.date))}: ${p.j.better} better, ${p.j.worse} worse"></i>`).join('')}</span></span></div>`;
+      ${pts.map((p, k) => `<i class="sp-pt${p.net > 0 ? ' up' : p.net < 0 ? ' down' : ''}" style="--k:${k};left:${p.x.toFixed(2)}%;top:${y(p.run).toFixed(2)}%" data-tip="spark" data-date="${p.j.date}" data-run="${p.run}"></i>`).join('')}</span></span></div>`;
 }
 function axisRow(cols) {
   const n = cols.length; const marks = scrubMarks(cols);
@@ -2513,7 +2545,7 @@ function timelineHTML(c, js) {
   const more = UI.gridAll && UI.gridAll[c.id]; const rows = more ? all : all.slice(0, 9);
   return `<figure class="tl-fig">
     ${sparkRow(js)}${axisRow(th.cols)}
-    <ul class="tl-rows">${rows.map(t => `<li class="tl-row tl-theme${t.risk ? ' risk' : ''}" data-k="${esc(t.key)}"><span class="tl-name"><b>${esc(t.label)}</b>${stChipHTML(t)}</span><span class="tl-plot">${threadHTML(t, th.cols, true)}</span><span class="sr">${esc(t.label)}: came up in ${plural(t.act.length, 'session')}. ${esc(t.status.long)}.</span></li>`).join('')}</ul>
+    <ul class="tl-rows">${rows.map(t => `<li class="tl-row tl-theme${t.risk ? ' risk' : ''}" data-k="${esc(t.key)}"><span class="tl-name"><button class="tl-nm" data-tip="theme" data-k="${esc(t.key)}">${esc(t.label)}</button>${stChipHTML(t)}</span><span class="tl-plot">${threadHTML(t, th.cols, true)}</span><span class="sr">${esc(t.label)}: came up in ${plural(t.act.length, 'session')}. ${esc(t.status.long)}.</span></li>`).join('')}</ul>
     <figcaption class="tg-legend xs faint"><span><i class="th-d on"></i>Came up</span><span><i class="th-d better"></i>Better</span><span><i class="th-d worse"></i>Worse</span><span><i class="th-d concern"></i>Concern</span><span><i class="th-key-gap"></i>Quiet</span>${all.length > 9 ? `<button class="btn quiet sm" data-act="grid-all">${more ? 'Fewer themes' : `All ${all.length} themes`}</button>` : ''}<span class="grow"></span><span>The top line is the running total. Tap a dot to open that session.</span></figcaption></figure>`;
 }
 function jnOpen(js, date) { const st = UI.openJn && UI.openJn[date]; return st == null ? date === js[js.length - 1].date : st; }
@@ -2562,9 +2594,9 @@ function themeHTML(g, ch, newOn, gid, dated, every, th) {
   const label = g.key === 'other' ? 'Other' : g.label;
   const when = !dated ? '' : g.sessions > 1 ? `${fmtShort(g.first.date)} – ${fmtShort(g.latest.date)}` : fmtShort(g.latest.date);
   return `<li class="theme${UI.hlTheme && UI.hlTheme === g.key ? ' lit' : ''}" data-k="${esc(g.key)}">
-    <span class="theme-meta">${t ? `<button class="theme-name" data-act="hl-theme" data-k="${esc(g.key)}" data-hl-k="${esc(g.key)}" title="Follow ${esc(label)} across the board">${esc(label)}</button>` : `<span class="theme-name">${esc(label)}</span>`}
+    <span class="theme-meta">${t ? `<button class="theme-name" data-act="hl-theme" data-k="${esc(g.key)}" data-hl-k="${esc(g.key)}" data-tip="theme" data-hover-only="1"${th.upto ? ` data-upto="${th.upto}"` : ''}>${esc(label)}</button>` : `<span class="theme-name">${esc(label)}</span>`}
       ${t && dated ? stChipHTML(t) : ''}${when ? `<span class="theme-when">${t && dated ? plural(t.act.length || g.sessions, 'session') : when}</span>` : ''}</span>
-    <span class="theme-main">${t && dated ? threadHTML(t, th.cols) : ''}
+    <span class="theme-main">${t && dated ? threadHTML(t, th.cols, false, th.upto) : ''}
       <span class="theme-pt">${pointHTML(g.latest, ch, newOn)}</span>
       ${dated ? linksHTML(t) : ''}
       ${rest.length ? `${every ? '' : `<button class="theme-more" data-act="theme" data-id="${esc(gid)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide earlier' : plural(rest.length, 'earlier note')}</button>`}
@@ -2589,7 +2621,7 @@ function screensHTML(c, scr, th) {
   const k = c.id + ':screens'; const open = !!(UI.openTheme && UI.openTheme[k]); const last = scr[scr.length - 1];
   const dates = Array.from(new Set(scr.map(s => s.date))); const marks = {}; dates.forEach(d => { marks[d] = 'clear'; });
   return `<li class="theme screens" data-k="screens"><span class="theme-meta"><span class="theme-name">Screening</span><span class="th-st k-settled"><b aria-hidden="true">✓</b>Last ${esc(fmtShort(last.date))}</span>${scr.length > 1 ? `<span class="theme-when">${plural(scr.length, 'time')}</span>` : ''}</span>
-    <span class="theme-main">${th && th.cols.length > 1 ? threadHTML({ dates, marks }, th.cols) : ''}<span class="theme-pt">${icon('check')}<span>${scr.length > 1 ? `Asked ${scr.length} times. Nothing reported each time.` : esc(plainText(last.short || shortOf(last.text)))}</span></span>
+    <span class="theme-main">${th && th.cols.length > 1 ? threadHTML({ key: 'screens', dates, marks }, th.cols, false, th.upto) : ''}<span class="theme-pt">${icon('check')}<span>${scr.length > 1 ? `Asked ${scr.length} times. Nothing reported each time.` : esc(plainText(last.short || shortOf(last.text)))}</span></span>
     ${scr.length > 1 ? `<button class="theme-more" data-act="theme" data-id="${esc(k)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide' : 'Each time'}</button>${open ? `<ol class="theme-earlier">${scr.slice().reverse().map(s => `<li><span class="te-date">${esc(fmtShort(s.date))}</span><span><mark class="hl c-risk" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark></span></li>`).join('')}</ol>` : ''}` : ''}</span></li>`;
 }
 function boardHTML(c) {
@@ -2599,7 +2631,7 @@ function boardHTML(c) {
   const gk = c.id + ':goals'; const gAll = UI.cellAll && UI.cellAll[gk]; const gList = goals.slice().reverse();
   const ctxN = themeGroups(ctx).length;
   const hl = UI.hlTheme && th.map[UI.hlTheme];
-  return `<div class="board-wrap${hl ? ' hl-on' : ''}" id="board-wrap">${hl ? `<div class="hl-bar" role="status"><span>Following <b>${esc(hl.label)}</b> across the board</span>${stChipHTML(hl)}<button class="btn quiet sm" data-act="hl-theme" data-k="">${icon('x')}Clear</button></div>` : ''}
+  return `<div class="board-wrap${hl ? ' hl-on' : ''}" id="board-wrap">${hl ? `<div class="hl-bar" role="status"><span>Following <b>${esc(hl.label)}</b> across the board${THEME_DEF[hl.key] ? `<span class="hl-def">${esc(THEME_DEF[hl.key])}</span>` : ''}</span>${stChipHTML(hl)}<button class="btn quiet sm" data-act="hl-theme" data-k="">${icon('x')}Clear</button></div>` : ''}
     ${risk.length ? `<section class="stack-s risk-block c-risk${real.length ? '' : ' calm'}"><h3>${real.length ? 'Risk and safety' : 'Safety screening'}</h3><ul class="items themes">${themeGroups(real).map(g => themeHTML(g, ch, newOn, c.id + ':risk:' + g.key, ds.length > 1, true, th)).join('')}${screensHTML(c, scr, th)}</ul></section>` : ''}
     <div class="board">${FIVE_PS.map((k, i) => cellHTML(c, k, sp, ch, i, newOn, th)).join('')}</div>
     <div class="below"><section class="stack-s"><h3>Goals${goals.length ? ` <span class="h-count">${goals.length}</span>` : ''}</h3>${goals.length ? `<ul class="items goals">${(gAll ? gList : gList.slice(0, 5)).map(s => `<li>${pointHTML(s, ch, newOn)}${ds.length > 1 ? ` <span class="te-date">${esc(fmtShort(s.date))}</span>` : ''}</li>`).join('')}</ul>${gList.length > 5 ? `<button class="btn quiet sm cell-more" data-act="cell-all" data-k="goals">${gAll ? 'Show fewer' : `Show ${gList.length - 5} more`}</button>` : ''}` : '<p class="small muted">No goals yet.</p>'}<form class="inline-add" data-form="add-item" data-cat="goal"><label class="sr" for="add-goal">Add a goal</label><input type="text" id="add-goal" placeholder="Add a goal, in their words if you can" autocomplete="off"><button class="btn sm" type="submit">Add</button></form></section>
@@ -3627,6 +3659,107 @@ function stefanHomeHTML() {
       return `<button class="case-row sv-case" style="--i:${i}" data-act="open-case" data-id="${esc(c.id)}">${glyphSVG(c)}<span class="stack-s" style="gap:4px"><span class="label">${esc(c.label)}</span><span class="meta">${caseMeta(c)}</span></span>
         ${pl ? `<span class="small muted sv-who">${esc(pl[1])}</span>` : ''}<span class="chips"><span class="sv-traj k-${tr.word.split(' ')[0].toLowerCase()}">${esc(tr.word)}</span>${w.map(t => `<span class="th-st k-${t.status.kind}" title="${esc(t.status.long)}">${ST_GLYPH[t.status.kind] ? `<b aria-hidden="true">${ST_GLYPH[t.status.kind]}</b>` : ''}${esc(t.label)} · ${esc(t.status.short)}</span>`).join('')}</span>${icon('next')}</button>`; }).join('')}</div></section>`;
 }
+
+/* ---------- what a theme means, and what happened at each dot ---------- */
+const THEME_DEF = {
+  selfharm: 'Self-harm and suicidal thoughts: each time it was asked about, any concern raised, and safety plans.',
+  abuse: 'Abuse, family violence, neglect or child protection involvement.',
+  exploitation: 'Online safety: who they talk to online, grooming, sexual safety, threats.',
+  missing: 'Running away, going missing, staying out without anyone knowing where.',
+  drugs: 'Alcohol, vaping, cannabis and other drugs.',
+  trauma: 'Frightening or hurtful events: violence, assault, accidents, deaths and grief.',
+  familymh: 'A parent’s or family member’s own mental health.',
+  anxiety: 'Worry, fear, panic, and what they avoid because of it.',
+  mood: 'Low mood, sadness, irritability, crying, and any mood ratings.',
+  aggression: 'Anger, hitting, threats or violence towards others.',
+  peers: 'Friends, social life, loneliness, and bullying.',
+  family: 'Home life and family relationships: parents, siblings, conflict, separation, who lives where.',
+  sleep: 'Bedtimes, waking, tiredness, nightmares, and phones or gaming at night.',
+  education: 'School or work: attendance, learning, teachers, school refusal.',
+  eating: 'Appetite, meals, weight and body image.',
+  attention: 'Concentration, focus, hyperactivity, impulsivity, ADHD.',
+  behaviour: 'Tantrums, meltdowns, defiance and rule-breaking.',
+  health: 'Physical health, medication, GP, paediatrician and hospital.',
+  development: 'Birth, milestones and early development.',
+  sexuality: 'Sexuality, gender identity and relationships.',
+  culture: 'Culture, faith, community and language.',
+  activities: 'Hobbies, sport and interests.',
+  mhhistory: 'Past mental health support: counsellors, psychologists, headspace, other services.',
+  screens: 'Routine safety screens where the answer was no: asked, nothing reported.'
+};
+const KIND_EXPLAIN = {
+  on: ['White', 'It came up this session. Nothing in the notes says it got better or worse.'],
+  better: ['Green', 'A note this session says it got better.'],
+  resolved: ['Green ring', 'A note this session says it was resolved.'],
+  worse: ['Red', 'A note this session says it got worse.'],
+  concern: ['Red ring', 'A risk concern was noted this session.'],
+  clear: ['Small dot', 'Asked about, nothing reported.']
+};
+const CAT_SHORT = k => (k === 'positive' ? 'Strength' : k === 'goal' ? 'Goal' : k === 'risk' ? 'Risk' : k === 'context' ? 'Background' : CATS[k] ? CATS[k].label : '');
+function tipThreads(c, upto) { const k = c.id + '|' + (upto || '') + '|' + (c.updated || 0); if (TIP.cache && TIP.cache.k === k) return TIP.cache.th; const th = threadsOf(c, upto || null); TIP.cache = { k, th }; return th; }
+function noteLine(n) {
+  const s = n.s; const txt = markup(plainText(s.short || shortOf(s.text)));
+  const said = n.of && s.rel ? ` <span class="tip-said">Compared with ${esc(fmtShort(n.of.date))}: ${markup(plainText(n.of.short || shortOf(n.of.text)))}</span>` : '';
+  return `<li><span class="tip-cat c-${s.cat}">${esc(CAT_SHORT(s.cat))}</span><span>${txt}${said}</span></li>`;
+}
+function dotTipHTML(c, key, date, upto) {
+  const nums = sessionNumbers(c); const e = chronEntries(c).find(x => x.date === date && x.kind === 'notes');
+  const head = (label, kind) => `<div class="tip-head"><i class="th-d ${kind}" aria-hidden="true"></i><b>${esc(label)}</b><span class="tip-when">${esc(fmtDate(date))}${e ? ` · Session ${nums[e.id]}` : ' · added in the app'}</span></div>${e ? `<p class="tip-sess">${esc(sessionTitle(e))}</p>` : ''}`;
+  const open = stefanView() ? '' : `<button class="btn quiet sm" data-act="goto-sess" data-date="${date}"${e ? ` data-id="${esc(e.id)}"` : ''}>Open the notes</button>`;
+  if (key === 'screens') {
+    const scr = allSpans(c, upto || null).filter(s => s.date === date && s.cat === 'risk' && isNegScreen(s));
+    return `${head('Screening', 'clear')}<p class="tip-why k-clear"><b>${KIND_EXPLAIN.clear[0]}:</b> asked about, nothing reported.</p><ul class="tip-notes">${scr.map(s => noteLine({ s })).join('')}</ul>${open}`;
+  }
+  const t = tipThreads(c, upto).map[key]; if (!t) return '';
+  const kind = t.marks[date] || 'on'; const ex = KIND_EXPLAIN[kind];
+  const notes = (t.notes[date] || []).slice().sort((a, b) => (b.kind === kind) - (a.kind === kind) || (b.s.cat !== 'context') - (a.s.cat !== 'context'));
+  const shown = notes.slice(0, 4);
+  return `${head(t.label, kind)}<p class="tip-why k-${kind}"><b>${ex[0]}:</b> ${ex[1].charAt(0).toLowerCase() + ex[1].slice(1)}</p>
+    ${shown.length ? `<ul class="tip-notes">${shown.map(noteLine).join('')}</ul>${notes.length > shown.length ? `<p class="xs faint">and ${plural(notes.length - shown.length, 'more note')}</p>` : ''}` : ''}${open}`;
+}
+function themeTipHTML(c, key, upto) {
+  const th = tipThreads(c, upto); const t = th.map[key]; if (!t) return '';
+  const cnt = k => t.dates.filter(d => t.marks[d] === k).length;
+  const stats = [`Came up in ${t.act.length} of ${plural(th.cols.length, 'session')}`, cnt('better') + cnt('resolved') ? `${cnt('better') + cnt('resolved')} better` : '', cnt('worse') ? `${cnt('worse')} worse` : '', cnt('concern') ? plural(cnt('concern'), 'concern') : '', cnt('clear') ? `asked ${plural(cnt('clear'), 'time')}, nothing reported` : ''].filter(Boolean).join(' · ');
+  const mw = (t.worseWith || []).concat(t.betterWith || []).slice(0, 3);
+  return `<div class="tip-head"><b>${esc(t.label)}</b>${stChipHTML(t)}</div><p>${esc(THEME_DEF[key] || '')}</p><p class="tip-stats">${esc(stats)}.</p><p class="tip-now"><span class="overline">Now</span> ${esc(t.status.long)}.</p>
+    ${t.first ? `<p class="xs faint">First noted ${esc(fmtDate(t.first))}. Last ${esc(fmtDate(t.last))}.</p>` : ''}${mw.length ? `<p class="xs muted">Moves with ${esc(listWords(mw.map(l => l.label.toLowerCase())))}.</p>` : ''}`;
+}
+function sparkTipHTML(c, date, run) {
+  const j = journey(c).find(x => x.date === date); if (!j) return '';
+  const nums = sessionNumbers(c); const e = chronEntries(c).find(x => x.date === date && x.kind === 'notes');
+  const sum = sessSummary(j);
+  return `<div class="tip-head"><i class="sp-pt${j.better - j.worse > 0 ? ' up' : j.better - j.worse < 0 ? ' down' : ''}" aria-hidden="true"></i><b>Overall</b><span class="tip-when">${esc(fmtDate(date))}${e ? ` · Session ${nums[e.id]}` : ''}</span></div>
+    ${j.title ? `<p class="tip-sess">${esc(j.title)}</p>` : ''}<p class="tip-why ${j.better - j.worse > 0 ? 'k-better' : j.better - j.worse < 0 ? 'k-worse' : 'k-on'}"><b>${j.better} better, ${j.worse} worse</b> this session. Running total ${Number(run) > 0 ? '+' : ''}${esc(run)}.</p>
+    ${sum ? `<p class="small muted">${esc(cap(sum))}.</p>` : ''}${stefanView() ? '' : `<button class="btn quiet sm" data-act="jn-open" data-date="${date}">Open this session</button>`}`;
+}
+const TIP = { el: null, pinned: false, target: null, timer: null, cache: null };
+function showTip(target, pinned) {
+  const c = current(); if (!c || !target) return; clearTimeout(TIP.timer); if (!pinned && TIP.pinned) return;
+  const d = target.dataset; const kind = d.tip;
+  const html = kind === 'dot' ? dotTipHTML(c, d.k, d.date, d.upto) : kind === 'theme' ? themeTipHTML(c, d.k, d.upto) : kind === 'spark' ? sparkTipHTML(c, d.date, d.run) : '';
+  if (!html) return hideTip(true);
+  let el = TIP.el; if (!el || !el.isConnected) { el = TIP.el = document.createElement('div'); el.id = 'tip'; el.className = 'tip'; el.setAttribute('role', 'dialog'); document.body.appendChild(el); }
+  el.innerHTML = html + (pinned ? `<button class="tip-x" data-act="tip-close" aria-label="Close">${icon('x')}</button>` : '');
+  el.classList.toggle('pinned', !!pinned); el.setAttribute('aria-label', kind === 'theme' ? 'What this theme means' : 'What happened this session');
+  if (TIP.target && TIP.target !== target) TIP.target.classList.remove('tip-on');
+  TIP.target = target; TIP.pinned = !!pinned; target.classList.add('tip-on');
+  el.hidden = false; placeTip();
+}
+function placeTip() {
+  const el = TIP.el, target = TIP.target; if (!el || !target) return;
+  const r = target.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight || !target.isConnected) return hideTip(true);
+  const W = Math.min(360, innerWidth - 24); el.style.width = W + 'px';
+  const H = el.offsetHeight; const barB = (($('.bar') && $('.bar').getBoundingClientRect().bottom) || 60) + 8;
+  let left = Math.min(Math.max(12, r.left + r.width / 2 - W / 2), innerWidth - W - 12); let top = r.bottom + 10;
+  if (top + H > innerHeight - 12) top = r.top - H - 10;
+  if (top < barB) top = Math.max(barB, Math.min(innerHeight - H - 12, r.bottom + 10));
+  el.style.left = left + 'px'; el.style.top = top + 'px';
+}
+function hideTip(force) {
+  if (TIP.pinned && !force) return; clearTimeout(TIP.timer);
+  if (TIP.el) TIP.el.hidden = true; if (TIP.target) TIP.target.classList.remove('tip-on'); TIP.target = null; TIP.pinned = false;
+}
 /* ================= example notes (fictional) ================= */
 const EXAMPLE = `Initial assessment 21/10/2026 with Jordan (15, Year 9 at Westfield High School) and his mum Sarah. Referred by GP Dr Patel for low mood and school refusal since Term 3.
 Jordan said "I just can't be bothered with anything anymore". Sleeping 2am to 11am most days, gaming late. Lost interest in basketball, which he used to love.
@@ -3793,6 +3926,12 @@ function previewHL(k) {
   w.classList.toggle('hl-on', !!key); $$('.theme', w).forEach(li => li.classList.toggle('lit', !!key && li.dataset.k === key));
 }
 document.addEventListener('pointerover', e => { if (e.pointerType === 'touch') return; const el = e.target.closest && e.target.closest('[data-hl-k]'); previewHL(el ? el.dataset.hlK : null); }, { passive: true });
+document.addEventListener('pointerover', e => {
+  if (e.pointerType === 'touch' || TIP.pinned) return; const el = e.target.closest && e.target.closest('[data-tip]');
+  if (e.target.closest && e.target.closest('#tip')) { clearTimeout(TIP.timer); return; }
+  clearTimeout(TIP.timer);
+  if (el) TIP.timer = setTimeout(() => showTip(el, false), TIP.target ? 40 : 160); else if (TIP.target) TIP.timer = setTimeout(() => hideTip(), 220);
+}, { passive: true });
 function refocus(sel) { let el = null; try { el = document.querySelector(sel); } catch (e) { return null; } if (el) el.focus({ preventScroll: true }); return el; }
 function setAsOf(c, d) { const ds = sessionDates(c); UI.asOf = UI.asOf || {}; UI.asOf[c.id] = !d || d === ds[ds.length - 1] ? null : d; UI.pop = null; render(); }
 /* open one session in Notes, wherever it is in the list */
@@ -3871,10 +4010,11 @@ const ACT = {
   'grid-all': () => { const c = current(); UI.gridAll[c.id] = !UI.gridAll[c.id]; render(); refocus('[data-act="grid-all"]'); },
   'map-more': el => { const c = current(); const k = c.id + ':' + el.dataset.cat; UI.mapMore[k] = !UI.mapMore[k]; render(); },
   'toggle-jn': el => { const d = el.dataset.date; UI.openJn[d] = el.dataset.open !== 'true'; render(); refocus(`[data-act="toggle-jn"][data-date="${d}"]`); },
-  'jn-open': el => { const d = el.dataset.date; UI.openJn[d] = true; UI.openMonth['j:' + monthKey(d)] = true; render(); const a = document.getElementById('jn-' + d); if (a) { a.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }); const h = a.querySelector('.sess-head'); if (h) h.focus({ preventScroll: true }); } },
+  'jn-open': el => { hideTip(true); const d = el.dataset.date; UI.openJn[d] = true; UI.openMonth['j:' + monthKey(d)] = true; render(); const a = document.getElementById('jn-' + d); if (a) { a.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }); const h = a.querySelector('.sess-head'); if (h) h.focus({ preventScroll: true }); } },
   'asof-step': el => { const c = current(); const ds = sessionDates(c); const at = asOfOf(c) || ds[ds.length - 1]; const i = Math.min(ds.length - 1, Math.max(0, ds.indexOf(at) + Number(el.dataset.d))); setAsOf(c, ds[i]); refocus('#' + el.id + ':not([disabled])') || refocus('#asof-range'); },
   'asof-latest': () => { const c = current(); const ds = sessionDates(c); setAsOf(c, ds[ds.length - 1]); refocus('#asof-range'); },
-  'goto-sess': el => gotoSession(current(), el.dataset.id, el.dataset.date),
+  'goto-sess': el => { hideTip(true); gotoSession(current(), el.dataset.id, el.dataset.date); },
+  'tip-close': () => hideTip(true),
   'copy-prep': () => { const c = current(); copyText(buildPrep(c), 'Plan copied. Paste it wherever you prep.'); },
   'sv-full': el => { UI.svFull = UI.svFull || {}; UI.svFull[el.dataset.id] = true; UI.tab = 'notes'; render(); window.scrollTo(0, 0); },
   'sv-back': el => { UI.svFull = UI.svFull || {}; UI.svFull[el.dataset.id] = false; render(); window.scrollTo(0, 0); },
@@ -3952,6 +4092,9 @@ const ACT = {
 };
 
 document.addEventListener('click', e => {
+  const tipEl = e.target.closest('[data-tip]');
+  if (tipEl && !tipEl.dataset.hoverOnly && !(tipEl.closest('#map-wrap') && UI.mapDragged)) { e.preventDefault(); if (TIP.pinned && TIP.target === tipEl) hideTip(true); else showTip(tipEl, true); return; }
+  if (TIP.target && !e.target.closest('#tip')) hideTip(true);
   const t = e.target.closest('[data-act]');
   if (UI.pop && !e.target.closest('#pop') && !(t && t.dataset.act === 'span')) closePop(true);
   if (!t) return;
@@ -3976,6 +4119,7 @@ document.addEventListener('keydown', e => {
     UI.tab = n; UI.pop = null; render(); const b = $(`#tab-${n}`); if (b) b.focus(); return;
   }
   if (e.key === 'Escape') {
+    if (TIP.target) { const t0 = TIP.target; hideTip(true); if (t0.focus && t0.tabIndex >= 0) t0.focus(); return; }
     if ($('#copy-panel')) return ACT['close-copy']();
     if (UI.pop) return closePop(true);
     if (UI.hlTheme) { UI.hlTheme = null; return render(); }
@@ -4032,8 +4176,9 @@ document.addEventListener('toggle', e => {
   if (d.dataset.more === 'opt') UI.optOpen = d.open;
   if (d.dataset.more === 'ctx') UI.ctxOpen = d.open;
 }, true);
-window.addEventListener('resize', () => { if (UI.pop) closePop(true); });
-document.addEventListener('scroll', () => { if (UI.pop && !$('#pop:focus-within')) closePop(true); }, { passive: true });
+window.addEventListener('resize', () => { if (UI.pop) closePop(true); hideTip(true); });
+document.addEventListener('scroll', () => { if (UI.pop && !$('#pop:focus-within')) closePop(true); if (TIP.target) { if (TIP.pinned) placeTip(); else hideTip(true); } }, { passive: true });
+document.addEventListener('focusin', e => { const el = e.target.closest && e.target.closest('[data-tip="theme"]'); if (el && el.matches(':focus-visible')) showTip(el, false); else if (TIP.target && !TIP.pinned && !(e.target.closest && e.target.closest('#tip'))) hideTip(); });
 
 boot();
 
