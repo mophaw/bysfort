@@ -234,11 +234,31 @@ input[type=checkbox]{width:18px;height:18px;accent-color:var(--ivory)}
 .sheet-body.ruled{position:relative;padding-left:26px;margin-left:-6px}
 .sheet-body.ruled::before{content:"";position:absolute;left:12px;top:.4em;bottom:.4em;width:1px;background:var(--line)}
 .rmark{position:absolute;left:8px;width:9px;height:9px;margin-top:.65em;border-radius:50%;background:var(--risk);box-shadow:0 0 0 3px var(--risk-soft),0 0 10px var(--risk)}
-/* sessions hang off one timeline, newest first */
-.area-sheets{position:relative;padding-left:30px}
-.area-sheets::before{content:"";position:absolute;left:8px;top:48px;bottom:24px;width:1px;background:linear-gradient(var(--line-3),var(--line) 70%,transparent)}
-.area-sheets>.sheet::before{content:"";position:absolute;left:-27px;top:26px;width:9px;height:9px;border-radius:50%;background:var(--void);border:1px solid var(--ivory-2);box-shadow:0 0 0 4px var(--void)}
-.area-sheets>.sheet:first-of-type::before{background:var(--ivory);border-color:var(--ivory);box-shadow:0 0 0 4px var(--void),0 0 12px oklch(94% .016 80 / .6)}
+/* sessions hang off one timeline, newest first; months are the bigger stops */
+.area-sheets{display:flex;flex-direction:column;gap:12px}
+.tl{position:relative;padding-left:30px;display:flex;flex-direction:column;gap:10px}
+.tl::before{content:"";position:absolute;left:8px;top:14px;bottom:24px;width:1px;background:linear-gradient(var(--line-3),var(--line) 70%,transparent)}
+.tl .sess::before{content:"";position:absolute;left:-26px;top:25px;width:7px;height:7px;border-radius:50%;background:var(--void);border:1px solid var(--ivory-3);box-shadow:0 0 0 4px var(--void)}
+.tl .sess.first::before{background:var(--ivory);border-color:var(--ivory);box-shadow:0 0 0 4px var(--void),0 0 12px oklch(94% .016 80 / .6)}
+.month{display:flex;flex-direction:column;gap:10px}
+.month-head{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:54px;padding:8px 6px 8px 0;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ivory-2);text-align:left;cursor:pointer;transition:color .2s,border-color .2s}
+.month-head:hover{color:var(--ivory);border-bottom-color:var(--line-2)}
+.month-name{font:400 1rem/1.2 var(--display);letter-spacing:.24em;text-transform:uppercase;color:var(--ivory);white-space:nowrap}
+.month-meta{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;flex:1;min-width:0;font-size:var(--t-xs);color:var(--ivory-3)}
+.month-meta .trend{margin:0}
+.month-head .chev{flex:none;color:var(--ivory-3);transition:transform .3s var(--ease)}
+.month.open>.month-head .chev{transform:rotate(180deg)}
+.month-body{display:flex;flex-direction:column;gap:10px;padding-bottom:8px}
+.tl .month-head::before{content:"";position:absolute;left:-27px;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:var(--void);border:1px solid var(--ivory-2);box-shadow:0 0 0 4px var(--void);transition:all .3s var(--ease)}
+.tl .month.open>.month-head::before{background:var(--ivory);border-color:var(--ivory);box-shadow:0 0 0 4px var(--void),0 0 0 7px oklch(94% .016 80 / .14),0 0 12px oklch(94% .016 80 / .6)}
+.tl .month .sess::before{left:-26px}
+.find{display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid var(--line-2);color:var(--ivory-3);padding:0 2px;min-width:0;transition:border-color .2s,color .2s}
+.find:focus-within{border-bottom-color:var(--ivory);color:var(--ivory)}
+.find input[type=search]{border:0;min-height:38px;padding:0;width:11em;font-size:var(--t-s);background:transparent}
+.find .icon{width:16px;height:16px;flex:none}
+.find-hit{background:oklch(94% .016 80 / .2);color:var(--ivory);border-radius:3px;padding:0 2px}
+.find-count{margin:0 0 4px}
+.sess-snip{display:block;margin-top:5px;font-size:var(--t-s);line-height:1.5;color:var(--ivory-3);white-space:normal;overflow-wrap:anywhere}
 .area-sheets:empty{display:none}
 .add-more{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:14px 22px;text-align:left;background:transparent;border:1px dashed var(--line-3);border-radius:18px;color:var(--ivory);font:500 .8rem/1.3 var(--display);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,background-color .2s}
 .add-more:hover{border-style:solid;background:oklch(94% .016 80 / .04)}
@@ -277,41 +297,125 @@ input[type=date]:focus-visible{outline:none;border-bottom-color:var(--ivory)}
 .asof-node[aria-pressed="true"] .dot{background:var(--ivory);box-shadow:0 0 0 4px var(--void),0 0 0 7px oklch(94% .016 80 / .22),0 0 16px var(--ivory)}
 .asof-note{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 /* Over time */
-.journey{display:flex;flex-direction:column;gap:22px;max-width:920px}
-.spark{margin:0;padding:16px 18px 12px;border:1px solid var(--line);border-radius:18px;background:oklch(12% .008 290 / .6);overflow-x:auto}
-.spark-plot{position:relative;height:110px;margin:0 6px}
-.spark-plot svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.spark .sp-axis{stroke:var(--line-2);stroke-dasharray:2 4}
-.spark .sp-line{fill:none;stroke:var(--ivory);stroke-width:1.4;filter:drop-shadow(0 0 4px oklch(94% .016 80 / .5))}
-.sp-pt{position:absolute;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:var(--void);border:1.5px solid var(--ivory-2)}
-.sp-pt.up{background:var(--ok);border-color:var(--ok);box-shadow:0 0 10px var(--ok)}
-.sp-pt.down{background:var(--risk);border-color:var(--risk);box-shadow:0 0 10px var(--risk)}
-.spark-x{position:relative;height:18px;margin:8px 6px 0}
-.spark-x span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap;font:500 .64rem/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-3)}
-.spark-x span:first-child{transform:none}.spark-x span:last-child{transform:translateX(-100%)}
-.spark figcaption{margin-top:8px}
-.jn-list{list-style:none;margin:0;padding:0 0 0 30px;position:relative}
-.jn-list::before{content:"";position:absolute;left:8px;top:10px;bottom:20px;width:1px;background:linear-gradient(var(--line-3),var(--line) 70%,transparent)}
-.jn-item{position:relative;padding:2px 0 28px}
-.jn-item::before{content:"";position:absolute;left:-27px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--void);border:1px solid var(--ivory-2);box-shadow:0 0 0 4px var(--void)}
-.jn-item:first-child::before{background:var(--ivory);border-color:var(--ivory);box-shadow:0 0 0 4px var(--void),0 0 12px oklch(94% .016 80 / .6)}
-.jn-date{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
-.jn-date .overline{flex-basis:100%}
-.jn-date b{font:400 1.15rem/1.2 var(--display);letter-spacing:.18em;text-transform:uppercase}
-.jn-tally{display:inline-flex;gap:10px}
-.jn-tally .trend{margin:0}
+.journey{display:flex;flex-direction:column;gap:22px;max-width:1040px}
+.brief{display:flex;flex-direction:column;gap:3px;padding:14px 20px 14px 18px;border-left:1px solid var(--ivory);background:linear-gradient(90deg,oklch(94% .016 80 / .05),transparent);border-radius:0 14px 14px 0;max-width:76ch;margin-top:8px}
+.brief .overline{margin-bottom:5px}
+.brief p{margin:0;color:var(--ivory-2)}
+.brief p:first-of-type{color:var(--ivory)}
+.tgrid-fig{margin:0;display:flex;flex-direction:column;gap:10px;padding:16px 18px 12px;border:1px solid var(--line);border-radius:18px;background:oklch(12% .008 290 / .6);min-width:0}
+.tgrid-wrap{position:relative;overflow-x:auto;scrollbar-width:thin}
+.tgrid{width:100%;border-collapse:collapse;table-layout:fixed;min-width:calc(9.5em + var(--n) * 13px)}
+.tgrid th,.tgrid td{padding:0}
+.tgrid thead .tg-name{vertical-align:bottom;padding-bottom:8px}
+.tg-name{width:9.5em;text-align:left;font:500 .7rem/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-2);padding:0 10px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tg-n{margin-left:8px;color:var(--ivory-3);font:400 .72rem/1 var(--font);letter-spacing:0}
+.tg-month{font:500 .62rem/1 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory-3);text-align:left;padding:0 0 8px 4px;border-left:1px solid var(--line);white-space:nowrap;overflow:hidden}
+.tgrid tbody tr{border-top:1px solid var(--line)}
+.tgrid tbody tr:hover{background:oklch(94% .016 80 / .03)}
+.tg-c{height:30px;text-align:center}
+.tg-c.ms{border-left:1px solid var(--line)}
+.tg-c[data-act]{cursor:pointer}
+.tg-c[data-act]:hover{background:oklch(94% .016 80 / .07)}
+.tg-c i,.tg-key{display:inline-block;vertical-align:middle}
+.tg-c.on i,.tg-key.on{width:5px;height:5px;border-radius:50%;background:var(--ivory-3)}
+.tg-c.up i,.tg-key.up{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid var(--ok);filter:drop-shadow(0 0 4px var(--ok))}
+.tg-c.down i,.tg-key.down{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid var(--risk);filter:drop-shadow(0 0 4px var(--risk))}
+.tg-c.mixed i{width:7px;height:7px;background:var(--warn);transform:rotate(45deg)}
+.tg-c.risk i,.tg-key.risk{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--risk);box-shadow:0 0 6px var(--risk-soft)}
+.tg-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.tg-legend span{display:inline-flex;align-items:center;gap:7px}
+@media (max-width:599px){.tgrid{min-width:calc(6em + var(--n) * 10px)}.tg-name{width:6em;letter-spacing:.06em;font-size:.64rem}.tg-n{display:none}.tgrid-fig{padding:14px 12px 10px}}
+.jn-tally{gap:10px}
+.jn-tally .trend,.jn-ch .trend{margin:0}
+.jn-body{padding-top:4px}
 .jn-sec{margin-top:12px;display:flex;flex-direction:column;gap:4px}
 .jn-ch{display:grid;grid-template-columns:86px minmax(0,1fr);gap:4px 12px;align-items:baseline;padding:6px 0;border-top:1px solid var(--line)}
-.jn-ch .trend{margin:0}
 .jn-why{display:block;margin-top:2px}
 .jn-new{gap:10px;margin-top:6px}
 .jn-new li{line-height:1.7}
+/* As of: one line for any number of sessions */
+.scrub{display:flex;flex-direction:column;gap:4px;padding:14px 18px 10px;border:1px solid var(--line);border-radius:18px;background:oklch(13% .008 290 / .55)}
+.scrub-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;min-height:36px}
+.scrub-now{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;flex:1;min-width:0;margin:0}
+.scrub-now b{font:400 .95rem/1.3 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory);white-space:nowrap}
+.scrub-now b .faint{letter-spacing:.12em}
+.scrub-date{font:500 .76rem/1.3 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ivory-2);white-space:nowrap}
+.scrub-title{color:var(--ivory-2);font-size:var(--t-s);min-width:0}
+.scrub-acts{gap:2px}
+.tag-latest{font:500 .6rem/1 var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--on-ivory);background:var(--ivory);border-radius:999px;padding:5px 9px 4px;margin-right:6px}
+.scrub-row{display:flex;align-items:center;gap:10px}
+.scrub-step{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);background:transparent;color:var(--ivory);cursor:pointer;transition:border-color .2s,background-color .2s}
+.scrub-step:hover:not([disabled]){border-color:var(--line-3);background:oklch(94% .016 80 / .06)}
+.scrub-step[disabled]{opacity:.28;cursor:default}
+.scrub-track{position:relative;flex:1;min-width:0;height:52px;--thumb:14px}
+.scrub-rail{position:absolute;left:calc(var(--thumb) / 2);right:calc(var(--thumb) / 2);top:19px;height:1px;background:var(--line-2)}
+.scrub-fill{position:absolute;left:0;top:0;height:1px;width:var(--at);background:var(--ivory);box-shadow:0 0 8px oklch(94% .016 80 / .6)}
+.scrub-rail i{position:absolute;top:0;width:7px;height:7px;margin:-3px 0 0 -3.5px;border-radius:50%;background:var(--ivory-2);transition:background-color .2s}
+.scrub-rail i.after{background:var(--void);border:1px dashed var(--ivory-3)}
+.scrub-track input[type=range]{position:absolute;left:0;top:7px;width:100%;height:24px;margin:0;padding:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;border:0}
+.scrub-track input[type=range]::-webkit-slider-runnable-track{height:24px;background:transparent;border:0}
+.scrub-track input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin-top:5px;border-radius:50%;background:var(--ivory);border:0;box-shadow:0 0 0 4px var(--void),0 0 0 5px oklch(94% .016 80 / .5),0 0 16px oklch(94% .016 80 / .8);transition:box-shadow .2s}
+.scrub-track input[type=range]::-moz-range-track{height:24px;background:transparent;border:0}
+.scrub-track input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--ivory);border:0;box-shadow:0 0 0 4px var(--void),0 0 0 5px oklch(94% .016 80 / .5),0 0 16px oklch(94% .016 80 / .8)}
+.scrub-track input[type=range]:focus-visible{outline:none}
+.scrub-track input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(--void),0 0 0 6px var(--ivory),0 0 20px var(--ivory)}
+.scrub-track input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px var(--void),0 0 0 6px var(--ivory),0 0 20px var(--ivory)}
+.scrub-months{position:absolute;left:calc(var(--thumb) / 2);right:calc(var(--thumb) / 2);top:37px;height:14px;pointer-events:none}
+.scrub-months span{position:absolute;top:0;transform:translateX(-50%);font:500 .6rem/1 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory-3);white-space:nowrap}
+.scrub-months span:first-child{transform:translateX(-5px)}
+.scrub-sum{margin:0;padding:2px 0 4px}
+@media (max-width:599px){.scrub{padding:12px 12px 8px}.scrub-step{width:36px;height:36px}.scrub-head .overline{display:none}.scrub-now{flex-basis:100%}.scrub-acts{margin-left:-12px}}
+/* At a glance */
+.glance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:oklch(14% .009 290 / .55);overflow:hidden;margin:0 0 14px}
+.glance-t{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;padding:16px 18px 18px;border:0;border-left:1px solid var(--line);border-radius:0;background:transparent;color:inherit;text-align:left;cursor:pointer;transition:background-color .2s}
+.glance-t:first-child{border-left:0}
+.glance-t:hover{background:oklch(94% .016 80 / .04)}
+.glance-t:focus-visible{outline-offset:-3px;border-radius:16px}
+.glance-t .overline{font-size:.62rem;letter-spacing:.22em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.g-big{font:300 1.55rem/1.15 var(--display);letter-spacing:.05em;color:var(--ivory)}
+.g-sub{font-size:var(--t-xs);color:var(--ivory-3);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.g-lines{display:flex;flex-direction:column;gap:5px;font-size:var(--t-s);line-height:1.35;color:var(--ivory);padding-top:2px}
+.g-line{display:inline-flex;align-items:baseline;gap:9px}
+.g-line i{flex:none;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent}
+.g-line.up i{border-bottom:8px solid var(--ok);filter:drop-shadow(0 0 4px var(--ok))}
+.g-line.down i{border-top:8px solid var(--risk);filter:drop-shadow(0 0 4px var(--risk))}
+.g-line:not(.up):not(.down){color:var(--ivory-3)}
+.glance-t.warn .g-big{color:var(--warn)} .glance-t.warn .g-sub{color:var(--warn)}
+.glance-t.crit .g-sub{color:var(--risk)}
+@media (max-width:899px){.glance{grid-template-columns:repeat(2,minmax(0,1fr))}.glance-t:nth-child(3){border-left:0}.glance-t:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:599px){.glance-t{padding:14px 14px 16px}.g-big{font-size:1.3rem}}
 @media (prefers-reduced-motion:no-preference){
-  .enter .jn-item{animation:rise .6s var(--ease) backwards;animation-delay:calc(var(--i,0) * 60ms + .15s)}
-  .enter .spark .sp-line{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.4s var(--ease) forwards .3s}
-  .enter .sp-pt{animation:pop .5s var(--ease) backwards;animation-delay:calc(var(--i,0) * 120ms + .4s)}
-  .enter .asof-node .dot{animation:pop .5s var(--ease) backwards .2s}
+  .enter .glance-t{animation:rise .6s var(--ease) backwards;animation-delay:calc(var(--i,0) * 70ms + .1s)}
+  .enter .month{animation:rise .6s var(--ease) backwards;animation-delay:calc(var(--i,0) * 60ms + .15s)}
+  .enter .tg-c i{animation:pop .45s var(--ease) backwards;animation-delay:calc(var(--k,0) * 22ms + .3s)}
+  .enter .scrub-fill{animation:grow 1s var(--ease) backwards .2s}
+  .enter .scrub-rail i{animation:pop .5s var(--ease) backwards;animation-delay:calc(var(--k,0) * 20ms + .2s)}
+  @keyframes grow{from{width:0}}
 }
+
+/* Sessions: a list of names that open */
+.sess-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;min-height:40px}
+.sess{padding:0;transition:border-color .25s,background-color .25s}
+.sess-head{border-radius:17px}.sess.open .sess-head{border-radius:17px 17px 0 0}
+.sess.open{border-color:var(--line-2)}
+.sess-head{display:grid;grid-template-columns:9.5em minmax(0,1fr) auto auto;align-items:center;gap:6px 18px;width:100%;margin:0;padding:18px 22px;border:0;border-radius:0;background:transparent;color:inherit;text-align:left;cursor:pointer;transition:background-color .2s}
+.sess-head:hover{background:oklch(94% .016 80 / .035)}
+.sess-head:focus-visible{outline-offset:-3px;border-radius:18px}
+.sess-date{font:400 .8rem/1.3 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory-2);white-space:nowrap}
+.sess-title{min-width:0}
+.sess-title .overline{display:block;margin-bottom:3px}
+.sess-title b{display:block;font:400 1.04rem/1.35 var(--display);letter-spacing:.02em;color:var(--ivory);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sess-meta{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.sess-dots{display:inline-flex;gap:4px}
+.sess-dots i{width:7px;height:7px;border-radius:50%;background:var(--hlc);box-shadow:0 0 6px var(--hlc)}
+.sess-meta .dotrisk{width:8px;height:8px;border-radius:50%;background:var(--risk);box-shadow:0 0 8px var(--risk)}
+.sess-head .chev{color:var(--ivory-3);transition:transform .3s var(--ease)}
+.sess.open .sess-head .chev{transform:rotate(180deg)}
+.sess-body{padding:0 22px 22px;border-top:1px solid var(--line)}
+.sess-actions{padding:12px 0 14px;gap:6px 10px}
+.rename input{width:auto;min-width:16em}
+@media (max-width:599px){.sess-head{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"date chev" "title title" "meta meta";padding:16px 18px}.sess-date{grid-area:date}.sess-title{grid-area:title}.sess-title b{white-space:normal}.sess-meta{grid-area:meta}.sess-head .chev{grid-area:chev}.sess-body{padding:0 16px 18px}}
+@media (prefers-reduced-motion:no-preference){.sess-body{animation:rise .45s var(--ease) backwards}}
 
 /* Highlights: luminous underlines in each P's ink, with a faint wash */
 mark{background-color:transparent;color:inherit}
@@ -389,9 +493,9 @@ details.more[open]>summary .icon{transform:rotate(180deg)}
 .cell-head .num{color:var(--ivory-3);font:300 1.4rem/1 var(--display)}
 .cell-hint{font-size:var(--t-s);color:var(--ivory-3);margin:-4px 0 0 21px}
 .cell .items{margin-left:4px;padding-left:22px;border-left:1px solid color-mix(in oklch,var(--hlc) 40%,transparent);gap:14px}
-.cell .items li{position:relative;font-size:var(--t-m);line-height:1.8;max-width:62ch}
-.cell .items li::before{content:"";position:absolute;left:-22px;top:.9em;width:14px;height:1px;background:color-mix(in oklch,var(--hlc) 55%,transparent)}
-.cell .items li::after{content:"";position:absolute;left:-10px;top:calc(.9em - 2px);width:5px;height:5px;border-radius:50%;background:var(--hlc)}
+.cell .items>li{position:relative;font-size:var(--t-m);line-height:1.8;max-width:62ch}
+.cell .items>li::before{content:"";position:absolute;left:-22px;top:.9em;width:14px;height:1px;background:color-mix(in oklch,var(--hlc) 55%,transparent)}
+.cell .items>li::after{content:"";position:absolute;left:-10px;top:calc(.9em - 2px);width:5px;height:5px;border-radius:50%;background:var(--hlc)}
 .items{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
 .items li{line-height:1.6}
 .trend{font:500 .66rem/1 var(--display);letter-spacing:.16em;text-transform:uppercase;margin-left:8px;white-space:nowrap}
@@ -401,6 +505,34 @@ details.more[open]>summary .icon{transform:rotate(180deg)}
 .inline-add input{min-height:40px}
 .risk-block{padding:20px 22px;border:1px solid oklch(68% .19 25 / .4);border-radius:16px;margin-bottom:22px;background:linear-gradient(90deg,var(--risk-soft),transparent)}
 .risk-block h3{color:var(--risk)}
+.risk-block.calm{border-color:var(--line-2);background:transparent}
+.risk-block.calm h3{color:var(--ivory-2)}
+.risk-block.calm .theme-name{color:var(--ivory-3)}
+.risk-block .items.themes{gap:14px}
+/* themes: the newest note up front, earlier ones folded behind it */
+.cell .items.themes{gap:18px}
+.cell .items>li.theme::before{top:9px} .cell .items>li.theme::after{top:7px}
+.theme{display:flex;flex-direction:column;gap:3px;min-width:0}
+.theme-head{display:flex;flex-wrap:wrap;align-items:center;gap:3px 10px;min-height:18px}
+.theme-name{font:500 .66rem/1.3 var(--display);letter-spacing:.2em;text-transform:uppercase;color:color-mix(in oklch,var(--hlc) 85%,var(--ivory))}
+.theme-when{font-size:var(--t-xs);color:var(--ivory-3);font-variant-numeric:tabular-nums}
+.trail{display:inline-flex;gap:3px;align-items:center}
+.trail i{width:5px;height:5px;border-radius:50%;background:color-mix(in oklch,var(--hlc) 45%,transparent)}
+.trail i.better,.trail i.resolved{background:var(--ok);box-shadow:0 0 5px var(--ok)}
+.trail i.worse{background:var(--risk);box-shadow:0 0 5px var(--risk)}
+.theme-pt{line-height:1.75;font-size:var(--t-m)}
+.theme-more{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 0;border:0;background:transparent;color:var(--ivory-3);font:500 .66rem/1 var(--display);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:color .2s}
+.theme-more:hover{color:var(--ivory)}
+.theme-more .icon{width:14px;height:14px;transition:transform .25s var(--ease)}
+.theme-more[aria-expanded="true"] .icon{transform:rotate(180deg)}
+.theme-earlier{list-style:none;margin:0 0 4px;padding:2px 0 2px 14px;border-left:1px dashed var(--line-2);display:flex;flex-direction:column;gap:8px}
+.theme-earlier li{display:grid;grid-template-columns:4.4em minmax(0,1fr);gap:10px;font-size:var(--t-s);line-height:1.7;color:var(--ivory-2)}
+.te-date{font:500 .64rem/2.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--ivory-3);white-space:nowrap}
+.items.goals li .te-date{margin-left:8px;line-height:1}
+.screens .theme-pt{display:flex;gap:8px;align-items:baseline;color:var(--ivory-2)}
+.screens .theme-pt .icon{color:var(--ok);width:16px;height:16px;flex:none;align-self:center}
+.cell-more{align-self:flex-start;margin-left:14px}
+@media (prefers-reduced-motion:no-preference){.theme-earlier{animation:rise .4s var(--ease) backwards}}
 .below{display:grid;gap:28px;grid-template-columns:minmax(0,1fr);margin-top:32px}
 @media (min-width:900px){.below{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .listing{display:flex;flex-direction:column;border-top:1px solid var(--line)}
@@ -424,6 +556,10 @@ details.more[open]>summary .icon{transform:rotate(180deg)}
 .mn.item:hover rect,.mn.item:focus-visible rect{stroke:var(--hlc)}
 .mn.item:hover text{fill:var(--ivory)}
 .mn.missing rect{stroke:var(--ivory-3);stroke-dasharray:2 4} .mn.missing text{fill:var(--ivory-3)}
+.mn text.tag{font-family:var(--display);font-size:10.5px;font-weight:500;letter-spacing:1.5px;fill:color-mix(in oklch,var(--hlc) 80%,var(--ivory))}
+.mn.more rect{fill:transparent;stroke:var(--ivory-3);stroke-dasharray:2 4}
+.mn.more text{fill:var(--ivory-2);font-family:var(--display);font-weight:500;font-size:12.5px;letter-spacing:1.9px}
+.mn.more:hover rect,.mn.more:focus-visible rect{stroke:var(--ivory);stroke-dasharray:none}
 .mn.c-goal.branch rect,.mn.c-goal.item rect{stroke-dasharray:2 3}
 .mn:focus-visible rect,.mn.sel rect{stroke:var(--ivory);stroke-width:1.6;stroke-dasharray:none}
 .mconn{fill:none;stroke-width:1;stroke:color-mix(in oklch,var(--hlc,var(--ivory-3)) 55%,transparent);transition:opacity .3s,stroke .3s}
@@ -628,6 +764,7 @@ function plainText(s) { return String(s || '').replace(MARK_RE, (m, l) => PATTER
 
 const IC = {
   back: '<path d="M15 18l-6-6 6-6"/>',
+  fwd: '<path d="M9 18l6-6-6-6"/>',
   copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
@@ -943,7 +1080,7 @@ function initFX() {
 /* ================= on-device sorter (used when Claude is off or unavailable) ================= */
 const R_ = (s) => new RegExp(s, 'i');
 const RULES_CAT = [
-  ['risk', R_("suicid|self[- ]?harm|cutting|cuts? (him|her|them)sel|kill (him|her|them|my)sel|overdos|wish(es)? (i|he|she|they) (could|was|were) (dead|gone)|disappear|end (it all|my life|his life|her life|their life)|not want(s|ed)? to (live|be here|be alive)|harm (to )?others|hurt (someone|others|people)|weapon|knife|assault|abus|family violence|domestic violence|\\bdv\\b|neglect|unsafe|ran away|run(s|ning)? away|went missing|absconded|exploit|groom|sexual safety|rosh|mandatory report|child protection")],
+  ['risk', R_("suicid|self[- ]?harm|cutting|cuts? (him|her|them)sel|kill (him|her|them|my)sel|overdos|wish(es)? (i|he|she|they) (could|was|were) (dead|gone)|disappear|end (it all|my life|his life|her life|their life)|not want(s|ed)? to (live|be here|be alive)|passive (suicidal )?(thoughts|ideation)|better off (dead|without (me|him|her|them))|(easier|better|wish(es|ed)?|want(s|ed)?) (to )?(not|never) wake up|(easier|better) if (i|he|she|they) (didn'?t|did not|don'?t|never) wake up|no (reason|point) (to live|in living)|harm (to )?others|hurt (someone|others|people)|weapon|knife|assault|abus|family violence|domestic violence|\\bdv\\b|neglect|unsafe|ran away|run(s|ning)? away|went missing|absconded|exploit|groom|sexual safety|rosh|mandatory report|child protection")],
   ['goal', R_("\\b(wants? to|would like (to|him|her|them)|hopes? to|goal|aims? to|keen to|plans? to|wants? (him|her|them) (back|to))\\b")],
   ['presenting', R_("lost interest|no longer enjoys|stopped enjoying|referred|referral|presenting (with|concern)|presents with|main concern|reason for referral")],
   ['protective', R_("\\b(supportive|support from|supports? (him|her|them)|close to|trusted|visits|connected (to|with)|engaged (with|in)|mentor|good relationship|stable|safe (person|adult)|helps (him|her|them)|youth group|church|mosque|temple)\\b")],
@@ -964,7 +1101,7 @@ const RULES_TOPIC = {
   drugs: "alcohol|drink|vape|vaping|cannabis|weed|drugs?|smok|substance",
   sexuality: "sexual|sexuality|gender|identity|lgbt|queer|gay|lesbian|bisexual|trans\\b|boyfriend|girlfriend|relationship with (a|her|his) (partner|boyfriend|girlfriend)",
   mood: "mood|sad|low|depress|happy|tearful|cry|irritab|angry|numb|hopeless|bothered",
-  selfharm: "suicid|self[- ]?harm|cutting|kill|overdos|disappear|not want to (live|be here)|end it",
+  selfharm: "suicid|self[- ]?harm|cutting|kill|overdos|disappear|not want to (live|be here)|end it|passive (suicidal )?(thoughts|ideation)|better off (dead|without)|(easier|better|wish(es|ed)?|want(s|ed)?) (to )?(not|never) wake up|(easier|better) if (i|he|she|they) (didn'?t|did not|don'?t|never) wake up|safety plan",
   aggression: "aggress|violent|violence|hit|hits|hitting|punch|fight|threat|harm (to )?others|hurt (someone|others)",
   abuse: "abus|family violence|domestic violence|\\bdv\\b|neglect|unsafe at home|rosh|child protection|dcj|facs|mandatory report",
   exploitation: "online|exploit|groom|sexual safety|older (men|man|boyfriend|girlfriend)|nudes|sext|social media|snapchat|instagram|tiktok",
@@ -1209,7 +1346,7 @@ function interventionStats(c, iv) {
 }
 /* ================= state ================= */
 const S = { cases: [], ready: false, mode: 'loading', settings: { useClaude: true } };
-const UI = { view: 'home', caseId: null, tab: 'notes', formMode: 'board', draft: null, openGap: null, pop: null, justSorted: null, newCase: false, confirm: null, mapView: {}, mapOpen: {}, sortCtl: null, space: null, menu: false, lastKey: '' };
+const UI = { view: 'home', caseId: null, tab: 'notes', formMode: 'board', draft: null, openGap: null, pop: null, justSorted: null, newCase: false, confirm: null, mapView: {}, mapOpen: {}, mapMore: {}, openMonth: {}, openTheme: {}, openJn: {}, cellAll: {}, gridAll: {}, find: {}, sortCtl: null, space: null, menu: false, lastKey: '' };
 let DB = null, UID = null, SAMPLE = null;
 const dirty = new Set(), timers = {}, writing = {}, again = {};
 /* Two separate spaces behind the passcode: 't' (hers) and 's' (his). Each keeps its own cases. */
@@ -1314,11 +1451,81 @@ function chronEntries(c) { return c.entries.map((e, i) => [e, i]).sort((x, y) =>
 /* upto: only entries on or before that date (the formulation "as of" a session) */
 function allSpans(c, upto) { const out = []; chronEntries(c).forEach(e => { if (upto && e.date > upto) return; e.spans.forEach(s => out.push(Object.assign({}, s, { text: spanText(e, s), entryId: e.id, date: e.date }))); }); return out; }
 function latestChanges(c, upto) { const m = {}; allSpans(c, upto).forEach(s => { if (s.rel && s.rel.id) m[s.rel.id] = { change: s.rel.change, date: s.date }; }); return m; }
+/* A short name for a session, from the notes themselves: the kind of contact, then what changed or what it was about.
+   A name from the AI sort or one she typed herself wins. */
+const SESSION_KINDS = [
+  [/\b(initial|first)\s+(assessment|appointment|session|contact)\b|\bintake\b|\bassessment\b/i, 'Assessment'],
+  [/\bfamily (session|meeting|therapy)\b/i, 'Family session'],
+  [/\bhome visit\b/i, 'Home visit'],
+  [/\bschool (meeting|visit|liaison)\b|\bmet with (the )?school\b/i, 'School meeting'],
+  [/\b(phone|telephone|tele-?health|video) (call|session|review|contact)\b|\bphone call\b/i, 'Phone call'],
+  [/\b(crisis|urgent|emergency) (contact|session|review|assessment)\b/i, 'Urgent review'],
+  [/\bdischarge\b/i, 'Discharge'],
+  [/\bgroup (session|program)\b/i, 'Group session'],
+  [/\breview\b/i, 'Review']
+];
+const TOPIC_WORDS = { mood: 'mood', sleep: 'sleep', education: 'school', peers: 'friends', family: 'family', home: 'home', selfharm: 'safety', aggression: 'anger', abuse: 'safety', exploitation: 'safety', missing: 'safety', anxiety: 'anxiety', trauma: 'trauma', eating: 'eating', drugs: 'substances', attention: 'attention', behaviour: 'behaviour', activities: 'interests', health: 'health', familymh: 'parent’s health', development: 'development', mhhistory: 'past support', sexuality: 'relationships' };
+const listWords = a => a.length < 2 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+function sessionTitle(e) {
+  if (e.title) return e.title;
+  const head = plainText(e.text).slice(0, 160); const kind = (SESSION_KINDS.find(([re]) => re.test(head)) || [])[1] || '';
+  const word = s => (s.topics || []).map(t => TOPIC_WORDS[t]).find(Boolean);
+  const moved = {}; e.spans.filter(s => s.rel).forEach(s => { const w = word(s); if (w) { const k = s.rel.change === 'resolved' ? 'settled' : s.rel.change; (moved[k] = moved[k] || []); if (!moved[k].includes(w)) moved[k].push(w); } });
+  let about = Object.entries(moved).map(([k, ws]) => `${listWords(ws.slice(0, 2))} ${k}`).slice(0, 2).join(', ');
+  if (!about) {
+    const weight = { presenting: 3, risk: 2.5, perpetuating: 2, precipitating: 2, predisposing: 1.2, goal: 1, protective: .8, positive: .6 };
+    const n = {}; e.spans.filter(s => !(s.cat === 'risk' && isNegScreen(Object.assign({}, s, { text: e.text.slice(s.a, s.b) })))).forEach(s => { (s.topics || []).forEach((t, i) => { const w = TOPIC_WORDS[t]; if (w) n[w] = (n[w] || 0) + (s.cat === 'context' ? .5 : weight[s.cat] || 1) / (i + 1); }); });
+    const salience = { mood: 1.3, anxiety: 1.3, safety: 1.5, trauma: 1.3, eating: 1.2, substances: 1.2, school: 1.2, sleep: 1.1, interests: .4, home: .5, 'past support': .5, development: .7, health: .8 };
+    about = listWords(Object.entries(n).map(([w, v]) => [w, v * (salience[w] || 1)]).sort((x, y) => y[1] - x[1]).slice(0, 3).map(x => x[0]));
+  }
+  const t = kind && about ? `${kind}: ${about}` : kind || about || 'Session notes';
+  return cap(t);
+}
 function sessionDates(c) { return Array.from(new Set(c.entries.filter(e => e.kind === 'notes').map(e => e.date))).sort(); }
 function asOfOf(c) { const d = UI.asOf && UI.asOf[c.id]; const ds = sessionDates(c); return d && ds.includes(d) && d !== ds[ds.length - 1] ? d : null; }
 function sessionNumbers(c) { const m = {}; chronEntries(c).filter(e => e.kind === 'notes').forEach((e, i) => { m[e.id] = i + 1; }); return m; }
+/* ---- themes: points about the same thing, followed from session to session ---- */
+const THEME_PRI = ['selfharm', 'abuse', 'exploitation', 'missing', 'drugs', 'trauma', 'familymh', 'anxiety', 'mood', 'aggression', 'peers', 'family', 'sleep', 'education', 'eating', 'attention', 'behaviour', 'health', 'development', 'sexuality', 'culture', 'activities', 'mhhistory', 'home'];
+const THEME_LABEL = { selfharm: 'Self-harm', abuse: 'Abuse and harm', exploitation: 'Online safety', missing: 'Running away', eating: 'Eating', drugs: 'Substances', trauma: 'Trauma', familymh: 'Parent’s health', anxiety: 'Anxiety', mood: 'Mood', aggression: 'Anger', peers: 'Friends', family: 'Family', sleep: 'Sleep', education: 'School', attention: 'Attention', behaviour: 'Behaviour', health: 'Health', development: 'Development', sexuality: 'Relationships', culture: 'Culture', activities: 'Interests', mhhistory: 'Past support', home: 'Home' };
+function themeOf(s) { const tp = s.topics || []; const k = THEME_PRI.find(t => tp.includes(t)) || ''; return k === 'home' ? 'family' : k; }
+const themeName = k => THEME_LABEL[k] || 'Other';
+/* spans in session order in; themes out, each newest first, the most talked-about theme first */
+function themeGroups(spans) {
+  const m = new Map();
+  spans.forEach(s => { const k = themeOf(s) || 'other'; if (!m.has(k)) m.set(k, { key: k, label: themeName(k), items: [] }); m.get(k).items.push(s); });
+  const gs = [...m.values()];
+  gs.forEach(g => { g.items.reverse(); g.latest = g.items[0]; g.first = g.items[g.items.length - 1]; g.sessions = new Set(g.items.map(s => s.date)).size; });
+  return gs.sort((a, b) => (a.key === 'other') - (b.key === 'other') || b.sessions - a.sessions || String(b.latest.date).localeCompare(String(a.latest.date)));
+}
+const monthKey = d => String(d || '').slice(0, 7);
+function monthName(k) { const [y, m] = String(k).split('-'); return `${MONTHS_LONG[Number(m) - 1] ? cap(MONTHS_LONG[Number(m) - 1]) : ''} ${y}`; }
+/* group anything with a .date into months, newest month first */
+function byMonth(list) { const out = []; list.forEach(x => { const k = monthKey(x.date); const last = out[out.length - 1]; if (last && last.key === k) last.items.push(x); else out.push({ key: k, items: [x] }); }); return out; }
+function daysBetween(a, b) { return Math.round((Date.parse(b) - Date.parse(a)) / 864e5); }
+function rhythm(ds) {
+  if (ds.length < 2) return ''; const gap = daysBetween(ds[0], ds[ds.length - 1]) / (ds.length - 1);
+  return gap <= 9 ? 'about weekly' : gap <= 18 ? 'about fortnightly' : gap <= 40 ? 'about monthly' : 'every few months';
+}
+/* What the notes say, in a few plain lines: the rhythm, the last session, what moved lately, safety. */
+function caseBrief(c) {
+  const ds = sessionDates(c); const js = journey(c); const sp = allSpans(c);
+  const lastDate = ds[ds.length - 1] || (js[js.length - 1] || {}).date || null;
+  const lastJ = js.slice().reverse().find(j => j.n) || js[js.length - 1] || null;
+  const dir = {}; js.forEach(j => j.changes.forEach(x => { const k = themeOf(x.of) || themeOf(x.s); if (k) dir[k] = { change: x.change, date: j.date }; }));
+  const recent = ds.length > 5 ? ds[ds.length - 6] : ds[0] || '';
+  const lately = Object.entries(dir).filter(([, v]) => v.date >= recent);
+  const better = lately.filter(([, v]) => v.change !== 'worse').map(([k]) => themeName(k).toLowerCase());
+  const worse = lately.filter(([, v]) => v.change === 'worse').map(([k]) => themeName(k).toLowerCase());
+  const talk = themeGroups(sp).filter(g => g.key !== 'other').slice(0, 3).map(g => ({ label: g.label, n: g.sessions }));
+  const sh = sp.filter(s => (s.topics || []).includes('selfharm') || (s.cat === 'risk' && themeOf(s) === 'selfharm'));
+  const asked = sh.length ? sh[sh.length - 1].date : null;
+  const concern = riskSpans(c); const lastConcern = concern.length ? concern[concern.length - 1] : null;
+  const changes = js.reduce((a, j) => ({ better: a.better + j.better, worse: a.worse + j.worse }), { better: 0, worse: 0 });
+  const weeksSince = lastDate ? Math.floor(daysBetween(lastDate, todayISO()) / 7) : 0;
+  return { ds, js, first: ds[0] || null, lastDate, lastJ, rhythm: rhythm(ds), better, worse, talk, asked, lastConcern, changes, weeksSince };
+}
 /* Without AI: link "better / worse / resolved" wording to the most recent earlier point on the same topic. */
-const CHANGE_WORSE = /\b(worse|worsen\w*|deteriorat\w*|escalat\w*|increas\w*|more (?:often|anxious|low|withdrawn|frequent|angry|aggressive)|stopped attending|not attending|refus\w+ to attend)\b/i;
+const CHANGE_WORSE = /\b(worse|worsen\w*|deteriorat\w*|escalat\w*|increas\w*|dropped|dipped|declin\w*|relaps\w*|returned(?! to\b)|came back|back to (?:not|skipping|missing)|more (?:often|anxious|low|withdrawn|frequent|angry|aggressive)|stopped attending|not attending|refus\w+ to attend)\b/i;
 const CHANGE_RESOLVED = /\b(resolved|has stopped|have stopped|ceased|no further)\b/i;
 const CHANGE_BETTER = /\b(better|improv\w*|less (?:often|anxious|low|withdrawn|frequent|angry)|reduc\w*|eas(?:ed|ing)|settl\w*|back at school|back to school|returned to|attend(?:ed|ing) (?:\d|all|most|every))\b/i;
 function relByRules(c, spans, text, date) {
@@ -1341,7 +1548,7 @@ function journey(c) {
     const here = sp.filter(s => s.date === date && (s.cat !== 'context' || s.rel));
     const changes = here.filter(s => s.rel && byId[s.rel.id] && byId[s.rel.id].date <= date).map(s => ({ s, of: byId[s.rel.id], change: s.rel.change }));
     const fresh = here.filter(s => s.cat !== 'context' && !changes.some(ch => ch.s.id === s.id));
-    return { date, n: notes.length ? nums[notes[0].id] : null, fresh, changes, better: changes.filter(x => x.change !== 'worse').length, worse: changes.filter(x => x.change === 'worse').length };
+    return { date, n: notes.length ? nums[notes[0].id] : null, title: notes.length ? sessionTitle(notes[0]) : '', fresh, changes, better: changes.filter(x => x.change !== 'worse').length, worse: changes.filter(x => x.change === 'worse').length };
   });
 }
 function activeInt(c) { return c.ints.find(i => !i.end) || null; }
@@ -1382,7 +1589,9 @@ For each span also give "short": the point in 4 to 12 plain words, third person,
 
 Then give up to 3 "checks": questions a careful, sceptical clinician would ask next to test the formulation (timing that does not fit, an alternative explanation, a contradiction, or missing information that would change the plan). Each {"text": a question under 20 words, "why": a reason under 20 words}.
 
-Reply with only JSON: {"spans":[{"quote":"...","cat":"...","topics":["..."],"short":"...","update":null}],"checks":[{"text":"...","why":"..."}]}`;
+Also give "title": a 3 to 6 word name for this session in plain words, built from what happened (for example "Assessment: low mood, school" or "Sleep better, bullying stopped"). No names or placeholders in the title.
+
+Reply with only JSON: {"title":"...","spans":[{"quote":"...","cat":"...","topics":["..."],"short":"...","update":null}],"checks":[{"text":"...","why":"..."}]}`;
 function locate(text, quote, from) {
   if (!quote) return -1;
   let i = text.indexOf(quote, from); if (i >= 0) return i;
@@ -1446,7 +1655,8 @@ async function sortWithAI(c, text, signal, provider, date) {
   spans.sort((x, y) => x.a - y.a);
   const checks = (Array.isArray(data && data.checks) ? data.checks : []).slice(0, 3).map(k => ({ id: uid('k'), text: String(k.text || '').slice(0, 160), why: String(k.why || '').slice(0, 160) })).filter(k => k.text);
   if (!spans.length) throw { code: 'empty_sort' };
-  return { spans, checks };
+  const title = String(data && data.title || '').replace(MARK_RE, '').replace(/\s+/g, ' ').trim().slice(0, 60);
+  return { spans, checks, title };
 }
 function aiErrorText(e, provider) {
   const code = e && e.code; const name = PROVIDER_NAME[provider] || 'Claude'; const tail = ', so your notes were sorted with the built-in rules.';
@@ -1490,6 +1700,7 @@ function buildSummary(c) {
 }
 function buildProgress(c) {
   const L = [`${c.label}: changes over time (${fmtDate(todayISO())})`, 'De-identified. From session notes; check before filing.'];
+  const brief = briefLines(caseBrief(c)); if (brief.length) { L.push(''); L.push('In short'); brief.forEach(l => L.push('- ' + l)); }
   journey(c).forEach(j => {
     L.push(''); L.push(`${fmtDate(j.date)}${j.n ? ` (session ${j.n})` : ' (added in the app)'}`);
     j.changes.forEach(x => L.push(`- ${cap(x.change)}: ${plainText(x.of.short || shortOf(x.of.text))}. ${plainText(x.s.short || shortOf(x.s.text))}`));
@@ -1783,10 +1994,31 @@ function caseHTML(c) {
   const tabs = [['notes', 'Notes', c.entries.length ? openN : null, 'still missing'], ['form', 'Formulation', null], ['next', 'Next session', c.entries.length ? cl.focusN : null, 'to focus on'], ['plan', 'Plan', null]];
   const at = CHAPTERS.indexOf(UI.tab); const nx = at >= 0 && at < CHAPTERS.length - 1 ? tabs[at + 1] : null;
   return `<header class="case-hero">${glyphSVG(c)}<div class="grow"><p class="overline">${caseMeta(c)}</p><h1 class="title">${esc(c.label)}</h1></div></header>
+    ${glanceHTML(c)}
     <nav class="tabs" role="tablist" aria-label="Case sections">${tabs.map(([k, l, n, what], j) => `<button class="tab" role="tab" id="tab-${k}" aria-selected="${UI.tab === k}" tabindex="${UI.tab === k ? 0 : -1}" data-act="tab" data-tab="${k}"><span class="ch-n" aria-hidden="true">0${j + 1}</span>${l}${n ? `<span class="count" title="${n} ${what}">${n}</span>` : ''}</button>`).join('')}</nav>
     ${safetyHTML(c)}
     <div class="panel" id="panel" role="tabpanel" aria-labelledby="tab-${UI.tab}">${UI.tab === 'form' ? formHTML(c) : UI.tab === 'plan' ? planHTML(c) : UI.tab === 'next' ? nextHTML(c, cl) : notesHTML(c, cl)}
       ${nx && c.entries.length ? `<button class="next-ch" data-act="tab" data-tab="${nx[0]}"><span class="scroll-pill" aria-hidden="true"></span><span><span class="overline">Next · 0${at + 2}</span><b>${nx[1]}</b></span></button>` : ''}</div>`;
+}
+/* The case at a glance: four tiles that say where things stand, each one a way in. */
+function agoText(days) { return days < 7 ? (days <= 0 ? 'today' : days === 1 ? 'yesterday' : `${days} days ago`) : days < 14 ? 'last week' : days < 63 ? `${Math.floor(days / 7)} weeks ago` : `${Math.round(days / 30.4)} months ago`; }
+function glanceHTML(c) {
+  if (!c.entries.length) return '';
+  const b = caseBrief(c); if (!b.lastDate) return '';
+  const lastE = chronEntries(c).filter(e => e.kind === 'notes').pop();
+  const n = b.ds.length; const since = b.asked ? b.ds.filter(d => d > b.asked).length : n;
+  let ti = 0; const tile = (go, cls, over, big, sub, label) => `<button class="glance-t${cls ? ' ' + cls : ''}" style="--i:${ti++}" data-act="glance" data-go="${go}" aria-label="${esc(label)}"><span class="overline">${over}</span>${big}${sub ? `<span class="g-sub">${sub}</span>` : ''}</button>`;
+  const lately = b.better.length || b.worse.length
+    ? `${b.better.length ? `<span class="g-line up"><i aria-hidden="true"></i>${esc(cap(listWords(b.better.slice(0, 3))))}</span>` : ''}${b.worse.length ? `<span class="g-line down"><i aria-hidden="true"></i>${esc(cap(listWords(b.worse.slice(0, 3))))}</span>` : ''}`
+    : `<span class="g-line">${n > 1 ? 'No changes noted yet' : 'Shows after a second session'}</span>`;
+  const safeCls = !b.asked ? 'warn' : since ? 'warn' : b.lastConcern && newRisk(c).length ? 'crit' : '';
+  const safeSub = !b.asked ? 'Ask about self-harm every session' : since ? `Not asked in the last ${since === 1 ? 'session' : plural(since, 'session')}` : b.lastConcern ? `Concern noted ${esc(fmtShort(b.lastConcern.date))}` : 'Nothing reported';
+  return `<div class="glance" role="group" aria-label="At a glance">
+    ${tile('notes', '', 'Sessions', `<b class="g-big num">${n || '–'}</b>`, n > 1 ? `${esc(fmtShort(b.first))} – ${esc(fmtShort(b.lastDate))}${b.rhythm ? ' · ' + b.rhythm : ''}` : n ? esc(fmtDate(b.first)) : 'Points added in the app', `${plural(n, 'session')}. Open the notes`)}
+    ${tile('last', '', `Last session · ${esc(agoText(daysBetween(b.lastDate, todayISO())))}`, `<b class="g-big">${esc(fmtShort(b.lastDate))}</b>`, lastE ? esc(sessionTitle(lastE)) : '', `Last session ${fmtDate(b.lastDate)}. Open it`)}
+    ${tile('time', '', 'Lately', `<span class="g-lines">${lately}</span>`, '', `Lately: ${b.better.length ? 'better ' + listWords(b.better) + '. ' : ''}${b.worse.length ? 'worse ' + listWords(b.worse) + '. ' : ''}Open Over time`)}
+    ${tile('safety', safeCls, 'Safety', `<b class="g-big">${b.asked ? `Asked ${esc(fmtShort(b.asked))}` : 'Not asked yet'}</b>`, safeSub, `Safety: ${b.asked ? 'self-harm last asked ' + fmtDate(b.asked) : 'self-harm not asked yet'}. ${safeSub}`)}
+  </div>`;
 }
 function safetyHTML(c) {
   const all = riskSpans(c); if (!all.length) return '';
@@ -1869,18 +2101,80 @@ function dateHandleHTML(e) {
   if (UI.editDate === e.id) return `<span class="row" style="gap:8px"><label class="sr" for="ed-date">Session date</label><input type="date" id="ed-date" value="${esc(e.date)}" max="${todayISO()}"><button class="btn sm primary" data-act="save-date" data-id="${esc(e.id)}">Save</button><button class="btn quiet sm" data-act="cancel-date">Cancel</button></span>`;
   return `<button class="date-handle" data-act="edit-date" data-id="${esc(e.id)}" aria-label="Session date ${esc(fmtDate(e.date))}. Change">${esc(fmtDate(e.date))}${icon('pen')}</button>`;
 }
+/* Sessions as a list of names: closed by default, open one to read or change it. */
+function sessGroups(c) {
+  const groups = []; chronEntries(c).slice().reverse().forEach(e => { const last = groups[groups.length - 1]; if (e.kind === 'quick' && last && last.kind === 'quick' && last.date === e.date) last.items.push(e); else groups.push(e.kind === 'quick' ? { kind: 'quick', id: 'q-' + e.date, date: e.date, items: [e] } : e); });
+  return groups;
+}
+function sessIds(c) { return sessGroups(c).map(g => g.id); }
+function sessDots(entries) {
+  const cats = new Set(entries.flatMap(e => e.spans.map(s => s.cat)));
+  return `<span class="sess-dots" aria-hidden="true">${CAT_ORDER.filter(k => k !== 'context' && cats.has(k)).map(k => `<i class="c-${k}"></i>`).join('')}</span>`;
+}
+function sessHeadHTML(g, open, over, title, meta, snip) {
+  return `<button class="sess-head sheet-head" data-act="toggle-sess" data-id="${esc(g.id)}" aria-expanded="${open}" aria-controls="sb-${esc(g.id)}">
+    <span class="sess-date">${esc(fmtDate(g.date))}</span>
+    <span class="sess-title"><span class="overline">${esc(over)}</span><b>${esc(title)}</b>${snip || ''}</span>
+    <span class="sess-meta">${meta}</span>${icon('chev', 'chev')}</button>`;
+}
+/* Months hold sessions; the newest month starts open. scope keeps Notes and Over time apart. */
+function monthOpen(scope, key, idx) { const st = UI.openMonth && UI.openMonth[scope + ':' + key]; return st == null ? idx === 0 : st; }
+function monthHTML(scope, m, idx, meta, inner, force) {
+  const open = force || monthOpen(scope, m.key, idx);
+  return `<section class="month${open ? ' open' : ''}" style="--i:${idx}"><button class="month-head" data-act="toggle-month" data-k="${esc(scope + ':' + m.key)}" data-open="${open}" aria-expanded="${open}">
+    <span class="month-name">${esc(monthName(m.key))}</span><span class="month-meta">${meta}</span>${icon('chev', 'chev')}</button>
+    ${open ? `<div class="month-body">${inner()}</div>` : ''}</section>`;
+}
+function findHits(g, q) {
+  if (!q) return null; const texts = g.kind === 'quick' ? g.items.map(e => plainText(e.text)) : [plainText(g.text), g.title || ''];
+  for (const t of texts) { const i = t.toLowerCase().indexOf(q); if (i >= 0) { const a = Math.max(0, i - 40), b = Math.min(t.length, i + q.length + 60); return (a ? '…' : '') + esc(t.slice(a, i)) + `<mark class="find-hit">${esc(t.slice(i, i + q.length))}</mark>` + esc(t.slice(i + q.length, b)) + (b < t.length ? '…' : ''); } }
+  return null;
+}
 function sheetsHTML(c) {
   if (!c.entries.length) return '';
-  const nums = sessionNumbers(c);
-  const groups = []; chronEntries(c).slice().reverse().forEach(e => { const last = groups[groups.length - 1]; if (e.kind === 'quick' && last && last.kind === 'quick' && last.date === e.date) last.items.push(e); else groups.push(e.kind === 'quick' ? { kind: 'quick', date: e.date, items: [e] } : e); });
-  return `${LEGEND}${groups.map((g, gi) => {
-    if (g.kind === 'quick') return `<article class="sheet" style="--i:${gi}"><div class="sheet-head"><h3>Added in the app · ${fmtDate(g.date)}</h3></div><div class="stack-s sheet-body">${g.items.map(e => `<div class="row" style="align-items:baseline"><span class="grow">${hlHTML(e, UI.justSorted === e.id)}</span><button class="btn quiet sm" data-act="del-entry" data-id="${esc(e.id)}" aria-label="Delete this line">${icon('trash')}</button></div>`).join('')}</div></article>`;
-    const iv = g.intId && c.ints.find(i => i.id === g.intId);
-    return `<article class="sheet" style="--i:${gi}" id="sheet-${esc(g.id)}"><div class="sheet-head"><div class="row" style="gap:6px 14px"><h3>Session ${nums[g.id] || ''}</h3>${dateHandleHTML(g)}</div><span class="row xs muted">${iv ? `${esc(variantOf(iv).name)} · ` : ''}Sorted ${g.by === 'claude' ? 'by Claude' : g.by === 'openai' ? 'by ChatGPT' : 'on this device'}
-        <button class="btn quiet sm" data-act="copy-entry" data-id="${esc(g.id)}">${icon('copy')}Copy</button>
-        ${UI.confirm === 'e:' + g.id ? `<button class="btn sm danger" data-act="del-entry-yes" data-id="${esc(g.id)}">Delete these notes</button><button class="btn quiet sm" data-act="cancel-confirm">Keep</button>` : `<button class="btn quiet sm" data-act="del-entry" data-id="${esc(g.id)}" aria-label="Delete these notes">${icon('trash')}</button>`}</span></div>
-      <div class="sheet-body ruled" style="white-space:pre-wrap">${hlHTML(g, UI.justSorted === g.id)}</div></article>`;
-  }).join('')}`;
+  const groups = sessGroups(c); const nSess = groups.filter(g => g.kind !== 'quick').length; const allOpen = groups.every(g => (UI.openSess || {})[g.id]);
+  const q = ((UI.find || {})[c.id] || '');
+  return `<div class="sess-tools"><span class="overline">${plural(nSess, 'session')}${groups.length > nSess ? ' · and points added in the app' : ''}</span>
+      <span class="row" style="gap:6px">${nSess > 3 ? `<label class="find">${icon('search')}<span class="sr">Find in notes</span><input type="search" id="sess-find" placeholder="Find in notes" value="${esc(q)}" autocomplete="off" enterkeyhint="search"></label>` : ''}
+      ${groups.length > 1 ? `<button class="btn quiet sm" data-act="sess-all">${allOpen ? 'Close all' : 'Open all'}</button>` : ''}</span></div>
+    <div id="sess-list" class="tl">${sessListHTML(c)}</div>`;
+}
+function sessListHTML(c) {
+  const nums = sessionNumbers(c); const open = UI.openSess = UI.openSess || {};
+  const q = ((UI.find || {})[c.id] || '').trim().toLowerCase();
+  let groups = sessGroups(c); const hits = {};
+  if (q) { groups = groups.filter(g => { const h = findHits(g, q); if (h) hits[g.id] = h; return !!h; }); }
+  const anyOpen = groups.some(g => open[g.id]);
+  const head = q ? `<p class="small muted find-count" role="status">${groups.length ? `${plural(groups.length, 'session')} mention “${esc(q)}”` : `Nothing in the notes mentions “${esc(q)}”.`}</p>` : '';
+  let gi = 0;
+  const row = g => {
+    const isOpen = !!open[g.id]; const snip = hits[g.id] ? `<span class="sess-snip">${hits[g.id]}</span>` : ''; const i = gi++;
+    if (g.kind === 'quick') {
+      const meta = `${sessDots(g.items)}<span class="xs faint">${plural(g.items.length, 'line')}</span>`;
+      return `<article class="sheet sess${isOpen ? ' open' : ''}${i === 0 && !q ? ' first' : ''}" style="--i:${i}" id="sheet-${esc(g.id)}">${sessHeadHTML(g, isOpen, 'Added in the app', g.items.length === 1 ? shortOf(plainText(g.items[0].text), 60) : `${plural(g.items.length, 'point')} added`, meta, snip)}
+        ${isOpen ? `<div class="sess-body" id="sb-${esc(g.id)}"><div class="stack-s sheet-body">${g.items.map(e => `<div class="row" style="align-items:baseline"><span class="grow">${hlHTML(e, UI.justSorted === e.id)}</span><button class="btn quiet sm" data-act="del-entry" data-id="${esc(e.id)}" aria-label="Delete this line">${icon('trash')}</button></div>`).join('')}</div></div>` : ''}</article>`;
+    }
+    const iv = g.intId && c.ints.find(x => x.id === g.intId);
+    const pts = g.spans.filter(s => s.cat !== 'context').length; const risk = g.spans.some(s => s.cat === 'risk' && !isNegScreen(s));
+    const meta = `${sessDots([g])}${risk ? '<span class="dotrisk" title="Risk noted"></span>' : ''}<span class="xs faint">${plural(pts, 'point')}</span>`;
+    const over = `Session ${nums[g.id] || ''}${iv ? ' · ' + variantOf(iv).name : ''}`;
+    const rename = UI.renaming === g.id ? `<form class="row rename" data-form="rename-sess" data-id="${esc(g.id)}"><label class="sr" for="rn-in">Session name</label><input type="text" id="rn-in" maxlength="60" value="${esc(g.title || sessionTitle(g))}" autocomplete="off"><button class="btn sm primary" type="submit">Save</button><button class="btn quiet sm" type="button" data-act="cancel-rename">Cancel</button></form>` : `<button class="btn quiet sm" data-act="rename-sess" data-id="${esc(g.id)}">${icon('pen')}Rename</button>`;
+    return `<article class="sheet sess${isOpen ? ' open' : ''}${i === 0 && !q ? ' first' : ''}" style="--i:${i}" id="sheet-${esc(g.id)}">${sessHeadHTML(g, isOpen, over, sessionTitle(g), meta, snip)}
+      ${isOpen ? `<div class="sess-body" id="sb-${esc(g.id)}">
+        <div class="sess-actions row">${dateHandleHTML(g)}${rename}<button class="btn quiet sm" data-act="copy-entry" data-id="${esc(g.id)}">${icon('copy')}Copy</button>
+          ${UI.confirm === 'e:' + g.id ? `<button class="btn sm danger" data-act="del-entry-yes" data-id="${esc(g.id)}">Delete these notes</button><button class="btn quiet sm" data-act="cancel-confirm">Keep</button>` : `<button class="btn quiet sm" data-act="del-entry" data-id="${esc(g.id)}" aria-label="Delete these notes">${icon('trash')}</button>`}
+          <span class="xs faint grow" style="text-align:right">Sorted ${g.by === 'claude' ? 'by Claude' : g.by === 'openai' ? 'by ChatGPT' : 'on this device'}</span></div>
+        <div class="sheet-body ruled" style="white-space:pre-wrap">${hlHTML(g, UI.justSorted === g.id)}</div></div>` : ''}</article>`;
+  };
+  const months = byMonth(groups);
+  if (!groups.length) return head;
+  /* a handful of sessions needs no months */
+  if (months.length < 2 || groups.length <= 4) return head + (anyOpen ? LEGEND : '') + groups.map(row).join('');
+  return head + (anyOpen ? LEGEND : '') + months.map((m, mi) => {
+    const n = m.items.filter(g => g.kind !== 'quick').length; const extra = m.items.length - n;
+    const meta = `${n ? plural(n, 'session') : ''}${n && extra ? ' · ' : ''}${extra ? plural(extra, 'addition') : ''}${sessDots(m.items.flatMap(g => g.kind === 'quick' ? g.items : [g]))}`;
+    return monthHTML('n', m, mi, meta, () => m.items.map(row).join(''), !!q);
+  }).join('');
 }
 
 /* ---- still missing ---- */
@@ -1937,52 +2231,147 @@ function formHTML(c) {
     ${mode === 'time' ? `<button class="btn" data-act="copy-progress">${icon('copy')}Copy progress</button>` : `<button class="btn" data-act="copy-summary">${icon('copy')}Copy formulation</button>`}</div>
     ${mode === 'time' ? journeyHTML(c) : asOfHTML(c) + (mode === 'map' ? mapHTML(c) : boardHTML(c))}</div>`;
 }
-/* Show the formulation as it stood at any session; later sessions read as "not yet" (dotted). */
+/* Show the formulation as it stood at any session: a scrubber that fits any number of sessions. */
+const CHANGE_WORD = { better: 'Better', worse: 'Worse', resolved: 'Resolved' };
+function sessSummary(j) {
+  if (!j) return '';
+  const th = list => Array.from(new Set(list.map(x => themeName(themeOf(x.of) || themeOf(x.s)).toLowerCase()).filter(t => t !== 'other')));
+  const up = th(j.changes.filter(x => x.change !== 'worse')), down = th(j.changes.filter(x => x.change === 'worse'));
+  return [j.fresh.length ? plural(j.fresh.length, 'new point') : '', up.length ? `better: ${listWords(up)}` : '', down.length ? `worse: ${listWords(down)}` : ''].filter(Boolean).join(' · ');
+}
+function scrubMarks(ds) {
+  const marks = []; ds.forEach((d, k) => { if (!k || monthKey(d) !== monthKey(ds[k - 1])) marks.push({ k, label: MONTHS[Number(d.slice(5, 7)) - 1] + (k && d.slice(0, 4) !== ds[k - 1].slice(0, 4) ? ' ’' + d.slice(2, 4) : '') }); });
+  const step = Math.ceil(marks.length / 7); return marks.filter((m, i) => i % step === 0);
+}
+function scrubNow(c, ds, i) {
+  const j = journey(c).find(x => x.date === ds[i]);
+  return `<b>Session ${i + 1} <span class="faint">of ${ds.length}</span></b><span class="scrub-date">${esc(fmtDate(ds[i]))}</span>${j && j.title ? `<span class="scrub-title">${esc(j.title)}</span>` : ''}`;
+}
 function asOfHTML(c) {
   const ds = sessionDates(c); if (ds.length < 2) return '';
-  const at = asOfOf(c) || ds[ds.length - 1]; const nums = {}; ds.forEach((d, i) => { nums[d] = i + 1; });
-  return `<div class="asof"><span class="overline">As of</span><div class="asof-line" role="group" aria-label="Show the formulation as of a session">${ds.map(d => `<button class="asof-node${d > at ? ' after' : ''}" data-act="asof" data-date="${d}" aria-pressed="${d === at}" aria-label="Session ${nums[d]}, ${fmtDate(d)}"><span class="dot" aria-hidden="true"></span><span>${fmtShort(d)}</span></button>`).join('')}</div></div>
-    ${asOfOf(c) ? `<p class="small muted asof-note">Showing the formulation as it was after the session on ${fmtDate(at)}. Points marked New were first noted that day. <button class="btn quiet sm" data-act="asof" data-date="${ds[ds.length - 1]}">Back to latest</button></p>` : ''}`;
+  const at = asOfOf(c) || ds[ds.length - 1]; const i = ds.indexOf(at); const n = ds.length; const latest = i === n - 1;
+  const pct = k => (k / (n - 1) * 100).toFixed(3);
+  const sum = sessSummary(journey(c).find(x => x.date === at));
+  return `<section class="scrub" aria-label="The formulation, session by session">
+    <div class="scrub-head"><span class="overline">As of</span><p class="scrub-now" id="scrub-now">${scrubNow(c, ds, i)}</p>
+      <span class="row scrub-acts">${latest ? '<span class="tag-latest">Latest</span>' : `<button class="btn quiet sm" data-act="asof-latest">${icon('fwd')}Latest</button>`}<button class="btn quiet sm" data-act="goto-sess" data-date="${at}">Read the notes</button></span></div>
+    <div class="scrub-row"><button class="scrub-step" id="asof-prev" data-act="asof-step" data-d="-1" ${i === 0 ? 'disabled' : ''} aria-label="Previous session">${icon('back')}</button>
+      <div class="scrub-track" id="scrub-track" style="--at:${pct(i)}%"><div class="scrub-rail" aria-hidden="true"><span class="scrub-fill"></span>${ds.map((d, k) => `<i class="${k < i ? 'past' : k === i ? 'on' : 'after'}" style="left:${pct(k)}%;--k:${k}"></i>`).join('')}</div>
+        <input type="range" id="asof-range" min="0" max="${n - 1}" step="1" value="${i}" aria-label="Show the formulation as of session" aria-valuetext="Session ${i + 1} of ${n}, ${esc(fmtDate(at))}">
+        <div class="scrub-months" aria-hidden="true">${scrubMarks(ds).map(m => `<span style="left:${pct(m.k)}%">${esc(m.label)}</span>`).join('')}</div></div>
+      <button class="scrub-step" id="asof-next" data-act="asof-step" data-d="1" ${latest ? 'disabled' : ''} aria-label="Next session">${icon('fwd')}</button></div>
+    ${sum || !latest ? `<p class="scrub-sum small muted">${sum ? `This session: ${esc(sum)}.` : ''}${latest ? '' : ' Points marked New were first noted this session; later sessions are left out.'}</p>` : ''}</section>`;
 }
-function sparkHTML(js) {
+
+/* ---- Over time ---- */
+function briefLines(b) {
+  const L = [];
+  if (b.ds.length) L.push(`${plural(b.ds.length, 'session')}${b.ds.length > 1 ? `, ${fmtShort(b.first)} to ${fmtDate(b.lastDate)}${b.rhythm ? ', ' + b.rhythm : ''}` : ` on ${fmtDate(b.first)}`}.`);
+  if (b.changes.better + b.changes.worse) L.push(`Your notes record ${plural(b.changes.better, 'change')} for the better and ${b.changes.worse || 'none'} for the worse.`);
+  if (b.talk.length) L.push(`Comes up most: ${listWords(b.talk.map(t => `${t.label.toLowerCase()} (${plural(t.n, 'session')})`))}.`);
+  if (b.better.length) L.push(`Better lately: ${listWords(b.better)}.`);
+  if (b.worse.length) L.push(`Worse lately: ${listWords(b.worse)}.`);
+  return L;
+}
+function themeGridHTML(c, js) {
   if (js.length < 2) return '';
-  let run = 0; const pts = js.map((j, i) => { run += j.better - j.worse; return { x: 4 + i * 92 / (js.length - 1), run, j, net: j.better - j.worse }; });
-  const max = Math.max(1, ...pts.map(p => Math.abs(p.run))); const y = v => 50 - v / max * 38;
-  return `<figure class="spark"><div class="spark-plot" role="img" aria-label="Running total of changes noted as better minus worse: ${esc(pts.map(p => `${fmtShort(p.j.date)} ${p.run}`).join(', '))}">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line class="sp-axis" vector-effect="non-scaling-stroke" x1="0" x2="100" y1="50" y2="50"/><polyline class="sp-line" vector-effect="non-scaling-stroke" pathLength="1" points="${pts.map(p => `${p.x.toFixed(2)},${y(p.run).toFixed(2)}`).join(' ')}"/></svg>
-      ${pts.map((p, i) => `<span class="sp-pt${p.net > 0 ? ' up' : p.net < 0 ? ' down' : ''}" style="--i:${i};left:${p.x.toFixed(2)}%;top:${y(p.run).toFixed(2)}%" aria-hidden="true"></span>`).join('')}</div>
-    <div class="spark-x" aria-hidden="true">${pts.map(p => `<span style="left:${p.x.toFixed(2)}%">${esc(fmtShort(p.j.date))}</span>`).join('')}</div>
-    <figcaption class="xs faint">Running total of what your notes say got better (up) or worse (down). A reading aid, not a clinical measure.</figcaption></figure>`;
+  const sp = allSpans(c); const all = themeGroups(sp).filter(g => g.key !== 'other');
+  if (!all.length) return '';
+  const more = UI.gridAll && UI.gridAll[c.id]; const rows = more ? all : all.slice(0, 9);
+  const months = byMonth(js.map(j => ({ date: j.date })));
+  const cell = (g, j, k) => {
+    const ch = j.changes.filter(x => (themeOf(x.of) || themeOf(x.s)) === g.key);
+    const up = ch.some(x => x.change !== 'worse'), down = ch.some(x => x.change === 'worse');
+    const here = g.items.filter(s => s.date === j.date); const risk = here.some(s => s.cat === 'risk' && !isNegScreen(s));
+    const st = down && up ? 'mixed' : down ? 'down' : up ? 'up' : risk ? 'risk' : here.length ? 'on' : '';
+    const word = { mixed: 'better and worse', down: 'worse', up: 'better', risk: 'concern noted', on: 'came up' }[st];
+    return `<td class="tg-c ${st}${k && monthKey(j.date) !== monthKey(js[k - 1].date) ? ' ms' : ''}" style="--k:${k}"${st ? ` data-act="jn-open" data-date="${j.date}" title="${esc(g.label)}, ${esc(fmtShort(j.date))}: ${word}"` : ''}>${st ? `<i aria-hidden="true"></i><span class="sr">${word}</span>` : ''}</td>`;
+  };
+  return `<figure class="tgrid-fig"><div class="tgrid-wrap"><table class="tgrid" style="--n:${js.length}">
+      <caption class="sr">Themes across sessions. Each column is a session, oldest on the left.</caption>
+      <thead><tr><th scope="col" class="tg-name"><span class="overline">Theme</span></th>${months.map(m => `<th scope="colgroup" colspan="${m.items.length}" class="tg-month">${esc(MONTHS[Number(m.key.slice(5, 7)) - 1])}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map(g => `<tr><th scope="row" class="tg-name">${esc(g.label)}<span class="tg-n">${g.sessions}</span></th>${js.map((j, k) => cell(g, j, k)).join('')}</tr>`).join('')}</tbody></table></div>
+    <figcaption class="tg-legend xs faint"><span><i class="tg-key on"></i>Came up</span><span><i class="tg-key up"></i>Better</span><span><i class="tg-key down"></i>Worse</span><span><i class="tg-key risk"></i>Concern</span>${all.length > 9 ? `<button class="btn quiet sm" data-act="grid-all">${more ? 'Fewer themes' : `All ${all.length} themes`}</button>` : ''}<span class="grow"></span><span>Tap a mark to open that session.</span></figcaption></figure>`;
 }
+function jnOpen(js, date) { const st = UI.openJn && UI.openJn[date]; return st == null ? date === js[js.length - 1].date : st; }
 function journeyHTML(c) {
-  const js = journey(c); const words = { better: 'Better', worse: 'Worse', resolved: 'Resolved' };
+  const b = caseBrief(c); const js = b.js;
   const tracked = js.some(j => j.changes.length);
-  return `<div class="journey"><div class="stack-s"><h2>How things have changed</h2><p class="small muted">Each session, what was new and which earlier points got better or worse. ${tracked ? '' : 'Changes appear once a later session mentions an earlier point improving or getting worse.'}</p></div>
-    ${sparkHTML(js)}
-    <ol class="jn-list">${js.slice().reverse().map((j, i) => `<li class="jn-item" style="--i:${i}"><div class="jn-date"><span class="overline">${j.n ? `Session ${j.n}` : 'Added in the app'}</span><b>${esc(fmtDate(j.date))}</b>${j.changes.length ? `<span class="jn-tally"><span class="trend better">${j.better} better</span>${j.worse ? `<span class="trend worse">${j.worse} worse</span>` : ''}</span>` : ''}</div>
-      ${j.changes.length ? `<div class="jn-sec">${j.changes.map(x => `<p class="jn-ch"><span class="trend ${x.change}">${words[x.change]}</span><span><mark class="hl c-${x.of.cat}" role="button" tabindex="0" data-act="span" data-id="${esc(x.of.id)}">${markup(x.of.short || shortOf(x.of.text))}</mark> <span class="small faint">first noted ${esc(fmtShort(x.of.date))}</span><span class="small muted jn-why">${markup(x.s.short || shortOf(x.s.text))}</span></span></p>`).join('')}</div>` : ''}
-      ${j.fresh.length ? `<div class="jn-sec"><span class="overline">New</span><ul class="items jn-new">${j.fresh.map(s => `<li><mark class="hl c-${s.cat}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(s.short || shortOf(s.text))}</mark><span class="code c-${s.cat}" aria-hidden="true">${CATS[s.cat] ? CATS[s.cat].code : ''}</span></li>`).join('')}</ul></div>` : ''}</li>`).join('')}</ol></div>`;
+  const lines = briefLines(b);
+  let ri = 0;
+  const row = j => {
+    const open = jnOpen(js, j.date); const i = ri++;
+    const meta = `${j.better ? `<span class="trend better">${j.better} better</span>` : ''}${j.worse ? `<span class="trend worse">${j.worse} worse</span>` : ''}${j.fresh.length ? `<span class="xs faint">${j.fresh.length} new</span>` : ''}`;
+    return `<article class="sheet sess jn${open ? ' open' : ''}${i === 0 ? ' first' : ''}" style="--i:${i}" id="jn-${j.date}"><button class="sess-head" data-act="toggle-jn" data-date="${j.date}" data-open="${open}" aria-expanded="${open}">
+        <span class="sess-date">${esc(fmtDate(j.date))}</span><span class="sess-title"><span class="overline">${j.n ? `Session ${j.n}` : 'Added in the app'}</span><b>${esc(j.title || (j.n ? 'Session notes' : 'Points added'))}</b></span><span class="sess-meta jn-tally">${meta}</span>${icon('chev', 'chev')}</button>
+      ${open ? `<div class="sess-body jn-body">
+        ${j.changes.length ? `<div class="jn-sec">${j.changes.map(x => `<p class="jn-ch"><span class="trend ${x.change}">${CHANGE_WORD[x.change]}</span><span><mark class="hl c-${x.of.cat}" role="button" tabindex="0" data-act="span" data-id="${esc(x.of.id)}">${markup(x.of.short || shortOf(x.of.text))}</mark> <span class="small faint">first noted ${esc(fmtShort(x.of.date))}</span><span class="small muted jn-why">${markup(x.s.short || shortOf(x.s.text))}</span></span></p>`).join('')}</div>` : ''}
+        ${j.fresh.length ? `<div class="jn-sec"><span class="overline">New</span><ul class="items jn-new">${j.fresh.map(s => `<li><mark class="hl c-${s.cat}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(s.short || shortOf(s.text))}</mark><span class="code c-${s.cat}" aria-hidden="true">${CATS[s.cat] ? CATS[s.cat].code : ''}</span></li>`).join('')}</ul></div>` : ''}
+        ${!j.changes.length && !j.fresh.length ? '<p class="small muted" style="padding-top:12px">Nothing new or changed was picked up in this session.</p>' : ''}</div>` : ''}</article>`;
+  };
+  const list = js.slice().reverse(); const months = byMonth(list);
+  return `<div class="journey"><div class="stack-s"><h2>How things have changed</h2>
+      ${lines.length ? `<div class="brief"><span class="overline">In short</span>${lines.map(l => `<p>${esc(l)}</p>`).join('')}</div>` : ''}
+      ${tracked ? '' : '<p class="small muted">Changes appear once a later session mentions an earlier point improving or getting worse.</p>'}</div>
+    ${themeGridHTML(c, js)}
+    <div class="tl jn-months">${months.length < 2 || list.length <= 4 ? list.map(row).join('') : months.map((m, mi) => {
+      const better = m.items.reduce((a, j) => a + j.better, 0), worse = m.items.reduce((a, j) => a + j.worse, 0);
+      return monthHTML('j', m, mi, `${plural(m.items.length, 'session')}${better ? ` · <span class="trend better">${better} better</span>` : ''}${worse ? ` <span class="trend worse">${worse} worse</span>` : ''}`, () => m.items.map(row).join(''));
+    }).join('')}</div></div>`;
 }
+
+/* ---- board ---- */
 /* rules-sorted points show the whole sentence; AI points keep their short wording */
 function boardText(s) { return s.by === 'rules' || !s.short ? shortOf(s.text, 320) : s.short; }
-function itemHTML(s, ch, newOn) {
-  const t = ch[s.id]; const words = { better: 'Better', worse: 'Worse', resolved: 'Resolved' };
-  return `<li><mark class="hl c-${s.cat}${UI.pop && UI.pop.spanId === s.id ? ' sel' : ''}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark>${newOn && s.date === newOn ? '<span class="new-tag">New</span>' : ''}${t ? `<span class="trend ${t.change}">${words[t.change]} · ${fmtShort(t.date)}</span>` : ''}</li>`;
+function pointHTML(s, ch, newOn) {
+  const t = ch[s.id] || (s.rel && s.rel.change ? { change: s.rel.change, date: s.date } : null);
+  return `<mark class="hl c-${s.cat}${UI.pop && UI.pop.spanId === s.id ? ' sel' : ''}" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark>${newOn && s.date === newOn ? '<span class="new-tag">New</span>' : ''}${t ? `<span class="trend ${t.change}">${CHANGE_WORD[t.change]} · ${fmtShort(t.date)}</span>` : ''}`;
+}
+function itemHTML(s, ch, newOn) { return `<li>${pointHTML(s, ch, newOn)}</li>`; }
+function trailHTML(g) {
+  if (g.items.length < 2) return '';
+  return `<span class="trail" aria-hidden="true">${g.items.slice(0, 12).reverse().map(s => `<i class="${s.rel && s.rel.change ? s.rel.change : ''}"></i>`).join('')}</span>`;
+}
+/* one theme: its newest point up front, the earlier ones a tap away */
+function themeHTML(g, ch, newOn, gid, dated, every) {
+  const open = every || !!(UI.openTheme && UI.openTheme[gid]); const rest = g.items.slice(1);
+  const when = !dated ? '' : g.sessions > 1 ? `${plural(g.sessions, 'session')} · ${fmtShort(g.first.date)} – ${fmtShort(g.latest.date)}` : fmtShort(g.latest.date);
+  return `<li class="theme"><span class="theme-head"><span class="theme-name">${esc(g.key === 'other' ? 'Other' : g.label)}</span>${trailHTML(g)}${when ? `<span class="theme-when">${when}</span>` : ''}</span>
+    <span class="theme-pt">${pointHTML(g.latest, ch, newOn)}</span>
+    ${rest.length ? `${every ? '' : `<button class="theme-more" data-act="theme" data-id="${esc(gid)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide earlier' : plural(rest.length, 'earlier note')}</button>`}
+      ${open ? `<ol class="theme-earlier">${rest.map(s => `<li>${dated ? `<span class="te-date">${esc(fmtShort(s.date))}</span>` : ''}<span>${pointHTML(s, ch, newOn)}</span></li>`).join('')}</ol>` : ''}` : ''}</li>`;
+}
+const THEME_CAP = 4;
+function themesHTML(c, scope, list, ch, newOn, cap) {
+  const gs = themeGroups(list); const k = c.id + ':' + scope; const all = UI.cellAll && UI.cellAll[k]; const dated = sessionDates(c).length > 1;
+  const shown = all || !cap ? gs : gs.slice(0, cap);
+  return `<ul class="items themes">${shown.map(g => themeHTML(g, ch, newOn, k + ':' + g.key, dated)).join('')}</ul>${cap && gs.length > cap ? `<button class="btn quiet sm cell-more" data-act="cell-all" data-k="${esc(scope)}">${all ? 'Show fewer' : `Show ${gs.length - cap} more ${gs.length - cap === 1 ? 'theme' : 'themes'}`}</button>` : ''}`;
 }
 function cellHTML(c, cat, spans, ch, i, newOn) {
   const list = spans.filter(s => s.cat === cat); const adding = UI.addCat === cat;
   const add = `<form class="inline-add" data-form="add-item" data-cat="${cat}"><label class="sr" for="add-${cat}">Add to ${CATS[cat].label}</label><input type="text" id="add-${cat}" placeholder="Add a point" autocomplete="off"><button class="btn sm" type="submit">Add</button></form>`;
-  return `<section class="cell c-${cat}" style="--i:${i}" aria-label="${CATS[cat].label}"><div class="cell-head"><h3><span class="ink c-${cat}">${CATS[cat].label}</span></h3><span class="row"><span class="num">${list.length}</span>${list.length && !adding ? `<button class="btn quiet sm" data-act="add-cat" data-cat="${cat}" aria-label="Add to ${CATS[cat].label}">${icon('plus')}</button>` : ''}</span></div>
+  return `<section class="cell c-${cat}" style="--i:${i}" aria-label="${CATS[cat].label}"><div class="cell-head"><h3><span class="ink c-${cat}">${CATS[cat].label}</span></h3><span class="row"><span class="num" title="${plural(list.length, 'point')}">${list.length}</span>${list.length && !adding ? `<button class="btn quiet sm" data-act="add-cat" data-cat="${cat}" aria-label="Add to ${CATS[cat].label}">${icon('plus')}</button>` : ''}</span></div>
     <p class="cell-hint">${CATS[cat].hint}</p>
-    ${list.length ? `<ul class="items">${list.map(s => itemHTML(s, ch, newOn)).join('')}</ul>${adding ? add : ''}` : `<div class="empty-cell"><span>Nothing yet.</span>${add}</div>`}</section>`;
+    ${list.length ? `${themesHTML(c, cat, list, ch, newOn, THEME_CAP)}${adding ? add : ''}` : `<div class="empty-cell"><span>Nothing yet.</span>${add}</div>`}</section>`;
+}
+/* "Asked, none reported" screens are kept as one line with the date last asked; real concerns stay in full */
+function screensHTML(c, scr) {
+  if (!scr.length) return '';
+  const k = c.id + ':screens'; const open = !!(UI.openTheme && UI.openTheme[k]); const last = scr[scr.length - 1];
+  return `<li class="theme screens"><span class="theme-head"><span class="theme-name">Screening</span><span class="theme-when">${scr.length > 1 ? `${plural(scr.length, 'time')} · ` : ''}last asked ${esc(fmtShort(last.date))}</span></span>
+    <span class="theme-pt">${icon('check')}<span>${scr.length > 1 ? `Asked ${scr.length} times. Nothing reported each time.` : esc(plainText(last.short || shortOf(last.text)))}</span></span>
+    ${scr.length > 1 ? `<button class="theme-more" data-act="theme" data-id="${esc(k)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide' : 'Each time'}</button>${open ? `<ol class="theme-earlier">${scr.slice().reverse().map(s => `<li><span class="te-date">${esc(fmtShort(s.date))}</span><span><mark class="hl c-risk" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark></span></li>`).join('')}</ol>` : ''}` : ''}</li>`;
 }
 function boardHTML(c) {
   const at = asOfOf(c); const sp = allSpans(c, at); const ch = latestChanges(c, at); const ds = sessionDates(c); const newOn = ds.length > 1 ? (at || ds[ds.length - 1]) : null;
   const risk = sp.filter(s => s.cat === 'risk'), goals = sp.filter(s => s.cat === 'goal'), ctx = sp.filter(s => s.cat === 'context');
-  return `${risk.length ? `<section class="stack-s risk-block c-risk"><h3>Risk and safety</h3><ul class="items">${risk.map(s => itemHTML(s, ch, newOn)).join('')}</ul></section>` : ''}
+  const real = risk.filter(s => !isNegScreen(s)), scr = risk.filter(s => isNegScreen(s));
+  const gk = c.id + ':goals'; const gAll = UI.cellAll && UI.cellAll[gk]; const gList = goals.slice().reverse();
+  const ctxN = themeGroups(ctx).length;
+  return `${risk.length ? `<section class="stack-s risk-block c-risk${real.length ? '' : ' calm'}"><h3>${real.length ? 'Risk and safety' : 'Safety screening'}</h3><ul class="items themes">${themeGroups(real).map(g => themeHTML(g, ch, newOn, c.id + ':risk:' + g.key, ds.length > 1, true)).join('')}${screensHTML(c, scr)}</ul></section>` : ''}
     <div class="board">${FIVE_PS.map((k, i) => cellHTML(c, k, sp, ch, i, newOn)).join('')}</div>
-    <div class="below"><section class="stack-s"><h3>Goals</h3>${goals.length ? `<ul class="items">${goals.map(s => itemHTML(s, ch, newOn)).join('')}</ul>` : '<p class="small muted">No goals yet.</p>'}<form class="inline-add" data-form="add-item" data-cat="goal"><label class="sr" for="add-goal">Add a goal</label><input type="text" id="add-goal" placeholder="Add a goal, in their words if you can" autocomplete="off"><button class="btn sm" type="submit">Add</button></form></section>
-      <section class="stack-s"><h3>Background</h3>${ctx.length ? `<details class="more"><summary>${icon('chev')}${plural(ctx.length, 'point')}</summary><ul class="items" style="margin-top:8px">${ctx.map(s => itemHTML(s, ch, newOn)).join('')}</ul></details>` : '<p class="small muted">Nothing filed as background.</p>'}</section></div>`;
+    <div class="below"><section class="stack-s"><h3>Goals${goals.length ? ` <span class="h-count">${goals.length}</span>` : ''}</h3>${goals.length ? `<ul class="items goals">${(gAll ? gList : gList.slice(0, 5)).map(s => `<li>${pointHTML(s, ch, newOn)}${ds.length > 1 ? ` <span class="te-date">${esc(fmtShort(s.date))}</span>` : ''}</li>`).join('')}</ul>${gList.length > 5 ? `<button class="btn quiet sm cell-more" data-act="cell-all" data-k="goals">${gAll ? 'Show fewer' : `Show ${gList.length - 5} more`}</button>` : ''}` : '<p class="small muted">No goals yet.</p>'}<form class="inline-add" data-form="add-item" data-cat="goal"><label class="sr" for="add-goal">Add a goal</label><input type="text" id="add-goal" placeholder="Add a goal, in their words if you can" autocomplete="off"><button class="btn sm" type="submit">Add</button></form></section>
+      <section class="stack-s c-context"><h3>Background</h3>${ctx.length ? `<details class="more" data-more="ctx" ${UI.ctxOpen ? 'open' : ''}><summary>${icon('chev')}${plural(ctx.length, 'point')} · ${plural(ctxN, 'theme')}</summary><div style="margin-top:10px">${themesHTML(c, 'context', ctx, ch, newOn, 0)}</div></details>` : '<p class="small muted">Nothing filed as background.</p>'}</section></div>`;
 }
 
 /* ---- plan tab ---- */
@@ -2094,11 +2483,12 @@ function showToast(msg, action) {
 const MAP_SIDES = { right: ['risk', 'presenting', 'precipitating', 'perpetuating'], left: ['predisposing', 'protective', 'positive', 'goal'] };
 const MAP_GAP_KEY = { risk: 'selfharm', goal: 'goals' };
 let measureCtx = null;
+const MAP_CAP = 5;
 /* kind: 'text' for points, 'label' for letterspaced branch and root labels */
 function textW(t, kind) {
-  const label = kind === 'label', ls = label ? 1.9 : 0;
-  try { if (!measureCtx) measureCtx = document.createElement('canvas').getContext('2d'); measureCtx.font = label ? '500 12.5px Jost, "Century Gothic", system-ui, sans-serif' : '400 14px "Atkinson Hyperlegible", system-ui, sans-serif'; return measureCtx.measureText(t).width + ls * t.length; }
-  catch (e) { return t.length * (label ? 9.4 : 7.6); }
+  const label = kind === 'label', tag = kind === 'tag', ls = label ? 1.9 : tag ? 1.5 : 0;
+  try { if (!measureCtx) measureCtx = document.createElement('canvas').getContext('2d'); measureCtx.font = label ? '500 12.5px Jost, "Century Gothic", system-ui, sans-serif' : tag ? '500 10.5px Jost, "Century Gothic", system-ui, sans-serif' : '400 14px "Atkinson Hyperlegible", system-ui, sans-serif'; return measureCtx.measureText(t).width + ls * t.length; }
+  catch (e) { return t.length * (label ? 9.4 : tag ? 7.6 : 7.6); }
 }
 function wrapText(t, maxW, maxLines) {
   const ws = String(t).split(/\s+/).filter(Boolean); const lines = []; let cur = '';
@@ -2108,8 +2498,8 @@ function wrapText(t, maxW, maxLines) {
   return lines;
 }
 function mapModel(c) {
-  const sp = allSpans(c, asOfOf(c)); const L = 16, PADX = 12, PADY = 9;
-  const node = (o) => { const lines = o.lines; const w = Math.ceil(Math.max(...lines.map(l => textW(l, o.label ? 'label' : 'text')))) + PADX * 2 + (o.kind === 'root' ? 16 : 0); return Object.assign(o, { w: Math.max(w, o.minW || 0), h: lines.length * L + PADY * 2 + (o.kind === 'root' ? 8 : 0) }); };
+  const sp = allSpans(c, asOfOf(c)); const L = 16, PADX = 12, PADY = 9; const dated = sessionDates(c).length > 1;
+  const node = (o) => { const lines = o.lines; const w = Math.ceil(Math.max(o.tag ? textW(o.tag, 'tag') : 0, ...lines.map(l => textW(l, o.label ? 'label' : 'text')))) + PADX * 2 + (o.kind === 'root' ? 16 : 0); return Object.assign(o, { w: Math.max(w, o.minW || 0), h: lines.length * L + (o.tag ? 15 : 0) + PADY * 2 + (o.kind === 'root' ? 8 : 0) }); };
   const root = node({ kind: 'root', lines: [(c.label + (c.age ? ', ' + c.age : '')).toUpperCase()], label: true, minW: 120 });
   const branches = [];
   ['right', 'left'].forEach(side => MAP_SIDES[side].forEach(cat => {
@@ -2118,7 +2508,15 @@ function mapModel(c) {
     const open = UI.mapOpen[c.id + ':' + cat] !== false;
     const label = cat === 'goal' ? 'Goals' : cat === 'risk' ? 'Risk and safety' : CATS[cat].label;
     const b = node({ kind: 'branch', cat, side, missing: !items.length, open, label: true, lines: [(items.length ? `${label}  ${items.length}` : `${label}: missing`).toUpperCase()] });
-    b.children = items.length && open ? items.map(s => node({ kind: 'item', cat, side, id: s.id, lines: wrapText(plainText(s.short || shortOf(s.text)), 230, 3) })) : [];
+    /* one node per theme (its newest point), a few per branch; the rest wait behind a "more" node */
+    /* every real concern keeps its own node; everything else is one node per theme */
+    let groups = cat === 'risk' ? items.filter(s => !isNegScreen(s)).reverse().map(s => ({ key: themeOf(s) || 'other', label: themeName(themeOf(s)), items: [s], latest: s, sessions: 1 })) : themeGroups(items);
+    const scr = cat === 'risk' ? items.filter(s => isNegScreen(s)) : [];
+    if (scr.length) groups.push({ key: 'screens', label: 'Screening', items: scr.slice().reverse(), latest: scr[scr.length - 1], sessions: new Set(scr.map(s => s.date)).size, screen: true });
+    const more = !!UI.mapMore[c.id + ':' + cat]; const shown = more ? groups : groups.slice(0, MAP_CAP);
+    const tagOf = g => [g.key === 'other' ? 'Other' : g.label, g.items.length > 1 ? (g.screen ? g.items.length + ' times' : g.items.length + ' notes') : '', dated ? fmtShort(g.latest.date) : ''].filter(Boolean).join(' · ').toUpperCase();
+    b.children = items.length && open ? shown.map(g => node({ kind: 'item', cat, side, id: g.latest.id, tag: tagOf(g), lines: g.screen && g.items.length > 1 ? ['Asked each time, nothing reported'] : wrapText(plainText(g.latest.short || shortOf(g.latest.text)), 230, 2) })) : [];
+    if (items.length && open && groups.length > MAP_CAP) b.children.push(node({ kind: 'more', cat, side, label: true, lines: [more ? 'SHOW FEWER' : `+ ${groups.length - MAP_CAP} MORE`] }));
     branches.push(b);
   }));
   // layout: each side stacks its branches; children stack to the outside of their branch
@@ -2148,10 +2546,10 @@ function elbow(x1, y1, x2, y2) { const mx = (x1 + x2) / 2; const r = Math.min(8,
 let MAP_I = 0;
 function nodeSVG(n, attrs) {
   const tx = n.kind === 'root' ? n.w / 2 : 12; const anchor = n.kind === 'root' ? ' text-anchor="middle"' : '';
-  const top = (n.h - n.lines.length * 16) / 2 + 12;
+  const th = n.tag ? 15 : 0; const y0 = (n.h - n.lines.length * 16 - th) / 2;
   return `<g class="mn ${n.kind}${n.missing ? ' missing' : ''} c-${n.cat || 'root'}${UI.pop && n.id && UI.pop.spanId === n.id ? ' sel' : ''}" style="--i:${MAP_I++}" data-cat="${n.cat || ''}" transform="translate(${n.x.toFixed(1)},${n.y.toFixed(1)})" ${attrs}>
     <rect width="${n.w}" height="${n.h}" rx="${n.kind === 'root' ? n.h / 2 : n.kind === 'branch' ? 6 : 8}"></rect>
-    ${n.lines.map((l, i) => `<text x="${tx}" y="${top + i * 16}"${anchor}>${esc(l)}</text>`).join('')}</g>`;
+    ${n.tag ? `<text class="tag" x="${tx}" y="${(y0 + 10.5).toFixed(1)}">${esc(n.tag)}</text>` : ''}${n.lines.map((l, i) => `<text x="${tx}" y="${(y0 + th + 12 + i * 16).toFixed(1)}"${anchor}>${esc(l)}</text>`).join('')}</g>`;
 }
 function mapHTML(c) {
   const m = mapModel(c); const r = m.root; MAP_I = 0;
@@ -2166,9 +2564,9 @@ function mapHTML(c) {
     nodes.push(nodeSVG(b, `role="button" tabindex="0" ${act}`));
     b.children.forEach(k => {
       const kx = dir > 0 ? k.x : k.x + k.w; const ky = k.y + k.h / 2;
-      conns.push(conn(b.cat, elbow(dir > 0 ? b.x + b.w : b.x, b.cy, kx, ky), false));
+      conns.push(conn(b.cat, elbow(dir > 0 ? b.x + b.w : b.x, b.cy, kx, ky), k.kind === 'more'));
       dots.push(`<circle class="mdot c-${b.cat}" cx="${kx.toFixed(1)}" cy="${ky.toFixed(1)}" r="2.4"/>`);
-      nodes.push(nodeSVG(k, `role="button" tabindex="0" data-act="span" data-id="${esc(k.id)}" aria-label="${esc(k.lines.join(' '))}"`));
+      nodes.push(k.kind === 'more' ? nodeSVG(k, `role="button" tabindex="0" data-act="map-more" data-cat="${b.cat}" aria-label="${esc(k.lines[0])}"`) : nodeSVG(k, `role="button" tabindex="0" data-act="span" data-id="${esc(k.id)}" aria-label="${esc((k.tag ? k.tag + '. ' : '') + k.lines.join(' '))}"`));
     });
   });
   UI.mapBounds = m.bounds;
@@ -2176,7 +2574,7 @@ function mapHTML(c) {
       <svg class="map-svg${UI.entering ? ' draw' : ''}" id="map-svg" role="group"><g id="map-g">${conns.join('')}${dots.join('')}${nodes.join('')}</g></svg>
       <div class="map-zoom"><button class="btn" data-act="map-zoom" data-z="in" aria-label="Zoom in">${icon('plus')}</button><button class="btn" data-act="map-zoom" data-z="out" aria-label="Zoom out"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><button class="btn" data-act="map-zoom" data-z="fit" aria-label="Fit to screen"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
     </div>
-    <p class="xs faint">Point at a colour to follow its branch. Tap a colour to fold it, tap a point to re-file it. Dotted branches are still missing.</p>`;
+    <p class="xs faint">Each point shows the newest note on that theme. Point at a colour to follow its branch, tap a colour to fold it, tap a point to re-file it. Dotted branches are still missing.</p>`;
 }
 function mapFit(c) {
   const wrap = $('#map-wrap'); const b = UI.mapBounds; if (!wrap || !b) return;
@@ -2192,7 +2590,7 @@ function mapZoom(c, f, cx, cy) {
 }
 function wireMap(c) {
   const wrap = $('#map-wrap'); if (!wrap) return;
-  const fitKey = c.id + ':' + allSpans(c, asOfOf(c)).length + ':' + wrap.clientWidth;
+  const fitKey = c.id + ':' + allSpans(c, asOfOf(c)).length + ':' + wrap.clientWidth + ':' + Object.keys(UI.mapMore).filter(k => UI.mapMore[k]).join(',');
   if (!UI.mapView[c.id] || UI.mapFitKey !== fitKey) { mapFit(c); UI.mapFitKey = fitKey; }
   mapApply(c);
   const svg = $('#map-svg');
@@ -2931,10 +3329,10 @@ async function runSort(c) {
       if (UI.sortCtl !== ctl) return; UI.sortCtl = null;
     }
     if (!res) { res = { spans: sortByRules(text), checks: [] }; relByRules(c, res.spans, text, date); }
-    added.push(addEntry(c, text, res.spans, { by, checks: res.checks, date, intId: iv && d.count && date >= iv.start ? iv.id : null }));
+    added.push(addEntry(c, text, res.spans, { by, checks: res.checks, title: res.title || '', date, intId: iv && d.count && date >= iv.start ? iv.id : null }));
   }
   UI.sortAdded = null;
-  const last = added[added.length - 1];
+  const last = added[added.length - 1]; UI.openSess = UI.openSess || {}; UI.openSess[last.id] = true;
   UI.draft = null; UI.justSorted = last.id; UI.openGap = null; UI.addOpen = false;
   if (UI.view === 'case' && UI.caseId === c.id) { render(); const el = document.getElementById('sheet-' + last.id); if (el && el.getBoundingClientRect().top > innerHeight * 0.55) el.scrollIntoView({ block: 'start' }); }
   const ids = new Set(added.map(e => e.id)); const undo = { label: 'Undo', run: () => { c.entries = c.entries.filter(x => !ids.has(x.id)); touch(c); UI.draft = keep; render(); } };
@@ -3016,6 +3414,15 @@ function setMenu(open) {
   else if (b && r && r.contains(document.activeElement)) b.focus();
 }
 const railShown = () => matchMedia('(min-width:1360px)').matches;
+function refocus(sel) { let el = null; try { el = document.querySelector(sel); } catch (e) { return null; } if (el) el.focus({ preventScroll: true }); return el; }
+function setAsOf(c, d) { const ds = sessionDates(c); UI.asOf = UI.asOf || {}; UI.asOf[c.id] = !d || d === ds[ds.length - 1] ? null : d; UI.pop = null; render(); }
+/* open one session in Notes, wherever it is in the list */
+function gotoSession(c, id, date) {
+  if (!c) return; const e = id ? c.entries.find(x => x.id === id) : chronEntries(c).find(x => x.kind === 'notes' && x.date === date); if (!e) return;
+  const g = sessGroups(c).find(x => x.id === e.id || (x.items && x.items.includes(e))); const gid = g ? g.id : e.id;
+  UI.tab = 'notes'; UI.pop = null; UI.openSess = UI.openSess || {}; UI.openSess[gid] = true; UI.openMonth['n:' + monthKey(e.date)] = true; if (UI.find) UI.find[c.id] = '';
+  render(); const a = document.getElementById('sheet-' + gid); if (a) { a.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }); const h = a.querySelector('.sess-head'); if (h) h.focus({ preventScroll: true }); }
+}
 const ACT = {
   home: () => { logoTap(); go('home'); },
   preview: el => previewMoment(el.dataset.k),
@@ -3076,6 +3483,28 @@ const ACT = {
   'copy-missing': () => { const c = current(); copyText(buildMissingList(c), 'List copied.'); },
   'copy-next': () => { const c = current(); copyText(buildNextList(c), 'List copied.'); },
   'copy-progress': () => { const c = current(); copyText(buildProgress(c), 'Progress copied. Paste it into your notes.'); whisperFor('copied'); },
+  'toggle-sess': el => { const id = el.dataset.id; UI.openSess = UI.openSess || {}; UI.openSess[id] = !UI.openSess[id]; UI.renaming = null; render(); const h = document.querySelector(`[data-act="toggle-sess"][data-id="${id}"]`); if (h) { h.focus({ preventScroll: true }); const r = h.getBoundingClientRect(); if (r.top < 70 || r.top > innerHeight - 80) h.scrollIntoView({ block: 'nearest' }); } },
+  'sess-all': () => { const c = current(); UI.openSess = UI.openSess || {}; const ids = sessIds(c); const allOpen = ids.every(id => UI.openSess[id]); ids.forEach(id => { UI.openSess[id] = !allOpen; });
+    sessGroups(c).forEach(g => { const k = 'n:' + monthKey(g.date); if (allOpen) delete UI.openMonth[k]; else UI.openMonth[k] = true; }); render(); refocus('[data-act="sess-all"]'); },
+  'toggle-month': el => { const k = el.dataset.k; UI.openMonth[k] = el.dataset.open !== 'true'; render(); refocus(`[data-act="toggle-month"][data-k="${k}"]`); },
+  theme: el => { const k = el.dataset.id; UI.openTheme[k] = !UI.openTheme[k]; render(); refocus(`[data-act="theme"][data-id="${k}"]`); },
+  'cell-all': el => { const c = current(); const k = c.id + ':' + el.dataset.k; UI.cellAll[k] = !UI.cellAll[k]; render(); refocus(`[data-act="cell-all"][data-k="${el.dataset.k}"]`); },
+  'grid-all': () => { const c = current(); UI.gridAll[c.id] = !UI.gridAll[c.id]; render(); refocus('[data-act="grid-all"]'); },
+  'map-more': el => { const c = current(); const k = c.id + ':' + el.dataset.cat; UI.mapMore[k] = !UI.mapMore[k]; render(); },
+  'toggle-jn': el => { const d = el.dataset.date; UI.openJn[d] = el.dataset.open !== 'true'; render(); refocus(`[data-act="toggle-jn"][data-date="${d}"]`); },
+  'jn-open': el => { const d = el.dataset.date; UI.openJn[d] = true; UI.openMonth['j:' + monthKey(d)] = true; render(); const a = document.getElementById('jn-' + d); if (a) { a.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }); const h = a.querySelector('.sess-head'); if (h) h.focus({ preventScroll: true }); } },
+  'asof-step': el => { const c = current(); const ds = sessionDates(c); const at = asOfOf(c) || ds[ds.length - 1]; const i = Math.min(ds.length - 1, Math.max(0, ds.indexOf(at) + Number(el.dataset.d))); setAsOf(c, ds[i]); refocus('#' + el.id + ':not([disabled])') || refocus('#asof-range'); },
+  'asof-latest': () => { const c = current(); const ds = sessionDates(c); setAsOf(c, ds[ds.length - 1]); refocus('#asof-range'); },
+  'goto-sess': el => gotoSession(current(), el.dataset.id, el.dataset.date),
+  glance: el => {
+    const c = current(); const go = el.dataset.go; UI.pop = null;
+    if (go === 'notes') { UI.tab = 'notes'; render(); const a = $('.area-sheets'); if (a) a.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }); }
+    else if (go === 'last') { const e = chronEntries(c).filter(x => x.kind === 'notes').pop(); if (e) gotoSession(c, e.id); }
+    else if (go === 'time') { UI.tab = 'form'; UI.formMode = 'time'; render(); }
+    else if (go === 'safety') { const b = caseBrief(c); if (!b.asked || b.ds.some(d => d > b.asked)) { UI.tab = 'notes'; UI.openGap = 'selfharm'; render(); const g = $('.gap-row[aria-expanded="true"]'); if (g) g.scrollIntoView({ block: 'center' }); } else { UI.tab = 'form'; UI.formMode = 'board'; render(); const r = $('.risk-block'); if (r) r.scrollIntoView({ block: 'center' }); } }
+  },
+  'rename-sess': el => { UI.renaming = el.dataset.id; UI.focus = 'rn-in'; render(); },
+  'cancel-rename': () => { UI.renaming = null; render(); },
   'edit-date': el => { UI.editDate = el.dataset.id; UI.focus = 'ed-date'; render(); },
   'cancel-date': () => { UI.editDate = null; render(); },
   'save-date': el => {
@@ -3083,7 +3512,7 @@ const ACT = {
     if (!e || !v) return; const prev = e.date; const nv = v > todayISO() ? todayISO() : v; UI.editDate = null;
     if (nv !== prev) { e.date = nv; touch(c); render(); showToast(`Session moved to ${fmtDate(nv)}.`, { label: 'Undo', run: () => { e.date = prev; touch(c); render(); } }); } else render();
   },
-  asof: el => { const c = current(); const ds = sessionDates(c); UI.asOf = UI.asOf || {}; UI.asOf[c.id] = el.dataset.date === ds[ds.length - 1] ? null : el.dataset.date; UI.pop = null; render(); },
+  asof: el => setAsOf(current(), el.dataset.date),
   gap: el => { const k = el.dataset.key; UI.openGap = UI.openGap === k ? null : k; render(); },
   'gap-quick': el => gapSave(current(), el.dataset.key, null, Number(el.dataset.n)),
   'gap-save': el => { const t = $('#gap-in'); gapSave(current(), el.dataset.key, t ? t.value : ''); },
@@ -3170,6 +3599,8 @@ document.addEventListener('input', e => {
   const t = e.target;
   if (t.id === 'case-q') { const q = t.value.trim().toLowerCase(); $$('#rail-list .rail-row').forEach(r => { r.hidden = !!q && !r.dataset.q.includes(q); }); return; }
   if (t.id === 'paste') { const c = current(); if (!c) return; const d = draftOf(c); d.text = t.value; const b = $('#to-review'); if (b) b.disabled = !t.value.trim(); refreshDraftDate(d, true); }
+  if (t.id === 'sess-find') { const c = current(); if (!c) return; UI.find[c.id] = t.value; const l = $('#sess-list'); if (l) l.innerHTML = sessListHTML(c); return; }
+  if (t.id === 'asof-range') { const c = current(); if (!c) return; const ds = sessionDates(c); const i = Number(t.value); const n = $('#scrub-now'); if (n) n.innerHTML = scrubNow(c, ds, i); const tr = $('#scrub-track'); if (tr) { tr.style.setProperty('--at', (i / (ds.length - 1) * 100).toFixed(3) + '%'); $$('.scrub-rail i', tr).forEach((el, k) => { el.className = k < i ? 'past' : k === i ? 'on' : 'after'; }); } }
 });
 document.addEventListener('change', e => {
   const t = e.target; const c = current();
@@ -3177,6 +3608,7 @@ document.addEventListener('change', e => {
   else if (t.id === 'count-int' && c) draftOf(c).count = t.checked;
   else if (t.id === 'note-date' && c) { const d = draftOf(c); const v = t.value; d.date = !v ? todayISO() : v > todayISO() ? todayISO() : v; d.dateSet = v ? 'manual' : 'today'; if (t.value !== d.date) t.value = d.date; const h = $('#date-hint'); if (h) h.textContent = dateHint(d); }
   else if (t.id === 'split-toggle' && c) { draftOf(c).split = t.checked; render(); }
+  else if (t.id === 'asof-range' && c) { const ds = sessionDates(c); setAsOf(c, ds[Number(t.value)]); refocus('#asof-range'); }
   else if (t.id === 'use-claude') { S.settings.useClaude = t.checked; saveSettings(); }
   else if (t.id === 'wh-toggle') { S.settings.whispers = t.checked; saveSettings(); whTick(); showToast(t.checked ? 'Little notes are on.' : 'Little notes are off.'); }
   else if (t.id === 'import-file' && t.files && t.files[0]) { const f = t.files[0]; const rd = new FileReader(); rd.onload = () => importCases(String(rd.result || '')); rd.onerror = () => showToast('That file could not be opened.'); rd.readAsText(f); t.value = ''; }
@@ -3190,6 +3622,9 @@ document.addEventListener('submit', e => {
     const c = current(); const cat = f.dataset.cat; const inp = f.querySelector('input'); const v = inp.value.trim(); if (!v) return inp.focus();
     const r = addQuick(c, v, cat); UI.addCat = cat; UI.focus = inp.id; render();
     showToast(r.hidden ? `Added, with ${plural(r.hidden, 'detail')} hidden.` : `Added to ${cat === 'goal' ? 'Goals' : CATS[cat].label}.`, { label: 'Undo', run: () => { c.entries = c.entries.filter(x => x.id !== r.entry.id); touch(c); render(); } });
+  } else if (f.dataset.form === 'rename-sess') {
+    const c = current(); const e = c && c.entries.find(x => x.id === f.dataset.id); const v = ($('#rn-in') || {}).value || '';
+    if (e) { const prev = e.title; e.title = deidentify(v.trim()).text.slice(0, 60); touch(c); UI.renaming = null; render(); showToast(e.title ? 'Session renamed.' : 'Name reset from the notes.', { label: 'Undo', run: () => { e.title = prev; touch(c); render(); } }); }
   } else if (f.dataset.form === 'signin') {
     cloudSignIn(($('#si-email') || {}).value || '', ($('#si-pass') || {}).value || '');
   } else if (f.dataset.form === 'edit-case') {
@@ -3202,6 +3637,7 @@ document.addEventListener('toggle', e => {
   if (d.dataset.opt) { if (d.open) UI.openOpt = d.dataset.opt; else if (UI.openOpt === d.dataset.opt) UI.openOpt = null; }
   if (d.classList.contains('case-admin')) UI.adminOpen = d.open;
   if (d.dataset.more === 'opt') UI.optOpen = d.open;
+  if (d.dataset.more === 'ctx') UI.ctxOpen = d.open;
 }, true);
 window.addEventListener('resize', () => { if (UI.pop) closePop(true); });
 document.addEventListener('scroll', () => { if (UI.pop && !$('#pop:focus-within')) closePop(true); }, { passive: true });
