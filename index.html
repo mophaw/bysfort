@@ -1775,7 +1775,8 @@ function activeInt(c) { return c.ints.find(i => !i.end) || null; }
 /* A plain 'asked, none reported' screen is documentation, not a risk to act on. Anything else filed as risk raises the banner. */
 const NEG_RE = /^\s*(asked(\s+about)?[^:]{0,40}:\s*)?(no|nil|not|none|denie[sd]|never)\b/i;
 const POS_RE = /passive|wish|\bbut\b|however|concerns? (were )?(reported|raised)|disclos|plan to|attempt|cutting|overdose/i;
-function isNegScreen(s) { if (s.neg) return true; const t = plainText(s.short || s.text || ''); return NEG_RE.test(t) && !POS_RE.test(t); }
+const NEG2_RE = /^\s*(si|sh|suicidal (ideation|thoughts)|self[- ]?harm|risk( assessment)?)\b[^.\n]{0,25}?[:\-–]\s*(nil|no|none|denied|denies|negative|low)\b|\b(denie[sd]\s+|no\s+(current |active |recent )?)(any\s+)?(si|sh|suicidal|self[- ]?harm)\b|\blow risk\b/i;
+function isNegScreen(s) { if (s.neg) return true; const t = plainText(s.short || s.text || ''); return (NEG_RE.test(t) || NEG2_RE.test(t)) && !POS_RE.test(t); }
 function riskSpans(c) { return allSpans(c).filter(s => s.cat === 'risk' && !isNegScreen(s)); }
 function newRisk(c) { const seen = new Set(c.riskSeen || []); return riskSpans(c).filter(s => !seen.has(s.id)); }
 function sessionCount(c) { return c.entries.filter(e => e.kind === 'notes').length; }
