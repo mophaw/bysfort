@@ -302,29 +302,44 @@ input[type=date]:focus-visible{outline:none;border-bottom-color:var(--ivory)}
 .brief .overline{margin-bottom:5px}
 .brief p{margin:0;color:var(--ivory-2)}
 .brief p:first-of-type{color:var(--ivory)}
-.tgrid-fig{margin:0;display:flex;flex-direction:column;gap:10px;padding:16px 18px 12px;border:1px solid var(--line);border-radius:18px;background:oklch(12% .008 290 / .6);min-width:0}
-.tgrid-wrap{position:relative;overflow-x:auto;scrollbar-width:thin}
-.tgrid{width:100%;border-collapse:collapse;table-layout:fixed;min-width:calc(9.5em + var(--n) * 13px)}
-.tgrid th,.tgrid td{padding:0}
-.tgrid thead .tg-name{vertical-align:bottom;padding-bottom:8px}
-.tg-name{width:9.5em;text-align:left;font:500 .7rem/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-2);padding:0 10px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tg-n{margin-left:8px;color:var(--ivory-3);font:400 .72rem/1 var(--font);letter-spacing:0}
-.tg-month{font:500 .62rem/1 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory-3);text-align:left;padding:0 0 8px 4px;border-left:1px solid var(--line);white-space:nowrap;overflow:hidden}
-.tgrid tbody tr{border-top:1px solid var(--line)}
-.tgrid tbody tr:hover{background:oklch(94% .016 80 / .03)}
-.tg-c{height:30px;text-align:center}
-.tg-c.ms{border-left:1px solid var(--line)}
-.tg-c[data-act]{cursor:pointer}
-.tg-c[data-act]:hover{background:oklch(94% .016 80 / .07)}
-.tg-c i,.tg-key{display:inline-block;vertical-align:middle}
-.tg-c.on i,.tg-key.on{width:5px;height:5px;border-radius:50%;background:var(--ivory-3)}
-.tg-c.up i,.tg-key.up{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid var(--ok);filter:drop-shadow(0 0 4px var(--ok))}
-.tg-c.down i,.tg-key.down{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid var(--risk);filter:drop-shadow(0 0 4px var(--risk))}
-.tg-c.mixed i{width:7px;height:7px;background:var(--warn);transform:rotate(45deg)}
-.tg-c.risk i,.tg-key.risk{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--risk);box-shadow:0 0 6px var(--risk-soft)}
-.tg-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.tg-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding-top:12px}
 .tg-legend span{display:inline-flex;align-items:center;gap:7px}
-@media (max-width:599px){.tgrid{min-width:calc(6em + var(--n) * 10px)}.tg-name{width:6em;letter-spacing:.06em;font-size:.64rem}.tg-n{display:none}.tgrid-fig{padding:14px 12px 10px}}
+.tg-legend .th-d{position:static;margin:0;display:inline-block}
+.tg-legend .th-d.on{background:var(--ivory-2)}
+/* Over time: the overall line on top, then one thread per theme on the same columns */
+.tl-fig{margin:0;display:flex;flex-direction:column;padding:16px 18px 12px;border:1px solid var(--line);border-radius:18px;background:oklch(12% .008 290 / .6);min-width:0}
+.tl-rows{list-style:none;margin:0;padding:0}
+.tl-row{display:grid;grid-template-columns:10.5em minmax(0,1fr);gap:0 16px;align-items:center}
+.tl-theme{min-height:44px;border-top:1px solid var(--line);--hlc:var(--ivory-2);transition:background-color .2s}
+.tl-theme.risk{--hlc:var(--risk)}
+.tl-theme:hover{background:oklch(94% .016 80 / .03)}
+.tl-name{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;padding:7px 0}
+.tl-name b{font:500 .7rem/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ivory-2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-spark .tl-name .xs{line-height:1.3}
+.tl-plot{position:relative;display:block;min-width:0;align-self:stretch}
+.tl-theme .thread{position:absolute;inset:0;height:auto}
+.tl-theme .th-d{width:9px;height:9px;margin:-4.5px 0 0 -4.5px;cursor:pointer}
+.tl-theme .th-d.concern{width:11px;height:11px;margin:-5.5px 0 0 -5.5px}
+.tl-theme .th-d:hover{transform:scale(1.35)}
+.tl-spark .tl-plot{height:96px}
+.spark-plot svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.spark-plot .sp-axis{stroke:var(--line-2);stroke-dasharray:2 4}
+.spark-plot .sp-line{fill:none;stroke:var(--ivory);stroke-width:1.4;filter:drop-shadow(0 0 4px oklch(94% .016 80 / .5))}
+.sp-pt{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--void);border:1.5px solid var(--ivory-2);cursor:pointer;transition:transform .2s}
+.sp-pt:hover{transform:scale(1.35)}
+.sp-pt.up{background:var(--ok);border-color:var(--ok);box-shadow:0 0 10px var(--ok)}
+.sp-pt.down{background:var(--risk);border-color:var(--risk);box-shadow:0 0 10px var(--risk)}
+.tl-axis .tl-plot{height:24px}
+.tl-axis .th-in span{position:absolute;top:6px;transform:translateX(-50%);font:500 .6rem/1 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory-3);white-space:nowrap}
+.tl-axis .th-in span:first-child{transform:translateX(-4px)}
+.th-key-gap{display:inline-block;width:18px;border-top:1px dashed var(--ivory-3)}
+@media (max-width:599px){.tl-row{grid-template-columns:6.8em minmax(0,1fr);gap:0 8px}.tl-fig{padding:12px 10px 10px}.tl-name b{letter-spacing:.06em;font-size:.64rem}.tl-name .th-st{letter-spacing:.04em}.tl-spark .tl-name .xs{display:none}.tl-theme .th-d{width:7px;height:7px;margin:-3.5px 0 0 -3.5px}}
+@media (prefers-reduced-motion:no-preference){
+  .enter .tl-spark svg{animation:wipe 1.4s var(--ease) backwards .3s}
+  @keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  .enter .sp-pt{animation:pop .5s var(--ease) backwards;animation-delay:calc(var(--k,0) * 40ms + .4s)}
+  .enter .tl-theme .th-seg{animation:fadein .8s backwards .5s}
+}
 .jn-tally{gap:10px}
 .jn-tally .trend,.jn-ch .trend{margin:0}
 .jn-body{padding-top:4px}
@@ -365,6 +380,55 @@ input[type=date]:focus-visible{outline:none;border-bottom-color:var(--ivory)}
 .scrub-months span:first-child{transform:translateX(-5px)}
 .scrub-sum{margin:0;padding:2px 0 4px}
 @media (max-width:599px){.scrub{padding:12px 12px 8px}.scrub-step{width:36px;height:36px}.scrub-head .overline{display:none}.scrub-now{flex-basis:100%}.scrub-acts{margin-left:-12px}}
+/* Plan: go into the next session with this */
+.prep{display:flex;flex-direction:column;gap:18px;padding:22px 24px 24px;border:1px solid var(--line-2);border-radius:20px;background:linear-gradient(140deg,oklch(19% .02 300 / .55),oklch(14% .012 220 / .45));margin-bottom:36px}
+.prep-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.prep-head h2{font-size:1.2rem;letter-spacing:.22em}
+.prep-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px 44px}
+@media (min-width:900px){.prep-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+.prep-col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.prep-sec h3{font:500 .68rem/1.3 var(--display);letter-spacing:.22em;color:var(--ivory-3);margin-bottom:9px}
+.prep-sec.risk h3{color:var(--risk)}
+.prep-sec ul,.sv-next{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.prep-sec li,.sv-next li{position:relative;padding-left:24px;line-height:1.55;color:var(--ivory)}
+.prep-sec li::before,.sv-next li::before{content:"";position:absolute;left:2px;top:.36em;width:12px;height:12px;border-radius:4px;border:1px solid var(--ivory-3)}
+.prep-sec.risk li::before{border-color:var(--risk)}
+.prep-sec.expect li::before{border-radius:50%;border-style:dashed}
+.prep-sec li .th-st{margin-right:4px;vertical-align:.1em}
+.prep-sec li.faint{color:var(--ivory-3)}
+.linklike{border:0;background:none;padding:0;color:var(--ivory-2);text-decoration:underline;text-underline-offset:.2em;cursor:pointer;font:inherit}
+.linklike:hover{color:var(--ivory)}
+@media (max-width:599px){.prep{padding:18px 16px 20px}}
+/* Stefan's view: progress and analysis */
+.sv-traj{font:500 .64rem/1 var(--display);letter-spacing:.18em;text-transform:uppercase;padding:7px 11px 6px;border-radius:999px;border:1px solid var(--line-3);color:var(--ivory-2);white-space:nowrap;align-self:center}
+.sv-traj.k-climbing{color:var(--ok);border-color:color-mix(in oklch,var(--ok) 50%,transparent)}
+.sv-traj.k-sliding{color:var(--risk);border-color:color-mix(in oklch,var(--risk) 50%,transparent)}
+.sv-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-bottom:30px}
+@media (min-width:900px){.sv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sv-card{padding:18px 20px 20px;border:1px solid var(--line);border-radius:18px;background:oklch(14% .009 290 / .55);display:flex;flex-direction:column;gap:10px;min-width:0}
+.sv-card h2,.sv-sec h2{font-size:.86rem;letter-spacing:.24em}
+.sv-line{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:4px 14px;align-items:baseline;padding-top:9px;border-top:1px solid var(--line);line-height:1.5}
+.sv-card h2+.sv-line{border-top:0;padding-top:2px}
+.sv-line .overline{font-size:.6rem;letter-spacing:.2em}
+@media (max-width:599px){.sv-line{grid-template-columns:minmax(0,1fr)}}
+.sv-sec{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.sv-drivers{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:900px){.sv-drivers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sv-drv{padding:16px 18px 18px;border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;gap:9px;--hlc:var(--ivory-2);background:oklch(14% .009 290 / .45);min-width:0}
+.sv-drv.risk{--hlc:var(--risk);border-color:color-mix(in oklch,var(--risk) 35%,transparent)}
+.sv-drv p{margin:0;line-height:1.55;color:var(--ivory-2)}
+.sv-drv p .overline{display:inline-block;width:3.4em;font-size:.6rem}
+.sv-drv-name{font:400 .95rem/1.2 var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--ivory)}
+.sv-note{margin:0 0 10px}
+.sv-glance .sv-tile{cursor:default}
+.sv-weeks{margin:0 0 26px;display:flex;flex-direction:column;gap:8px}
+.sv-bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:8px;height:84px;align-items:end;padding:0 4px;border-bottom:1px solid var(--line-2)}
+.sv-bars span{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.sv-bars i{display:block;width:100%;max-width:28px;height:calc(var(--h) * .78);min-height:2px;background:linear-gradient(var(--ivory),oklch(94% .016 80 / .2));border-radius:4px 4px 0 0;box-shadow:0 0 10px oklch(94% .016 80 / .2)}
+.sv-bars b{font:500 .62rem/1 var(--display);color:var(--ivory-3)}
+.sv-cases{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.sv-who{display:block;line-height:1.45}
+@media (prefers-reduced-motion:no-preference){.enter .sv-bars i{animation:barup .7s var(--ease) backwards;animation-delay:calc(var(--k,0) * 40ms + .2s)}@keyframes barup{from{height:0}}.enter .sv-card,.enter .sv-drv{animation:rise .6s var(--ease) backwards}}
 /* At a glance */
 .glance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:oklch(14% .009 290 / .55);overflow:hidden;margin:0 0 14px}
 .glance-t{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;padding:16px 18px 18px;border:0;border-left:1px solid var(--line);border-radius:0;background:transparent;color:inherit;text-align:left;cursor:pointer;transition:background-color .2s}
@@ -379,7 +443,8 @@ input[type=date]:focus-visible{outline:none;border-bottom-color:var(--ivory)}
 .g-line i{flex:none;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent}
 .g-line.up i{border-bottom:8px solid var(--ok);filter:drop-shadow(0 0 4px var(--ok))}
 .g-line.down i{border-top:8px solid var(--risk);filter:drop-shadow(0 0 4px var(--risk))}
-.g-line:not(.up):not(.down){color:var(--ivory-3)}
+.g-line.back i{width:auto;height:auto;border:0}.g-line.back i::before{content:"↺";color:var(--warn);font:700 .9rem/1 var(--font);font-style:normal}
+.g-line:not(.up):not(.down):not(.back){color:var(--ivory-3)}
 .glance-t.warn .g-big{color:var(--warn)} .glance-t.warn .g-sub{color:var(--warn)}
 .glance-t.crit .g-sub{color:var(--risk)}
 @media (max-width:899px){.glance{grid-template-columns:repeat(2,minmax(0,1fr))}.glance-t:nth-child(3){border-left:0}.glance-t:nth-child(n+3){border-top:1px solid var(--line)}}
@@ -387,7 +452,6 @@ input[type=date]:focus-visible{outline:none;border-bottom-color:var(--ivory)}
 @media (prefers-reduced-motion:no-preference){
   .enter .glance-t{animation:rise .6s var(--ease) backwards;animation-delay:calc(var(--i,0) * 70ms + .1s)}
   .enter .month{animation:rise .6s var(--ease) backwards;animation-delay:calc(var(--i,0) * 60ms + .15s)}
-  .enter .tg-c i{animation:pop .45s var(--ease) backwards;animation-delay:calc(var(--k,0) * 22ms + .3s)}
   .enter .scrub-fill{animation:grow 1s var(--ease) backwards .2s}
   .enter .scrub-rail i{animation:pop .5s var(--ease) backwards;animation-delay:calc(var(--k,0) * 20ms + .2s)}
   @keyframes grow{from{width:0}}
@@ -512,9 +576,60 @@ details.more[open]>summary .icon{transform:rotate(180deg)}
 /* themes: the newest note up front, earlier ones folded behind it */
 .cell .items.themes{gap:18px}
 .cell .items>li.theme::before{top:9px} .cell .items>li.theme::after{top:7px}
-.theme{display:flex;flex-direction:column;gap:3px;min-width:0}
-.theme-head{display:flex;flex-wrap:wrap;align-items:center;gap:3px 10px;min-height:18px}
-.theme-name{font:500 .66rem/1.3 var(--display);letter-spacing:.2em;text-transform:uppercase;color:color-mix(in oklch,var(--hlc) 85%,var(--ivory))}
+.theme{display:grid;grid-template-columns:8.8em minmax(0,1fr);gap:4px 16px;align-items:start;min-width:0;transition:opacity .25s}
+.theme-meta{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;padding-top:1px}
+.theme-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.theme-name{font:500 .66rem/1.3 var(--display);letter-spacing:.2em;text-transform:uppercase;color:color-mix(in oklch,var(--hlc) 85%,var(--ivory));background:none;border:0;padding:0;text-align:left;max-width:100%;overflow-wrap:anywhere}
+button.theme-name{cursor:pointer;text-decoration:underline dotted transparent;text-underline-offset:.35em;transition:color .2s,text-decoration-color .2s}
+button.theme-name:hover{color:var(--ivory);text-decoration-color:var(--ivory-3)}
+@media (max-width:599px){.theme{grid-template-columns:minmax(0,1fr);gap:4px}.theme-meta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 12px}}
+/* the thread: one hairline across every session; a dot where the theme came up, dotted where it went quiet */
+.thread{display:block;position:relative;height:16px;width:100%}
+.th-in{position:absolute;left:6px;right:6px;top:0;bottom:0}
+.th-base{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+.th-seg{position:absolute;top:50%;height:1px;background:color-mix(in oklch,var(--hlc) 70%,transparent)}
+.th-seg.gap{height:0;background:none;border-top:1px dashed color-mix(in oklch,var(--hlc) 60%,transparent)}
+.th-seg.tail{height:0;background:none;border-top:1px dashed var(--line-3)}
+.th-d{position:absolute;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--hlc);transition:transform .2s}
+.th-d.better{background:var(--ok);box-shadow:0 0 6px var(--ok)}
+.th-d.resolved{background:var(--void);border:1.5px solid var(--ok)}
+.th-d.worse{background:var(--risk);box-shadow:0 0 6px var(--risk)}
+.th-d.concern{width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:var(--void);border:1.5px solid var(--risk);box-shadow:0 0 6px var(--risk-soft)}
+.th-d.clear{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:var(--ivory-3)}
+.th-st{display:inline-flex;align-items:center;gap:5px;font:500 .6rem/1.25 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--ivory-3);white-space:nowrap}
+.th-st b{font:700 .8rem/1 var(--font);letter-spacing:0}
+.th-st.k-back,.th-st.k-worse,.th-st.k-concern,.th-st.k-unasked,.th-st.k-new,.th-st.k-quiet{padding:3px 8px;border:1px solid;border-radius:999px}
+.th-st.k-back,.th-st.k-unasked{color:var(--warn);border-color:color-mix(in oklch,var(--warn) 45%,transparent)}
+.th-st.k-worse,.th-st.k-concern{color:var(--risk);border-color:color-mix(in oklch,var(--risk) 45%,transparent)}
+.th-st.k-better,.th-st.k-resolved,.th-st.k-settled{color:var(--ok)}
+.th-st.k-new{color:var(--ivory);border-color:var(--line-3)}
+.th-st.k-quiet{color:var(--ivory-2);border-color:var(--line-3);border-style:dashed}
+.th-links{display:flex;flex-wrap:wrap;align-items:center;gap:5px 6px;margin-top:2px}
+.lk-l{font:500 .6rem/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ivory-3);margin-right:2px}
+.lk-sep{width:1px;height:14px;background:var(--line-2);margin:0 6px}
+.lk{display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:2px 9px 2px 8px;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--ivory-2);font:500 .62rem/1 var(--display);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s}
+.lk:not(.up):not(.down)::before{content:"";width:10px;height:1px;background:currentColor;opacity:.6}
+.lk b{font:700 .62rem/1 var(--font);letter-spacing:0}
+.lk.down b{color:var(--risk)} .lk.up b{color:var(--ok)}
+.lk:hover,.lk.on{border-color:var(--ivory);color:var(--ivory)}
+/* following one theme across the board */
+.board-wrap.hl-on .theme:not(.lit),.board-wrap.hl-on .items:not(.themes)>li{opacity:.25}
+.theme.lit .theme-name{color:var(--ivory);text-shadow:0 0 14px var(--hlc)}
+.theme.lit .th-seg{background:var(--hlc);box-shadow:0 0 6px var(--hlc)}
+.theme.lit .th-seg.gap{background:none;box-shadow:none;border-top-color:var(--hlc)}
+.hl-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--bar-h) + 10px);z-index:6;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:6px 6px 6px 18px;margin:0 0 16px;border:1px solid var(--line-3);border-radius:999px;background:var(--panel-glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:var(--t-s);color:var(--ivory-2)}
+.hl-bar b{color:var(--ivory);font-weight:700}
+.hl-bar .btn{margin-left:auto}
+/* to watch: what to tell her, as of the session on the slider */
+.watch{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 0 4px;border-top:1px solid var(--line);margin-top:4px}
+.watch-list{display:flex;flex-wrap:wrap;gap:6px}
+.w-chip{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:4px 13px;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--ivory-2);font-size:var(--t-s);cursor:pointer;transition:border-color .2s,color .2s,background-color .2s}
+.w-chip b{font-weight:700;font-size:.85rem}
+.w-chip:hover,.w-chip.on{border-color:var(--ivory);color:var(--ivory);background:oklch(94% .016 80 / .05)}
+.w-chip.k-back,.w-chip.k-unasked{color:var(--ivory);border-color:color-mix(in oklch,var(--warn) 50%,transparent)}.w-chip.k-back b,.w-chip.k-unasked b{color:var(--warn)}
+.w-chip.k-worse,.w-chip.k-concern{color:var(--ivory);border-color:color-mix(in oklch,var(--risk) 50%,transparent)}.w-chip.k-worse b,.w-chip.k-concern b{color:var(--risk)}
+.w-chip.k-better b,.w-chip.k-resolved b{color:var(--ok)}
+.w-chip.k-quiet{border-style:dashed}
 .theme-when{font-size:var(--t-xs);color:var(--ivory-3);font-variant-numeric:tabular-nums}
 .trail{display:inline-flex;gap:3px;align-items:center}
 .trail i{width:5px;height:5px;border-radius:50%;background:color-mix(in oklch,var(--hlc) 45%,transparent)}
@@ -1497,6 +1612,82 @@ function themeGroups(spans) {
   gs.forEach(g => { g.items.reverse(); g.latest = g.items[0]; g.first = g.items[g.items.length - 1]; g.sessions = new Set(g.items.map(s => s.date)).size; });
   return gs.sort((a, b) => (a.key === 'other') - (b.key === 'other') || b.sessions - a.sessions || String(b.latest.date).localeCompare(String(a.latest.date)));
 }
+/* ---- threads: each theme followed through every session, so what goes quiet, comes back or moves together shows ---- */
+const MARK_RANK = { clear: 1, on: 2, better: 3, resolved: 4, worse: 5, concern: 6 };
+const RISK_KEYS = new Set(['selfharm', 'abuse', 'exploitation', 'missing']);
+const QUIET_N = 3, QUIET_DAYS = 14;
+const markPol = k => (k === 'worse' || k === 'concern' ? -1 : k === 'better' || k === 'resolved' ? 1 : 0);
+const PROBLEM_CATS = ['presenting', 'precipitating', 'perpetuating'];
+const IMPROVING = /\b(better|improv\w*|less|fewer|rare|rarely|reduc\w*|eas(?:ed|ing)|settl\w*|stopped|no longer|resolved|none|calmer)\b/i;
+function threadsOf(c, upto) {
+  const sp = allSpans(c, upto); const byId = {}; sp.forEach(s => { byId[s.id] = s; });
+  const cols = Array.from(new Set(chronEntries(c).filter(e => !upto || e.date <= upto).map(e => e.date))).sort();
+  const n = cols.length; const ix = d => cols.indexOf(d); const T = {};
+  const mark = (k, date, kind, s) => {
+    if (!k) return; const t = T[k] || (T[k] = { key: k, label: themeName(k), marks: {}, cats: {}, prob: {}, problem: false, risk: RISK_KEYS.has(k) });
+    if (!t.marks[date] || MARK_RANK[kind] > MARK_RANK[t.marks[date]]) t.marks[date] = kind;
+    if (s) (t.cats[date] = t.cats[date] || new Set()).add(s.cat);
+  };
+  sp.forEach(s => {
+    const k = themeOf(s); const ch = s.rel && s.rel.change && byId[s.rel.id] ? s.rel.change : null;
+    const neg = s.cat === 'risk' && isNegScreen(s); mark(k, s.date, s.cat === 'risk' ? (neg ? 'clear' : 'concern') : ch || 'on', s);
+    if (k && (PROBLEM_CATS.includes(s.cat) || (s.cat === 'risk' && !neg))) { T[k].problem = true; if (ch !== 'better' && ch !== 'resolved' && !IMPROVING.test(plainText(s.short || s.text))) T[k].prob[s.date] = true; }
+    if (ch) { const k2 = themeOf(byId[s.rel.id]); if (k2 && k2 !== k) mark(k2, s.date, ch, null); }
+  });
+  const list = Object.values(T); const lastCol = cols[n - 1];
+  const fmtGap = (a, b) => { const d = daysBetween(a, b); return d >= 56 ? `${Math.round(d / 30.4)} months` : `${Math.round(d / 7)} weeks`; };
+  const backIn = (ds, ok) => { for (let i = ds.length - 1; i > 0; i--) { const gap = ix(ds[i]) - ix(ds[i - 1]) - 1; if (gap >= QUIET_N && daysBetween(ds[i - 1], ds[i]) >= QUIET_DAYS) return !ok || ok(ds[i]) ? { date: ds[i], from: ds[i - 1], gap } : null; } return null; };
+  const recent = d => d && n - 1 - ix(d) < QUIET_N;
+  list.forEach(t => {
+    const dates = Object.keys(t.marks).sort(); const act = dates.filter(d => t.marks[d] !== 'clear');
+    Object.assign(t, { dates, act, first: act[0] || dates[0], last: act[act.length - 1] || dates[dates.length - 1] });
+    t.since = n - 1 - ix(t.last);
+    const lastCh = dates.filter(d => markPol(t.marks[d])).pop();
+    let st;
+    if (t.risk) {
+      const con = dates.filter(d => t.marks[d] === 'concern'), lc = con[con.length - 1];
+      const asked = lc ? dates.filter(d => d > lc && t.marks[d] === 'clear').length : 0; const b = backIn(con);
+      if (!lc) st = { kind: 'settled', short: 'No concerns', long: `Asked ${plural(dates.length, 'time')}, nothing reported` };
+      else if (b && recent(b.date)) st = { kind: 'back', date: b.date, short: `Back ${fmtShort(b.date)}`, long: `Came back ${fmtShort(b.date)}, after ${fmtGap(b.from, b.date)} without a concern` };
+      else if (lc === lastCol) st = { kind: 'concern', date: lc, short: `Noted ${fmtShort(lc)}`, long: `Concern noted this session${con.length > 1 ? `, ${plural(con.length, 'session')} in all` : ''}` };
+      else if (asked) st = { kind: 'settled', date: lc, short: `None since ${fmtShort(lc)}`, long: `No concern since ${fmtShort(lc)}. Asked ${plural(asked, 'time')} since, nothing reported` };
+      else st = { kind: 'unasked', date: lc, short: `Not asked since ${fmtShort(lc)}`, long: `Concern noted ${fmtShort(lc)} and not asked about since` };
+    } else {
+      const res = dates.filter(d => t.marks[d] === 'resolved').pop();
+      const bad = d => t.marks[d] === 'worse' || !!t.prob[d];
+      const afterRes = res ? act.find(d => d > res && bad(d)) : null; const b = backIn(act, bad);
+      if (n > 1 && t.first === lastCol) st = { kind: 'new', date: t.first, short: 'New', long: `First came up ${fmtShort(t.first)}` };
+      else if (afterRes && recent(afterRes)) st = { kind: 'back', date: afterRes, short: `Back ${fmtShort(afterRes)}`, long: `Came back ${fmtShort(afterRes)}, after it was noted as resolved ${fmtShort(res)}` };
+      else if (b && recent(b.date)) st = { kind: 'back', date: b.date, short: `Back ${fmtShort(b.date)}`, long: `Came back ${fmtShort(b.date)}, after ${fmtGap(b.from, b.date)} quiet` };
+      else if (lastCh && t.marks[lastCh] === 'resolved' && !act.some(d => d > lastCh)) st = { kind: 'resolved', date: lastCh, short: `Resolved ${fmtShort(lastCh)}`, long: `Noted as resolved ${fmtShort(lastCh)}` };
+      else if (t.since >= QUIET_N && daysBetween(t.last, lastCol) >= QUIET_DAYS) st = t.problem ? { kind: 'quiet', date: t.last, short: `Quiet since ${fmtShort(t.last)}`, long: `Not mentioned for ${plural(t.since, 'session')}, since ${fmtShort(t.last)}` } : { kind: 'still', short: `Last noted ${fmtShort(t.last)}`, long: `Last noted ${fmtShort(t.last)}` };
+      else if (lastCh && recent(lastCh) && t.marks[lastCh] === 'worse') st = { kind: 'worse', date: lastCh, short: `Worse ${fmtShort(lastCh)}`, long: `Noted as worse ${fmtShort(lastCh)}` };
+      else if (lastCh && recent(lastCh)) st = { kind: 'better', date: lastCh, short: `Easing ${fmtShort(lastCh)}`, long: `Noted as better ${fmtShort(lastCh)}` };
+      else { const m = Math.min(n, 6); const k = act.filter(d => ix(d) >= n - m).length; st = { kind: 'ongoing', short: 'Ongoing', long: `Came up in ${k} of the last ${plural(m, 'session')}` }; }
+    }
+    t.status = st;
+  });
+  /* themes that move together: worse in the same sessions (any once), or better together (three times or more);
+     a concern also links to what else got worse or was going on that day */
+  list.forEach(a => {
+    const shared = (b, pol) => a.dates.filter(d => markPol(a.marks[d]) === pol && markPol(b.marks[d]) === pol);
+    const pick = (pol, min, max) => list.filter(b => b !== a).map(b => ({ key: b.key, label: b.label, risk: b.risk, dates: shared(b, pol) })).filter(x => x.dates.length >= min)
+      .sort((x, y) => y.dates.length - x.dates.length || String(y.dates[y.dates.length - 1]).localeCompare(String(x.dates[x.dates.length - 1])) || y.risk - x.risk).slice(0, max);
+    a.worseWith = pick(-1, 1, 3); a.betterWith = pick(1, 3, 2);
+    if (a.risk) {
+      const con = a.dates.filter(d => a.marks[d] === 'concern'); const seen = new Map();
+      con.slice().reverse().forEach(d => list.forEach(b => { if (b === a || seen.has(b.key)) return; const m = b.marks[d]; const cats = b.cats[d] || new Set();
+        if (m === 'worse' || m === 'concern' || (m === 'on' && PROBLEM_CATS.some(x => cats.has(x)))) seen.set(b.key, { key: b.key, label: b.label, date: d, worse: m === 'worse' || m === 'concern' }); }));
+      a.same = [...seen.values()].sort((x, y) => y.worse - x.worse).slice(0, 4);
+    }
+  });
+  return { cols, map: T, list };
+}
+/* what to tell her, as of a session: what came back, got worse, went quiet or settled */
+function watchList(th) {
+  const order = { back: 0, concern: 1, unasked: 2, worse: 3, new: 4, quiet: 5, resolved: 6, better: 7 };
+  return th.list.filter(t => order[t.status.kind] != null).sort((a, b) => order[a.status.kind] - order[b.status.kind] || (b.risk - a.risk));
+}
 const monthKey = d => String(d || '').slice(0, 7);
 function monthName(k) { const [y, m] = String(k).split('-'); return `${MONTHS_LONG[Number(m) - 1] ? cap(MONTHS_LONG[Number(m) - 1]) : ''} ${y}`; }
 /* group anything with a .date into months, newest month first */
@@ -1511,18 +1702,15 @@ function caseBrief(c) {
   const ds = sessionDates(c); const js = journey(c); const sp = allSpans(c);
   const lastDate = ds[ds.length - 1] || (js[js.length - 1] || {}).date || null;
   const lastJ = js.slice().reverse().find(j => j.n) || js[js.length - 1] || null;
-  const dir = {}; js.forEach(j => j.changes.forEach(x => { const k = themeOf(x.of) || themeOf(x.s); if (k) dir[k] = { change: x.change, date: j.date }; }));
-  const recent = ds.length > 5 ? ds[ds.length - 6] : ds[0] || '';
-  const lately = Object.entries(dir).filter(([, v]) => v.date >= recent);
-  const better = lately.filter(([, v]) => v.change !== 'worse').map(([k]) => themeName(k).toLowerCase());
-  const worse = lately.filter(([, v]) => v.change === 'worse').map(([k]) => themeName(k).toLowerCase());
+  const th = threadsOf(c); const of = kinds => th.list.filter(t => kinds.includes(t.status.kind)).map(t => themeName(t.key).toLowerCase());
+  const better = of(['better', 'resolved']), worse = of(['worse', 'concern']), back = of(['back']), quiet = of(['quiet']);
   const talk = themeGroups(sp).filter(g => g.key !== 'other').slice(0, 3).map(g => ({ label: g.label, n: g.sessions }));
   const sh = sp.filter(s => (s.topics || []).includes('selfharm') || (s.cat === 'risk' && themeOf(s) === 'selfharm'));
   const asked = sh.length ? sh[sh.length - 1].date : null;
   const concern = riskSpans(c); const lastConcern = concern.length ? concern[concern.length - 1] : null;
   const changes = js.reduce((a, j) => ({ better: a.better + j.better, worse: a.worse + j.worse }), { better: 0, worse: 0 });
   const weeksSince = lastDate ? Math.floor(daysBetween(lastDate, todayISO()) / 7) : 0;
-  return { ds, js, first: ds[0] || null, lastDate, lastJ, rhythm: rhythm(ds), better, worse, talk, asked, lastConcern, changes, weeksSince };
+  return { ds, js, th, first: ds[0] || null, lastDate, lastJ, rhythm: rhythm(ds), better, worse, back, quiet, talk, asked, lastConcern, changes, weeksSince };
 }
 /* Without AI: link "better / worse / resolved" wording to the most recent earlier point on the same topic. */
 const CHANGE_WORSE = /\b(worse|worsen\w*|deteriorat\w*|escalat\w*|increas\w*|dropped|dipped|declin\w*|relaps\w*|returned(?! to\b)|came back|back to (?:not|skipping|missing)|more (?:often|anxious|low|withdrawn|frequent|angry|aggressive)|stopped attending|not attending|refus\w+ to attend)\b/i;
@@ -1962,6 +2150,7 @@ function everywhereHTML() {
     <div class="row">${S.cases.length ? `<button class="btn" data-act="download-export">${icon('download')}Save backup file</button>` : ''}<label class="btn primary filepick">${icon('upload')}Open backup file<input type="file" id="import-file" accept=".json,application/json,text/plain"></label></div></section>`;
 }
 function homeHTML() {
+  if (stefanView()) return stefanHomeHTML();
   const list = S.cases.slice().sort((a, b) => (b.updated || 0) - (a.updated || 0));
   const form = UI.newCase || !list.length ? newCaseHTML(!list.length) : '';
   if (!list.length) return `${heroHTML(false)}<section class="empty" style="margin:0 auto;align-items:center;text-align:center"><h1>Start from the notes you already have</h1>
@@ -1990,10 +2179,11 @@ function caseRowHTML(c, i) {
 
 /* ================= case ================= */
 function caseHTML(c) {
+  if (stefanView() && !(UI.svFull && UI.svFull[c.id])) return stefanCaseHTML(c);
   const cl = checklist(c); const openN = cl.toCover;
   const tabs = [['notes', 'Notes', c.entries.length ? openN : null, 'still missing'], ['form', 'Formulation', null], ['next', 'Next session', c.entries.length ? cl.focusN : null, 'to focus on'], ['plan', 'Plan', null]];
   const at = CHAPTERS.indexOf(UI.tab); const nx = at >= 0 && at < CHAPTERS.length - 1 ? tabs[at + 1] : null;
-  return `<header class="case-hero">${glyphSVG(c)}<div class="grow"><p class="overline">${caseMeta(c)}</p><h1 class="title">${esc(c.label)}</h1></div></header>
+  return `${stefanView() ? `<div class="row"><button class="btn quiet sm" data-act="sv-back" data-id="${esc(c.id)}">${icon('back')}Back to the analysis</button></div>` : ''}<header class="case-hero">${glyphSVG(c)}<div class="grow"><p class="overline">${caseMeta(c)}</p><h1 class="title">${esc(c.label)}</h1></div></header>
     ${glanceHTML(c)}
     <nav class="tabs" role="tablist" aria-label="Case sections">${tabs.map(([k, l, n, what], j) => `<button class="tab" role="tab" id="tab-${k}" aria-selected="${UI.tab === k}" tabindex="${UI.tab === k ? 0 : -1}" data-act="tab" data-tab="${k}"><span class="ch-n" aria-hidden="true">0${j + 1}</span>${l}${n ? `<span class="count" title="${n} ${what}">${n}</span>` : ''}</button>`).join('')}</nav>
     ${safetyHTML(c)}
@@ -2008,15 +2198,16 @@ function glanceHTML(c) {
   const lastE = chronEntries(c).filter(e => e.kind === 'notes').pop();
   const n = b.ds.length; const since = b.asked ? b.ds.filter(d => d > b.asked).length : n;
   let ti = 0; const tile = (go, cls, over, big, sub, label) => `<button class="glance-t${cls ? ' ' + cls : ''}" style="--i:${ti++}" data-act="glance" data-go="${go}" aria-label="${esc(label)}"><span class="overline">${over}</span>${big}${sub ? `<span class="g-sub">${sub}</span>` : ''}</button>`;
-  const lately = b.better.length || b.worse.length
-    ? `${b.better.length ? `<span class="g-line up"><i aria-hidden="true"></i>${esc(cap(listWords(b.better.slice(0, 3))))}</span>` : ''}${b.worse.length ? `<span class="g-line down"><i aria-hidden="true"></i>${esc(cap(listWords(b.worse.slice(0, 3))))}</span>` : ''}`
+  const gl = (cls, list) => list.length ? `<span class="g-line ${cls}"><i aria-hidden="true"></i>${esc(cap(listWords(list.slice(0, 3))))}</span>` : '';
+  const lately = b.back.length || b.better.length || b.worse.length
+    ? `${gl('back', b.back)}${gl('down', b.worse)}${gl('up', b.better)}`
     : `<span class="g-line">${n > 1 ? 'No changes noted yet' : 'Shows after a second session'}</span>`;
   const safeCls = !b.asked ? 'warn' : since ? 'warn' : b.lastConcern && newRisk(c).length ? 'crit' : '';
   const safeSub = !b.asked ? 'Ask about self-harm every session' : since ? `Not asked in the last ${since === 1 ? 'session' : plural(since, 'session')}` : b.lastConcern ? `Concern noted ${esc(fmtShort(b.lastConcern.date))}` : 'Nothing reported';
   return `<div class="glance" role="group" aria-label="At a glance">
     ${tile('notes', '', 'Sessions', `<b class="g-big num">${n || '–'}</b>`, n > 1 ? `${esc(fmtShort(b.first))} – ${esc(fmtShort(b.lastDate))}${b.rhythm ? ' · ' + b.rhythm : ''}` : n ? esc(fmtDate(b.first)) : 'Points added in the app', `${plural(n, 'session')}. Open the notes`)}
     ${tile('last', '', `Last session · ${esc(agoText(daysBetween(b.lastDate, todayISO())))}`, `<b class="g-big">${esc(fmtShort(b.lastDate))}</b>`, lastE ? esc(sessionTitle(lastE)) : '', `Last session ${fmtDate(b.lastDate)}. Open it`)}
-    ${tile('time', '', 'Lately', `<span class="g-lines">${lately}</span>`, '', `Lately: ${b.better.length ? 'better ' + listWords(b.better) + '. ' : ''}${b.worse.length ? 'worse ' + listWords(b.worse) + '. ' : ''}Open Over time`)}
+    ${tile('time', '', 'Lately', `<span class="g-lines">${lately}</span>`, '', `Lately: ${b.back.length ? 'came back: ' + listWords(b.back) + '. ' : ''}${b.worse.length ? 'worse: ' + listWords(b.worse) + '. ' : ''}${b.better.length ? 'better: ' + listWords(b.better) + '. ' : ''}Open Over time`)}
     ${tile('safety', safeCls, 'Safety', `<b class="g-big">${b.asked ? `Asked ${esc(fmtShort(b.asked))}` : 'Not asked yet'}</b>`, safeSub, `Safety: ${b.asked ? 'self-harm last asked ' + fmtDate(b.asked) : 'self-harm not asked yet'}. ${safeSub}`)}
   </div>`;
 }
@@ -2260,7 +2451,14 @@ function asOfHTML(c) {
         <input type="range" id="asof-range" min="0" max="${n - 1}" step="1" value="${i}" aria-label="Show the formulation as of session" aria-valuetext="Session ${i + 1} of ${n}, ${esc(fmtDate(at))}">
         <div class="scrub-months" aria-hidden="true">${scrubMarks(ds).map(m => `<span style="left:${pct(m.k)}%">${esc(m.label)}</span>`).join('')}</div></div>
       <button class="scrub-step" id="asof-next" data-act="asof-step" data-d="1" ${latest ? 'disabled' : ''} aria-label="Next session">${icon('fwd')}</button></div>
-    ${sum || !latest ? `<p class="scrub-sum small muted">${sum ? `This session: ${esc(sum)}.` : ''}${latest ? '' : ' Points marked New were first noted this session; later sessions are left out.'}</p>` : ''}</section>`;
+    ${sum || !latest ? `<p class="scrub-sum small muted">${sum ? `This session: ${esc(sum)}.` : ''}${latest ? '' : ' Points marked New were first noted this session; later sessions are left out.'}</p>` : ''}
+    ${watchHTML(threadsOf(c, asOfOf(c)))}</section>`;
+}
+
+const WATCH_TEXT = { back: t => `${t.label} came back`, concern: t => `${t.label}: concern noted`, unasked: t => `${t.label}: not asked since ${fmtShort(t.dates.filter(d => t.marks[d] === 'concern').pop())}`, worse: t => `${t.label} worse`, new: t => `${t.label} is new`, quiet: t => `${t.label} quiet for ${plural(t.since, 'session')}`, resolved: t => `${t.label} resolved`, better: t => `${t.label} easing` };
+function watchHTML(th) {
+  const w = watchList(th); if (!w.length) return '';
+  return `<div class="watch"><span class="overline">To watch</span><span class="watch-list">${w.slice(0, 7).map(t => `<button class="w-chip k-${t.status.kind}${UI.hlTheme === t.key ? ' on' : ''}" data-act="hl-theme" data-k="${esc(t.key)}" data-hl-k="${esc(t.key)}" title="${esc(t.status.long)}">${ST_GLYPH[t.status.kind] ? `<b aria-hidden="true">${ST_GLYPH[t.status.kind]}</b>` : ''}${esc(WATCH_TEXT[t.status.kind](t))}<span class="sr">. ${esc(t.status.long)}</span></button>`).join('')}</span></div>`;
 }
 
 /* ---- Over time ---- */
@@ -2269,29 +2467,54 @@ function briefLines(b) {
   if (b.ds.length) L.push(`${plural(b.ds.length, 'session')}${b.ds.length > 1 ? `, ${fmtShort(b.first)} to ${fmtDate(b.lastDate)}${b.rhythm ? ', ' + b.rhythm : ''}` : ` on ${fmtDate(b.first)}`}.`);
   if (b.changes.better + b.changes.worse) L.push(`Your notes record ${plural(b.changes.better, 'change')} for the better and ${b.changes.worse || 'none'} for the worse.`);
   if (b.talk.length) L.push(`Comes up most: ${listWords(b.talk.map(t => `${t.label.toLowerCase()} (${plural(t.n, 'session')})`))}.`);
-  if (b.better.length) L.push(`Better lately: ${listWords(b.better)}.`);
+  if (b.back.length) L.push(`Came back after going quiet: ${listWords(b.back)}.`);
   if (b.worse.length) L.push(`Worse lately: ${listWords(b.worse)}.`);
+  if (b.better.length) L.push(`Better lately: ${listWords(b.better)}.`);
+  if (b.quiet.length) L.push(`Not mentioned for a while: ${listWords(b.quiet)}. Worth checking in.`);
   return L;
 }
-function themeGridHTML(c, js) {
+/* ---- threads: one line per theme across every session; solid where it keeps coming up, dotted where it went quiet ---- */
+const MARK_WORD = { on: 'came up', better: 'better', worse: 'worse', resolved: 'resolved', concern: 'concern noted', clear: 'asked, nothing reported' };
+const ST_GLYPH = { back: '↺', worse: '▼', concern: '●', unasked: '!', better: '▲', resolved: '✓', settled: '✓', new: '+', quiet: '┄', ongoing: '', still: '' };
+function threadHTML(t, cols, open) {
+  const n = cols.length; if (!t || n < 2) return '';
+  const x = d => (cols.indexOf(d) / (n - 1) * 100).toFixed(2); const ds = t.dates; let segs = '';
+  for (let i = 1; i < ds.length; i++) { const gap = cols.indexOf(ds[i]) - cols.indexOf(ds[i - 1]) > 1; segs += `<span class="th-seg${gap ? ' gap' : ''}" style="left:${x(ds[i - 1])}%;width:${(x(ds[i]) - x(ds[i - 1])).toFixed(2)}%"></span>`; }
+  const last = ds[ds.length - 1]; if (last && last !== cols[n - 1]) segs += `<span class="th-seg tail" style="left:${x(last)}%;width:${(100 - x(last)).toFixed(2)}%"></span>`;
+  return `<span class="thread${open ? ' open' : ''}" aria-hidden="true"><span class="th-in"><span class="th-base"></span>${segs}${ds.map(d => `<i class="th-d ${t.marks[d]}" style="left:${x(d)}%" title="${esc(fmtShort(d))}: ${MARK_WORD[t.marks[d]]}"${open ? ` data-act="jn-open" data-date="${d}"` : ''}></i>`).join('')}</span></span>`;
+}
+function stChipHTML(t) { const st = t && t.status; if (!st) return ''; return `<span class="th-st k-${st.kind}" title="${esc(st.long)}">${ST_GLYPH[st.kind] ? `<b aria-hidden="true">${ST_GLYPH[st.kind]}</b>` : ''}${esc(st.short)}<span class="sr">. ${esc(st.long)}</span></span>`; }
+function linkChip(l, title, dir) { return `<button class="lk${dir ? ' ' + dir : ''}${UI.hlTheme === l.key ? ' on' : ''}" data-act="hl-theme" data-k="${esc(l.key)}" data-hl-k="${esc(l.key)}" title="${esc(title)}">${dir ? `<b aria-hidden="true">${dir === 'down' ? '▼' : '▲'}</b>` : ''}${esc(l.label)}<span class="sr">, ${esc(title)}</span></button>`; }
+/* what moves with this theme: worse in the same sessions first, then better together; for a concern, what else was going on that day */
+function linksHTML(t) {
+  if (!t) return '';
+  if (t.risk) return t.same && t.same.length ? `<span class="th-links"><span class="lk-l">Same sessions</span>${t.same.map(l => linkChip(l, `${l.worse ? 'worse' : 'came up'} on ${fmtShort(l.date)}, when this concern was noted`, l.worse ? 'down' : '')).join('')}</span>` : '';
+  const ws = (t.worseWith || []).map(l => [l, `worse in the same sessions: ${l.dates.map(fmtShort).join(', ')}`, 'down']);
+  const bs = (t.betterWith || []).filter(l => !ws.some(w => w[0].key === l.key)).map(l => [l, `better in the same sessions: ${l.dates.map(fmtShort).join(', ')}`, 'up']);
+  const all = ws.concat(bs).slice(0, 3);
+  return all.length ? `<span class="th-links"><span class="lk-l">Moves with</span>${all.map(([l, tt, d]) => linkChip(l, tt, d)).join('')}</span>` : '';
+}
+function sparkRow(js) {
+  const n = js.length; let run = 0;
+  const pts = js.map((j, k) => { run += j.better - j.worse; return { x: k / (n - 1) * 100, run, j, net: j.better - j.worse }; });
+  const max = Math.max(1, ...pts.map(p => Math.abs(p.run))); const y = v => 50 - v / max * 40;
+  return `<div class="tl-row tl-spark"><span class="tl-name"><b>Overall</b><span class="xs faint">better minus worse</span></span>
+    <span class="tl-plot spark-plot" role="img" aria-label="Running total of changes noted as better minus worse: ${esc(pts.map(p => `${fmtShort(p.j.date)} ${p.run}`).join(', '))}"><span class="th-in">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line class="sp-axis" vector-effect="non-scaling-stroke" x1="0" x2="100" y1="50" y2="50"/><polyline class="sp-line" vector-effect="non-scaling-stroke" points="${pts.map(p => `${p.x.toFixed(2)},${y(p.run).toFixed(2)}`).join(' ')}"/></svg>
+      ${pts.map((p, k) => `<i class="sp-pt${p.net > 0 ? ' up' : p.net < 0 ? ' down' : ''}" style="--k:${k};left:${p.x.toFixed(2)}%;top:${y(p.run).toFixed(2)}%" data-act="jn-open" data-date="${p.j.date}" title="${esc(fmtShort(p.j.date))}: ${p.j.better} better, ${p.j.worse} worse"></i>`).join('')}</span></span></div>`;
+}
+function axisRow(cols) {
+  const n = cols.length; const marks = scrubMarks(cols);
+  return `<div class="tl-row tl-axis" aria-hidden="true"><span class="tl-name"></span><span class="tl-plot"><span class="th-in">${marks.map(m => `<span style="left:${(m.k / (n - 1) * 100).toFixed(2)}%">${esc(m.label)}</span>`).join('')}</span></span></div>`;
+}
+function timelineHTML(c, js) {
   if (js.length < 2) return '';
-  const sp = allSpans(c); const all = themeGroups(sp).filter(g => g.key !== 'other');
-  if (!all.length) return '';
+  const th = threadsOf(c); const all = th.list.slice().sort((a, b) => b.act.length - a.act.length || b.risk - a.risk);
   const more = UI.gridAll && UI.gridAll[c.id]; const rows = more ? all : all.slice(0, 9);
-  const months = byMonth(js.map(j => ({ date: j.date })));
-  const cell = (g, j, k) => {
-    const ch = j.changes.filter(x => (themeOf(x.of) || themeOf(x.s)) === g.key);
-    const up = ch.some(x => x.change !== 'worse'), down = ch.some(x => x.change === 'worse');
-    const here = g.items.filter(s => s.date === j.date); const risk = here.some(s => s.cat === 'risk' && !isNegScreen(s));
-    const st = down && up ? 'mixed' : down ? 'down' : up ? 'up' : risk ? 'risk' : here.length ? 'on' : '';
-    const word = { mixed: 'better and worse', down: 'worse', up: 'better', risk: 'concern noted', on: 'came up' }[st];
-    return `<td class="tg-c ${st}${k && monthKey(j.date) !== monthKey(js[k - 1].date) ? ' ms' : ''}" style="--k:${k}"${st ? ` data-act="jn-open" data-date="${j.date}" title="${esc(g.label)}, ${esc(fmtShort(j.date))}: ${word}"` : ''}>${st ? `<i aria-hidden="true"></i><span class="sr">${word}</span>` : ''}</td>`;
-  };
-  return `<figure class="tgrid-fig"><div class="tgrid-wrap"><table class="tgrid" style="--n:${js.length}">
-      <caption class="sr">Themes across sessions. Each column is a session, oldest on the left.</caption>
-      <thead><tr><th scope="col" class="tg-name"><span class="overline">Theme</span></th>${months.map(m => `<th scope="colgroup" colspan="${m.items.length}" class="tg-month">${esc(MONTHS[Number(m.key.slice(5, 7)) - 1])}</th>`).join('')}</tr></thead>
-      <tbody>${rows.map(g => `<tr><th scope="row" class="tg-name">${esc(g.label)}<span class="tg-n">${g.sessions}</span></th>${js.map((j, k) => cell(g, j, k)).join('')}</tr>`).join('')}</tbody></table></div>
-    <figcaption class="tg-legend xs faint"><span><i class="tg-key on"></i>Came up</span><span><i class="tg-key up"></i>Better</span><span><i class="tg-key down"></i>Worse</span><span><i class="tg-key risk"></i>Concern</span>${all.length > 9 ? `<button class="btn quiet sm" data-act="grid-all">${more ? 'Fewer themes' : `All ${all.length} themes`}</button>` : ''}<span class="grow"></span><span>Tap a mark to open that session.</span></figcaption></figure>`;
+  return `<figure class="tl-fig">
+    ${sparkRow(js)}${axisRow(th.cols)}
+    <ul class="tl-rows">${rows.map(t => `<li class="tl-row tl-theme${t.risk ? ' risk' : ''}" data-k="${esc(t.key)}"><span class="tl-name"><b>${esc(t.label)}</b>${stChipHTML(t)}</span><span class="tl-plot">${threadHTML(t, th.cols, true)}</span><span class="sr">${esc(t.label)}: came up in ${plural(t.act.length, 'session')}. ${esc(t.status.long)}.</span></li>`).join('')}</ul>
+    <figcaption class="tg-legend xs faint"><span><i class="th-d on"></i>Came up</span><span><i class="th-d better"></i>Better</span><span><i class="th-d worse"></i>Worse</span><span><i class="th-d concern"></i>Concern</span><span><i class="th-key-gap"></i>Quiet</span>${all.length > 9 ? `<button class="btn quiet sm" data-act="grid-all">${more ? 'Fewer themes' : `All ${all.length} themes`}</button>` : ''}<span class="grow"></span><span>The top line is the running total. Tap a dot to open that session.</span></figcaption></figure>`;
 }
 function jnOpen(js, date) { const st = UI.openJn && UI.openJn[date]; return st == null ? date === js[js.length - 1].date : st; }
 function journeyHTML(c) {
@@ -2313,7 +2536,7 @@ function journeyHTML(c) {
   return `<div class="journey"><div class="stack-s"><h2>How things have changed</h2>
       ${lines.length ? `<div class="brief"><span class="overline">In short</span>${lines.map(l => `<p>${esc(l)}</p>`).join('')}</div>` : ''}
       ${tracked ? '' : '<p class="small muted">Changes appear once a later session mentions an earlier point improving or getting worse.</p>'}</div>
-    ${themeGridHTML(c, js)}
+    ${timelineHTML(c, js)}
     <div class="tl jn-months">${months.length < 2 || list.length <= 4 ? list.map(row).join('') : months.map((m, mi) => {
       const better = m.items.reduce((a, j) => a + j.better, 0), worse = m.items.reduce((a, j) => a + j.worse, 0);
       return monthHTML('j', m, mi, `${plural(m.items.length, 'session')}${better ? ` · <span class="trend better">${better} better</span>` : ''}${worse ? ` <span class="trend worse">${worse} worse</span>` : ''}`, () => m.items.map(row).join(''));
@@ -2332,46 +2555,55 @@ function trailHTML(g) {
   if (g.items.length < 2) return '';
   return `<span class="trail" aria-hidden="true">${g.items.slice(0, 12).reverse().map(s => `<i class="${s.rel && s.rel.change ? s.rel.change : ''}"></i>`).join('')}</span>`;
 }
-/* one theme: its newest point up front, the earlier ones a tap away */
-function themeHTML(g, ch, newOn, gid, dated, every) {
+/* one theme: its thread across all sessions, its newest point up front, what it moves with, the earlier notes a tap away */
+function themeHTML(g, ch, newOn, gid, dated, every, th) {
+  const t = th && g.key !== 'other' ? th.map[g.key] : null;
   const open = every || !!(UI.openTheme && UI.openTheme[gid]); const rest = g.items.slice(1);
-  const when = !dated ? '' : g.sessions > 1 ? `${plural(g.sessions, 'session')} · ${fmtShort(g.first.date)} – ${fmtShort(g.latest.date)}` : fmtShort(g.latest.date);
-  return `<li class="theme"><span class="theme-head"><span class="theme-name">${esc(g.key === 'other' ? 'Other' : g.label)}</span>${trailHTML(g)}${when ? `<span class="theme-when">${when}</span>` : ''}</span>
-    <span class="theme-pt">${pointHTML(g.latest, ch, newOn)}</span>
-    ${rest.length ? `${every ? '' : `<button class="theme-more" data-act="theme" data-id="${esc(gid)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide earlier' : plural(rest.length, 'earlier note')}</button>`}
-      ${open ? `<ol class="theme-earlier">${rest.map(s => `<li>${dated ? `<span class="te-date">${esc(fmtShort(s.date))}</span>` : ''}<span>${pointHTML(s, ch, newOn)}</span></li>`).join('')}</ol>` : ''}` : ''}</li>`;
+  const label = g.key === 'other' ? 'Other' : g.label;
+  const when = !dated ? '' : g.sessions > 1 ? `${fmtShort(g.first.date)} – ${fmtShort(g.latest.date)}` : fmtShort(g.latest.date);
+  return `<li class="theme${UI.hlTheme && UI.hlTheme === g.key ? ' lit' : ''}" data-k="${esc(g.key)}">
+    <span class="theme-meta">${t ? `<button class="theme-name" data-act="hl-theme" data-k="${esc(g.key)}" data-hl-k="${esc(g.key)}" title="Follow ${esc(label)} across the board">${esc(label)}</button>` : `<span class="theme-name">${esc(label)}</span>`}
+      ${t && dated ? stChipHTML(t) : ''}${when ? `<span class="theme-when">${t && dated ? plural(t.act.length || g.sessions, 'session') : when}</span>` : ''}</span>
+    <span class="theme-main">${t && dated ? threadHTML(t, th.cols) : ''}
+      <span class="theme-pt">${pointHTML(g.latest, ch, newOn)}</span>
+      ${dated ? linksHTML(t) : ''}
+      ${rest.length ? `${every ? '' : `<button class="theme-more" data-act="theme" data-id="${esc(gid)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide earlier' : plural(rest.length, 'earlier note')}</button>`}
+      ${open ? `<ol class="theme-earlier">${rest.map(s => `<li>${dated ? `<span class="te-date">${esc(fmtShort(s.date))}</span>` : ''}<span>${pointHTML(s, ch, newOn)}</span></li>`).join('')}</ol>` : ''}` : ''}</span></li>`;
 }
 const THEME_CAP = 4;
-function themesHTML(c, scope, list, ch, newOn, cap) {
+function themesHTML(c, scope, list, ch, newOn, cap, th) {
   const gs = themeGroups(list); const k = c.id + ':' + scope; const all = UI.cellAll && UI.cellAll[k]; const dated = sessionDates(c).length > 1;
   const shown = all || !cap ? gs : gs.slice(0, cap);
-  return `<ul class="items themes">${shown.map(g => themeHTML(g, ch, newOn, k + ':' + g.key, dated)).join('')}</ul>${cap && gs.length > cap ? `<button class="btn quiet sm cell-more" data-act="cell-all" data-k="${esc(scope)}">${all ? 'Show fewer' : `Show ${gs.length - cap} more ${gs.length - cap === 1 ? 'theme' : 'themes'}`}</button>` : ''}`;
+  return `<ul class="items themes">${shown.map(g => themeHTML(g, ch, newOn, k + ':' + g.key, dated, false, th)).join('')}</ul>${cap && gs.length > cap ? `<button class="btn quiet sm cell-more" data-act="cell-all" data-k="${esc(scope)}">${all ? 'Show fewer' : `Show ${gs.length - cap} more ${gs.length - cap === 1 ? 'theme' : 'themes'}`}</button>` : ''}`;
 }
-function cellHTML(c, cat, spans, ch, i, newOn) {
+function cellHTML(c, cat, spans, ch, i, newOn, th) {
   const list = spans.filter(s => s.cat === cat); const adding = UI.addCat === cat;
   const add = `<form class="inline-add" data-form="add-item" data-cat="${cat}"><label class="sr" for="add-${cat}">Add to ${CATS[cat].label}</label><input type="text" id="add-${cat}" placeholder="Add a point" autocomplete="off"><button class="btn sm" type="submit">Add</button></form>`;
   return `<section class="cell c-${cat}" style="--i:${i}" aria-label="${CATS[cat].label}"><div class="cell-head"><h3><span class="ink c-${cat}">${CATS[cat].label}</span></h3><span class="row"><span class="num" title="${plural(list.length, 'point')}">${list.length}</span>${list.length && !adding ? `<button class="btn quiet sm" data-act="add-cat" data-cat="${cat}" aria-label="Add to ${CATS[cat].label}">${icon('plus')}</button>` : ''}</span></div>
     <p class="cell-hint">${CATS[cat].hint}</p>
-    ${list.length ? `${themesHTML(c, cat, list, ch, newOn, THEME_CAP)}${adding ? add : ''}` : `<div class="empty-cell"><span>Nothing yet.</span>${add}</div>`}</section>`;
+    ${list.length ? `${themesHTML(c, cat, list, ch, newOn, THEME_CAP, th)}${adding ? add : ''}` : `<div class="empty-cell"><span>Nothing yet.</span>${add}</div>`}</section>`;
 }
 /* "Asked, none reported" screens are kept as one line with the date last asked; real concerns stay in full */
-function screensHTML(c, scr) {
+function screensHTML(c, scr, th) {
   if (!scr.length) return '';
   const k = c.id + ':screens'; const open = !!(UI.openTheme && UI.openTheme[k]); const last = scr[scr.length - 1];
-  return `<li class="theme screens"><span class="theme-head"><span class="theme-name">Screening</span><span class="theme-when">${scr.length > 1 ? `${plural(scr.length, 'time')} · ` : ''}last asked ${esc(fmtShort(last.date))}</span></span>
-    <span class="theme-pt">${icon('check')}<span>${scr.length > 1 ? `Asked ${scr.length} times. Nothing reported each time.` : esc(plainText(last.short || shortOf(last.text)))}</span></span>
-    ${scr.length > 1 ? `<button class="theme-more" data-act="theme" data-id="${esc(k)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide' : 'Each time'}</button>${open ? `<ol class="theme-earlier">${scr.slice().reverse().map(s => `<li><span class="te-date">${esc(fmtShort(s.date))}</span><span><mark class="hl c-risk" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark></span></li>`).join('')}</ol>` : ''}` : ''}</li>`;
+  const dates = Array.from(new Set(scr.map(s => s.date))); const marks = {}; dates.forEach(d => { marks[d] = 'clear'; });
+  return `<li class="theme screens" data-k="screens"><span class="theme-meta"><span class="theme-name">Screening</span><span class="th-st k-settled"><b aria-hidden="true">✓</b>Last ${esc(fmtShort(last.date))}</span>${scr.length > 1 ? `<span class="theme-when">${plural(scr.length, 'time')}</span>` : ''}</span>
+    <span class="theme-main">${th && th.cols.length > 1 ? threadHTML({ dates, marks }, th.cols) : ''}<span class="theme-pt">${icon('check')}<span>${scr.length > 1 ? `Asked ${scr.length} times. Nothing reported each time.` : esc(plainText(last.short || shortOf(last.text)))}</span></span>
+    ${scr.length > 1 ? `<button class="theme-more" data-act="theme" data-id="${esc(k)}" aria-expanded="${open}">${icon('chev')}${open ? 'Hide' : 'Each time'}</button>${open ? `<ol class="theme-earlier">${scr.slice().reverse().map(s => `<li><span class="te-date">${esc(fmtShort(s.date))}</span><span><mark class="hl c-risk" role="button" tabindex="0" data-act="span" data-id="${esc(s.id)}">${markup(boardText(s))}</mark></span></li>`).join('')}</ol>` : ''}` : ''}</span></li>`;
 }
 function boardHTML(c) {
   const at = asOfOf(c); const sp = allSpans(c, at); const ch = latestChanges(c, at); const ds = sessionDates(c); const newOn = ds.length > 1 ? (at || ds[ds.length - 1]) : null;
   const risk = sp.filter(s => s.cat === 'risk'), goals = sp.filter(s => s.cat === 'goal'), ctx = sp.filter(s => s.cat === 'context');
-  const real = risk.filter(s => !isNegScreen(s)), scr = risk.filter(s => isNegScreen(s));
+  const real = risk.filter(s => !isNegScreen(s)), scr = risk.filter(s => isNegScreen(s)); const th = threadsOf(c, at);
   const gk = c.id + ':goals'; const gAll = UI.cellAll && UI.cellAll[gk]; const gList = goals.slice().reverse();
   const ctxN = themeGroups(ctx).length;
-  return `${risk.length ? `<section class="stack-s risk-block c-risk${real.length ? '' : ' calm'}"><h3>${real.length ? 'Risk and safety' : 'Safety screening'}</h3><ul class="items themes">${themeGroups(real).map(g => themeHTML(g, ch, newOn, c.id + ':risk:' + g.key, ds.length > 1, true)).join('')}${screensHTML(c, scr)}</ul></section>` : ''}
-    <div class="board">${FIVE_PS.map((k, i) => cellHTML(c, k, sp, ch, i, newOn)).join('')}</div>
+  const hl = UI.hlTheme && th.map[UI.hlTheme];
+  return `<div class="board-wrap${hl ? ' hl-on' : ''}" id="board-wrap">${hl ? `<div class="hl-bar" role="status"><span>Following <b>${esc(hl.label)}</b> across the board</span>${stChipHTML(hl)}<button class="btn quiet sm" data-act="hl-theme" data-k="">${icon('x')}Clear</button></div>` : ''}
+    ${risk.length ? `<section class="stack-s risk-block c-risk${real.length ? '' : ' calm'}"><h3>${real.length ? 'Risk and safety' : 'Safety screening'}</h3><ul class="items themes">${themeGroups(real).map(g => themeHTML(g, ch, newOn, c.id + ':risk:' + g.key, ds.length > 1, true, th)).join('')}${screensHTML(c, scr, th)}</ul></section>` : ''}
+    <div class="board">${FIVE_PS.map((k, i) => cellHTML(c, k, sp, ch, i, newOn, th)).join('')}</div>
     <div class="below"><section class="stack-s"><h3>Goals${goals.length ? ` <span class="h-count">${goals.length}</span>` : ''}</h3>${goals.length ? `<ul class="items goals">${(gAll ? gList : gList.slice(0, 5)).map(s => `<li>${pointHTML(s, ch, newOn)}${ds.length > 1 ? ` <span class="te-date">${esc(fmtShort(s.date))}</span>` : ''}</li>`).join('')}</ul>${gList.length > 5 ? `<button class="btn quiet sm cell-more" data-act="cell-all" data-k="goals">${gAll ? 'Show fewer' : `Show ${gList.length - 5} more`}</button>` : ''}` : '<p class="small muted">No goals yet.</p>'}<form class="inline-add" data-form="add-item" data-cat="goal"><label class="sr" for="add-goal">Add a goal</label><input type="text" id="add-goal" placeholder="Add a goal, in their words if you can" autocomplete="off"><button class="btn sm" type="submit">Add</button></form></section>
-      <section class="stack-s c-context"><h3>Background</h3>${ctx.length ? `<details class="more" data-more="ctx" ${UI.ctxOpen ? 'open' : ''}><summary>${icon('chev')}${plural(ctx.length, 'point')} · ${plural(ctxN, 'theme')}</summary><div style="margin-top:10px">${themesHTML(c, 'context', ctx, ch, newOn, 0)}</div></details>` : '<p class="small muted">Nothing filed as background.</p>'}</section></div>`;
+      <section class="stack-s c-context"><h3>Background</h3>${ctx.length ? `<details class="more" data-more="ctx" ${UI.ctxOpen ? 'open' : ''}><summary>${icon('chev')}${plural(ctx.length, 'point')} · ${plural(ctxN, 'theme')}</summary><div style="margin-top:10px">${themesHTML(c, 'context', ctx, ch, newOn, 0, th)}</div></details>` : '<p class="small muted">Nothing filed as background.</p>'}</section></div></div>`;
 }
 
 /* ---- plan tab ---- */
@@ -2379,7 +2611,7 @@ function planHTML(c) {
   const iv = activeInt(c);
   const opts = INTERVENTIONS.map(def => ({ def, fit: fitFor(c, def) })).sort((a, b) => ({ yes: 0, maybe: 1, no: 2 }[a.fit.level] - { yes: 0, maybe: 1, no: 2 }[b.fit.level]));
   const goals = allSpans(c).filter(s => s.cat === 'goal');
-  return `<div class="plan-grid"><section class="stack">
+  return `${prepHTML(c)}<div class="plan-grid"><section class="stack">
       <h2>Intervention</h2>
       ${iv ? activeHTML(c, iv) : '<p class="muted">None started. Pick one below; the notes you add can then count as sessions.</p>'}
       <div>${opts.map((o, i) => optionHTML(c, o, iv, i)).join('')}</div>
@@ -2498,7 +2730,7 @@ function wrapText(t, maxW, maxLines) {
   return lines;
 }
 function mapModel(c) {
-  const sp = allSpans(c, asOfOf(c)); const L = 16, PADX = 12, PADY = 9; const dated = sessionDates(c).length > 1;
+  const sp = allSpans(c, asOfOf(c)); const L = 16, PADX = 12, PADY = 9; const dated = sessionDates(c).length > 1; const th = threadsOf(c, asOfOf(c));
   const node = (o) => { const lines = o.lines; const w = Math.ceil(Math.max(o.tag ? textW(o.tag, 'tag') : 0, ...lines.map(l => textW(l, o.label ? 'label' : 'text')))) + PADX * 2 + (o.kind === 'root' ? 16 : 0); return Object.assign(o, { w: Math.max(w, o.minW || 0), h: lines.length * L + (o.tag ? 15 : 0) + PADY * 2 + (o.kind === 'root' ? 8 : 0) }); };
   const root = node({ kind: 'root', lines: [(c.label + (c.age ? ', ' + c.age : '')).toUpperCase()], label: true, minW: 120 });
   const branches = [];
@@ -2514,7 +2746,9 @@ function mapModel(c) {
     const scr = cat === 'risk' ? items.filter(s => isNegScreen(s)) : [];
     if (scr.length) groups.push({ key: 'screens', label: 'Screening', items: scr.slice().reverse(), latest: scr[scr.length - 1], sessions: new Set(scr.map(s => s.date)).size, screen: true });
     const more = !!UI.mapMore[c.id + ':' + cat]; const shown = more ? groups : groups.slice(0, MAP_CAP);
-    const tagOf = g => [g.key === 'other' ? 'Other' : g.label, g.items.length > 1 ? (g.screen ? g.items.length + ' times' : g.items.length + ' notes') : '', dated ? fmtShort(g.latest.date) : ''].filter(Boolean).join(' · ').toUpperCase();
+    const SHOW = ['back', 'worse', 'concern', 'unasked', 'quiet', 'resolved', 'new'];
+    const tagOf = g => { const t = th.map[g.key]; const st = t && dated && !g.screen && SHOW.includes(t.status.kind) ? (ST_GLYPH[t.status.kind] + ' ' + t.status.short).trim() : '';
+      return [g.key === 'other' ? 'Other' : g.label, g.items.length > 1 ? (g.screen ? g.items.length + ' times' : g.items.length + ' notes') : '', st || (dated ? fmtShort(g.latest.date) : '')].filter(Boolean).join(' · ').toUpperCase(); };
     b.children = items.length && open ? shown.map(g => node({ kind: 'item', cat, side, id: g.latest.id, tag: tagOf(g), lines: g.screen && g.items.length > 1 ? ['Asked each time, nothing reported'] : wrapText(plainText(g.latest.short || shortOf(g.latest.text)), 230, 2) })) : [];
     if (items.length && open && groups.length > MAP_CAP) b.children.push(node({ kind: 'more', cat, side, label: true, lines: [more ? 'SHOW FEWER' : `+ ${groups.length - MAP_CAP} MORE`] }));
     branches.push(b);
@@ -3255,6 +3489,144 @@ function whTickPreview(tag) {
   const home = to5 > 0 ? (30 - to5) / 30 : 1; root.style.setProperty('--home', home.toFixed(3)); root.style.setProperty('--warm', (to5 > 0 ? .35 + home * .65 : 1).toFixed(3));
   whisper(whPick(tag), { warm: true });
 }
+/* ================= next session plan (for her) and Stefan's view of her casework ================= */
+
+/* Measures she already writes down: the last value of each, so she knows what to bring back next time. */
+const MEASURES = [
+  { key: 'mood', label: 'Mood rating', re: /\bmood[^.\n]{0,30}?\b(\d{1,2}(?:\s*(?:to|-|–)\s*\d{1,2})?)\s*(?:\/|out of)\s*10\b/i, fmt: m => `${m[1].replace(/\s*(to|-|–)\s*/, '–')}/10` },
+  { key: 'sleep', label: 'Sleep', re: /\b((?:in bed|asleep|sleep(?:ing)?|bedtime)[^.\n]{0,25}?(?:\d{1,2}(?::\d\d)?\s*(?:am|pm)?|midnight))/i, fmt: m => m[1] },
+  { key: 'school', label: 'School', re: /\b((?:attended|attends|attending|attendance|missed)[^.\n]{0,25}?(?:\d+\s*(?:days?|percent|%)|all days|most days|every day))/i, fmt: m => m[1] }
+];
+function lastMeasures(c) {
+  const es = chronEntries(c);
+  return MEASURES.map(M => { for (let i = es.length - 1; i >= 0; i--) { const m = plainText(es[i].text).match(M.re); if (m) return { key: M.key, label: M.label, value: cap(M.fmt(m).replace(new RegExp('^' + M.label + '\\s+', 'i'), '')), date: es[i].date }; } return null; }).filter(Boolean);
+}
+const FOLLOW = {
+  back: t => `${t.label} came back ${fmtShort(t.status.date)}. Ask what changed and what set it off.`,
+  worse: t => `${t.label} got worse ${fmtShort(t.status.date)}. Find out what is driving it.`,
+  quiet: t => `${t.label} hasn’t come up in ${plural(t.since, 'session')}. Check in: settled, or just not asked?`,
+  new: t => `${t.label} is new. Get the detail: when it started, how often, how bad.`,
+  better: t => `${t.label} is easing. Ask what helped, so they keep doing it.`,
+  resolved: t => `${t.label} was noted as resolved. Check it is holding.`
+};
+function nextPrep(c) {
+  const cl = checklist(c); const th = threadsOf(c); const ds = sessionDates(c); const last = ds[ds.length - 1];
+  const sh = th.map.selfharm; const others = cl.safety.filter(i => i.key !== 'selfharm');
+  const safety = [sh && sh.dates.some(d => sh.marks[d] === 'concern')
+    ? `Ask about self-harm and suicidal thoughts. ${sh.status.long}. Check the safety plan is still current.`
+    : 'Ask about self-harm and suicidal thoughts, as every session.'];
+  const SHORT = { aggression: 'harm to others', abuse: 'abuse or neglect', exploitation: 'online safety', missing: 'running away' };
+  if (others.length) safety.push(`Not asked yet: ${listWords(others.map(i => SHORT[i.key] || i.title.toLowerCase()))}.`);
+  const follow = watchList(th).filter(t => !t.risk && FOLLOW[t.status.kind]).slice(0, 4);
+  const gaps = cl.open.filter(i => i.group !== 'safety' && !i.optional).slice(0, 4).map(i => i.title);
+  const goals = allSpans(c).filter(s => s.cat === 'goal').reverse().slice(0, 3).map(g => ({ g, p: { not: 'not yet', some: 'some progress', done: 'achieved' }[c.goalProgress[g.id] || 'not'] }));
+  const iv = activeInt(c); let plan = '';
+  if (iv) { const st = interventionStats(c, iv); plan = `${variantOf(iv).name}: session ${st.done + 1} next. ${st.status[1]}.`; }
+  else { const best = INTERVENTIONS.map(def => ({ def, fit: fitFor(c, def) })).find(o => o.fit.level === 'yes'); plan = best ? `No intervention started yet. Best fit from the notes: ${best.def.name}.` : 'No intervention started yet.'; }
+  const measures = lastMeasures(c);
+  const expect = measures.map(m => `${m.label} (last: ${m.value})`).concat(['The self-harm screen, asked and answered'], follow.length ? [`What happened with ${listWords(follow.map(t => t.label.toLowerCase()))}`] : [], cl.saved.map(i => i.title));
+  const gap = ds.length > 1 ? Math.round(daysBetween(ds[0], last) / (ds.length - 1)) : 0;
+  const due = gap ? new Date(Date.parse(last) + gap * 864e5).toISOString().slice(0, 10) : '';
+  return { safety, follow, gaps, goals, plan, expect, last, due: due && due >= todayISO() ? due : '', picks: cl.picks.length + cl.tests.length };
+}
+function prepHTML(c) {
+  if (!c.entries.length) return '';
+  const p = nextPrep(c); const li = t => `<li>${esc(t)}</li>`;
+  const sec = (title, items, cls) => items.length ? `<section class="prep-sec${cls ? ' ' + cls : ''}"><h3>${title}</h3><ul>${items.join('')}</ul></section>` : '';
+  return `<section class="prep" aria-label="Plan for the next session"><div class="prep-head"><div class="stack-s"><p class="overline">Next session${p.due ? ` · around ${esc(fmtShort(p.due))}` : ''}</p><h2>Go in with this</h2></div><button class="btn" data-act="copy-prep">${icon('copy')}Copy as checklist</button></div>
+    <div class="prep-grid"><div class="prep-col">
+      ${sec('1 · Safety first', p.safety.map(li), 'risk')}
+      ${sec('2 · Follow up', p.follow.map(t => `<li><span class="th-st k-${t.status.kind}">${ST_GLYPH[t.status.kind] ? `<b aria-hidden="true">${ST_GLYPH[t.status.kind]}</b>` : ''}${esc(t.label)}</span> ${esc(FOLLOW[t.status.kind](t).replace(t.label + ' ', ''))}</li>`))}
+      ${sec('3 · Fill in', p.gaps.map(li).concat(p.picks ? [`<li class="faint">Plus ${plural(p.picks, 'question')} picked up from the notes, in <button class="linklike" data-act="tab" data-tab="next">Next session</button>.</li>`] : []))}
+    </div><div class="prep-col">
+      ${sec('Your notes should come back with', p.expect.map(li), 'expect')}
+      ${sec('Goals to review', p.goals.map(x => `<li><mark class="hl c-goal" role="button" tabindex="0" data-act="span" data-id="${esc(x.g.id)}">${markup(x.g.short || shortOf(x.g.text))}</mark> <span class="xs faint">${x.p}</span></li>`))}
+      ${sec('Intervention', [li(p.plan)])}
+    </div></div></section>`;
+}
+function buildPrep(c) {
+  const p = nextPrep(c); const L = [`${c.label}: plan for next session${p.due ? ` (around ${fmtDate(p.due)})` : ''}`, ''];
+  const block = (t, xs) => { if (!xs.length) return; L.push(t); xs.forEach(x => L.push('[ ] ' + x)); L.push(''); };
+  block('Safety first', p.safety); block('Follow up', p.follow.map(t => FOLLOW[t.status.kind](t))); block('Fill in', p.gaps);
+  block('Notes should come back with', p.expect); block('Goals to review', p.goals.map(x => `${plainText(x.g.short || shortOf(x.g.text))} (${x.p})`)); L.push(p.plan);
+  return L.join('\n');
+}
+
+/* ---------- Stefan's view: her casework, progress and analysis only ---------- */
+const isStefan = () => !!(CL.user && loginName(CL.user.email).toLowerCase() === 'stefan');
+const stefanView = () => S.mode === 'cloud' && isStefan() && UI.space === 't';
+/* What drives each theme and what the evidence says fixes it. Blunt, practical, sourced. */
+const FIX = {
+  sleep: ['Late nights wreck the next day: mood, focus, and getting to school.', 'Fix sleep first. Same wake-up time every day, phone out of the bedroom, no sleeping in on weekends.', ['lovato']],
+  education: ['Every day off school makes going back harder. Avoidance feeds the anxiety, and falling behind costs confidence.', 'Graded return, fast: a set start time, a safe person at school, part days first, and parents and school holding the same line.', ['nswdoe', 'rcn']],
+  peers: ['Bullying knocks a teenager down the pecking order. Losing standing with peers is one of the strongest drivers of low mood and self-harm.', 'The school has to stop it. Then rebuild standing outside it: a team, a skill, two solid friends.', ['moore', 'esafety']],
+  family: ['Constant conflict and loose structure at home: fewer clear rules, less support, more fights.', 'Clear house rules both parents hold, consistent consequences, one calm check-in a day. Family work beats individual sessions here.', ['nice']],
+  familymh: ['A parent’s own untreated depression lowers the ceiling for the whole house.', 'Get the parent their own treatment. Supporting the parent is one of the most effective ways to help the child.', ['emergingminds']],
+  mood: ['Low mood feeds on withdrawal: less activity, less reward, lower mood.', 'Behavioural activation: schedule what used to matter and do it before the motivation shows up. CBT for depression, at least three months.', ['orygen']],
+  anxiety: ['Avoidance and reassurance keep anxiety alive. Every escape teaches the brain the threat was real.', 'Graded exposure: face it in steps, and adults stop rescuing. CBT is first line.', ['anxCPG']],
+  selfharm: ['Self-harm thoughts spike when stress spikes. The risk sits in the moments things go wrong.', 'Ask every session, keep the safety plan live, reduce access to means. CBT, DBT or MBT can cut repeat self-harm.', ['nswpd', 'ranzcp']],
+  aggression: ['Aggression sticks when it gets them out of demands.', 'Calm limits with follow-through, and praise for the opposite behaviour. Parent-focused programs work best for younger kids.', ['ifi']],
+  attention: ['Untreated attention problems mean daily failure at school and fights at home.', 'A proper assessment, then combined medical and behavioural support.', ['aadpa']],
+  trauma: ['Unprocessed trauma shows up as avoidance, anger and bad sleep.', 'Trauma-focused CBT, typically 12 to 20 sessions.', ['ptsd', 'nctsn']],
+  eating: ['Changes in eating can be the first sign of body-image or mood problems.', 'Ask directly about weight, body image and dieting; act early.', ['insideout']],
+  drugs: ['Substance use is often self-medication, and it drags sleep and school down with it.', 'Find out what it does for them, cut the harm, treat what it is covering.', []],
+  behaviour: ['Behaviour problems stick when they work.', 'Map what happens before and after, then change the payoff at home and school.', ['ifi']]
+};
+function trajectory(js) {
+  let run = 0; const r = js.map(j => (run += j.better - j.worse));
+  if (r.length < 3) return { word: 'Too early to tell', d: 0 };
+  const k = Math.min(6, r.length - 1); const d = r[r.length - 1] - r[r.length - 1 - k];
+  return { word: d >= 2 ? 'Climbing' : d <= -2 ? 'Sliding' : 'Holding steady', d, k };
+}
+function personLines(c) {
+  const sp = allSpans(c); const pick = (cat, n, newest) => { const l = sp.filter(s => s.cat === cat); return (newest ? l.reverse() : l).slice(0, n).map(s => plainText(s.short || shortOf(s.text))); };
+  return [['Came in for', pick('presenting', 1)], ['Starting point', pick('predisposing', 2)], ['Into, good at', pick('positive', 2, true)], ['Support', pick('protective', 1, true)]].filter(x => x[1].length).map(([k, v]) => [k, v.join('; ')]);
+}
+function standingLines(c, th, tr) {
+  const m = th.map; const L = []; const has = k => m[k] && m[k].problem; const kind = k => m[k] && m[k].status.kind;
+  const pre = Array.from(new Set(allSpans(c).filter(s => s.cat === 'predisposing').map(s => themeName(themeOf(s)).toLowerCase()).filter(x => x !== 'other')));
+  if (pre.length) L.push(['Starting point', `A harder start than most (${listWords(pre)}). Not their fault, but still their climb.`]);
+  if (has('peers')) L.push(['With peers', ['worse', 'back', 'new'].includes(kind('peers')) ? 'Losing ground with peers right now. Status loss is one of the biggest drivers of low mood at this age.' : 'Has taken hits from peers. Getting the standing back matters as much as stopping the bullying.']);
+  else if (m.peers) L.push(['With peers', 'Has people around. Protect that; it is a buffer.']);
+  if (has('education')) L.push(['Competence', ['better', 'resolved', 'quiet'].includes(kind('education')) ? 'Getting back on track at school. Keep the pressure steady; slipping now costs more than it did.' : 'Falling behind at school compounds: missed days, lost confidence, more avoidance.']);
+  if (m.activities) L.push(['A ladder to climb', 'Has interests or a team to get better at. Visible progress there rebuilds confidence faster than talk does.']);
+  const loose = [has('sleep') && 'sleep', has('family') && 'conflict at home'].filter(Boolean);
+  if (loose.length) L.push(['Structure', `Routine is shaky (${listWords(loose)}). Order first: sleep, mornings, school, house rules.`]);
+  L.push(['Direction', tr.k ? `${tr.word}: ${tr.d > 0 ? '+' : ''}${tr.d} over the last ${plural(tr.k, 'session')} (better minus worse).` : tr.word]);
+  return L;
+}
+function stefanCaseHTML(c) {
+  const th = threadsOf(c); const b = caseBrief(c); const tr = trajectory(b.js); const prep = nextPrep(c);
+  const drivers = th.list.filter(t => t.problem && FIX[t.key]).sort((a, z) => (z.risk - a.risk) || z.act.length - a.act.length).slice(0, 4);
+  const row = ([k, v]) => `<div class="sv-line"><span class="overline">${esc(k)}</span><span>${esc(v)}</span></div>`;
+  return `<header class="case-hero">${glyphSVG(c)}<div class="grow"><p class="overline">${caseMeta(c)}</p><h1 class="title">${esc(c.label)}</h1></div><span class="sv-traj k-${tr.word.split(' ')[0].toLowerCase()}">${esc(tr.word)}</span></header>
+    <div class="sv-grid">
+      <section class="sv-card"><h2>Who</h2>${personLines(c).map(row).join('') || '<p class="small muted">Not enough in the notes yet.</p>'}</section>
+      <section class="sv-card"><h2>Where they stand</h2>${standingLines(c, th, tr).map(row).join('')}</section>
+    </div>
+    ${b.ds.length > 1 ? `<section class="sv-sec"><h2>Progress</h2>${briefLines(b).length ? `<div class="brief">${briefLines(b).map(l => `<p>${esc(l)}</p>`).join('')}</div>` : ''}${timelineHTML(c, b.js)}</section>` : ''}
+    ${drivers.length ? `<section class="sv-sec"><h2>What’s driving it, and what fixes it</h2><div class="sv-drivers">${drivers.map(t => { const f = FIX[t.key]; return `<article class="sv-drv${t.risk ? ' risk' : ''}"><div class="row between"><b class="sv-drv-name">${esc(t.label)}</b>${stChipHTML(t)}</div>${threadHTML(t, th.cols)}
+        <p><span class="overline">Why</span>${esc(f[0])}</p><p><span class="overline">Fix</span>${esc(f[1])}</p>${f[2].length ? `<p class="xs faint">${f[2].map(k => link(k)).join(' · ')}</p>` : ''}</article>`; }).join('')}</div></section>` : ''}
+    <section class="sv-sec"><h2>What Taylah should push next</h2><ul class="sv-next">${prep.safety.concat(prep.follow.map(t => FOLLOW[t.status.kind](t))).map(t => `<li>${esc(t)}</li>`).join('')}</ul></section>
+    <p class="xs faint sv-note">Built from her de-identified notes by simple rules, not by a clinician. A reading aid, not a diagnosis.</p>
+    <div class="row"><button class="btn quiet sm" data-act="sv-full" data-id="${esc(c.id)}">Open her full case</button></div>`;
+}
+function fmtWhen(t) { if (!t) return ''; const d = new Date(t); const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; let h = d.getHours(); const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return `${days[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}, ${h}:${pad2(d.getMinutes())} ${ap}`; }
+function stefanHomeHTML() {
+  const list = S.cases.slice().sort((a, z) => (z.updated || 0) - (a.updated || 0));
+  const now = Date.now(); const today = todayISO(); const daysAgo = n => new Date(now - n * 864e5).toISOString().slice(0, 10);
+  const allDates = list.flatMap(c => sessionDates(c)); const wk = allDates.filter(d => d > daysAgo(7) && d <= today).length, mo = allDates.filter(d => d > daysAgo(30) && d <= today).length;
+  const active = list.filter(c => c.updated && now - c.updated < 14 * 864e5).length; const last = list[0];
+  const risk = list.filter(c => newRisk(c).length).length; const missing = list.reduce((a, c) => a + (c.entries.length ? checklist(c).toCover : 0), 0);
+  const weeks = Array.from({ length: 12 }, (_, i) => { const a = daysAgo(7 * (12 - i)), z = daysAgo(7 * (11 - i)); return allDates.filter(d => d > a && d <= z).length; }); const wmax = Math.max(1, ...weeks);
+  const tile = (o, big, sub) => `<div class="glance-t sv-tile"><span class="overline">${o}</span><b class="g-big">${big}</b>${sub ? `<span class="g-sub">${sub}</span>` : ''}</div>`;
+  return `<section class="stack"><div class="home-head"><div><p class="overline">T’s space · Stefan’s view</p><h1 class="title">Taylah’s casework</h1></div></div>
+    <div class="glance sv-glance">${tile('Cases', list.length, `${active} worked on in the last 2 weeks`)}${tile('Sessions', mo, `in the last 30 days · ${wk} this week`)}${tile('Last worked on', last && last.updated ? esc(fmtShort(localISO(last.updated))) : '–', last && last.updated ? `${esc(last.label)} · ${esc(fmtWhen(last.updated))}` : '')}${tile('Open items', missing, `${risk ? `${plural(risk, 'case')} with risk to review · ` : ''}still missing across cases`)}</div>
+    ${weeks.some(Boolean) ? '' : '<p class="small muted">No sessions dated in the last 12 weeks.</p>'}<figure class="sv-weeks"${weeks.some(Boolean) ? '' : ' hidden'}><div class="sv-bars" role="img" aria-label="Sessions per week, last 12 weeks: ${weeks.join(', ')}">${weeks.map(n => `<span style="--h:${(n / wmax * 100).toFixed(0)}%"><i></i><b>${n || ''}</b></span>`).join('')}</div><figcaption class="xs faint">Sessions per week, last 12 weeks (by session date)</figcaption></figure>
+    <div class="sv-cases">${list.map((c, i) => { const th = threadsOf(c); const tr = trajectory(journey(c)); const w = watchList(th).slice(0, 3); const pl = personLines(c)[0];
+      return `<button class="case-row sv-case" style="--i:${i}" data-act="open-case" data-id="${esc(c.id)}">${glyphSVG(c)}<span class="stack-s" style="gap:4px"><span class="label">${esc(c.label)}</span><span class="meta">${caseMeta(c)}</span></span>
+        ${pl ? `<span class="small muted sv-who">${esc(pl[1])}</span>` : ''}<span class="chips"><span class="sv-traj k-${tr.word.split(' ')[0].toLowerCase()}">${esc(tr.word)}</span>${w.map(t => `<span class="th-st k-${t.status.kind}" title="${esc(t.status.long)}">${ST_GLYPH[t.status.kind] ? `<b aria-hidden="true">${ST_GLYPH[t.status.kind]}</b>` : ''}${esc(t.label)} · ${esc(t.status.short)}</span>`).join('')}</span>${icon('next')}</button>`; }).join('')}</div></section>`;
+}
 /* ================= example notes (fictional) ================= */
 const EXAMPLE = `Initial assessment 21/10/2026 with Jordan (15, Year 9 at Westfield High School) and his mum Sarah. Referred by GP Dr Patel for low mood and school refusal since Term 3.
 Jordan said "I just can't be bothered with anything anymore". Sleeping 2am to 11am most days, gaming late. Lost interest in basketball, which he used to love.
@@ -3414,6 +3786,13 @@ function setMenu(open) {
   else if (b && r && r.contains(document.activeElement)) b.focus();
 }
 const railShown = () => matchMedia('(min-width:1360px)').matches;
+/* point at a theme anywhere (a link, a name, a watch chip) to see it across the whole board */
+let HL_PREVIEW = null;
+function previewHL(k) {
+  if (k === HL_PREVIEW) return; HL_PREVIEW = k; const w = $('#board-wrap'); if (!w) return; const key = k || UI.hlTheme;
+  w.classList.toggle('hl-on', !!key); $$('.theme', w).forEach(li => li.classList.toggle('lit', !!key && li.dataset.k === key));
+}
+document.addEventListener('pointerover', e => { if (e.pointerType === 'touch') return; const el = e.target.closest && e.target.closest('[data-hl-k]'); previewHL(el ? el.dataset.hlK : null); }, { passive: true });
 function refocus(sel) { let el = null; try { el = document.querySelector(sel); } catch (e) { return null; } if (el) el.focus({ preventScroll: true }); return el; }
 function setAsOf(c, d) { const ds = sessionDates(c); UI.asOf = UI.asOf || {}; UI.asOf[c.id] = !d || d === ds[ds.length - 1] ? null : d; UI.pop = null; render(); }
 /* open one session in Notes, wherever it is in the list */
@@ -3496,6 +3875,19 @@ const ACT = {
   'asof-step': el => { const c = current(); const ds = sessionDates(c); const at = asOfOf(c) || ds[ds.length - 1]; const i = Math.min(ds.length - 1, Math.max(0, ds.indexOf(at) + Number(el.dataset.d))); setAsOf(c, ds[i]); refocus('#' + el.id + ':not([disabled])') || refocus('#asof-range'); },
   'asof-latest': () => { const c = current(); const ds = sessionDates(c); setAsOf(c, ds[ds.length - 1]); refocus('#asof-range'); },
   'goto-sess': el => gotoSession(current(), el.dataset.id, el.dataset.date),
+  'copy-prep': () => { const c = current(); copyText(buildPrep(c), 'Plan copied. Paste it wherever you prep.'); },
+  'sv-full': el => { UI.svFull = UI.svFull || {}; UI.svFull[el.dataset.id] = true; UI.tab = 'notes'; render(); window.scrollTo(0, 0); },
+  'sv-back': el => { UI.svFull = UI.svFull || {}; UI.svFull[el.dataset.id] = false; render(); window.scrollTo(0, 0); },
+  'hl-theme': el => {
+    const k = el.dataset.k || null; const was = UI.hlTheme; UI.hlTheme = k && was !== k ? k : null; HL_PREVIEW = null;
+    if (UI.hlTheme && !(UI.tab === 'form' && UI.formMode === 'board')) { UI.tab = 'form'; UI.formMode = 'board'; }
+    render();
+    if (!UI.hlTheme) { refocus(`[data-act="hl-theme"][data-k="${was}"]`); return; }
+    const lit = $$('#board-wrap .theme.lit'); const seen = lit.find(li => { const r = li.getBoundingClientRect(); return r.top > 120 && r.bottom < innerHeight - 20; });
+    const go = seen || lit[0]; if (!go) return;
+    if (!seen) go.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+    const nm = go.querySelector('.theme-name'); if (nm && nm.focus) nm.focus({ preventScroll: true });
+  },
   glance: el => {
     const c = current(); const go = el.dataset.go; UI.pop = null;
     if (go === 'notes') { UI.tab = 'notes'; render(); const a = $('.area-sheets'); if (a) a.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }); }
@@ -3586,6 +3978,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if ($('#copy-panel')) return ACT['close-copy']();
     if (UI.pop) return closePop(true);
+    if (UI.hlTheme) { UI.hlTheme = null; return render(); }
     if (UI.confirm) { UI.confirm = null; return render(); }
     if (UI.openGap) { UI.openGap = null; return render(); }
     return;
