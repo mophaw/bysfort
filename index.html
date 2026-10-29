@@ -1830,7 +1830,10 @@ const STANDALONE = !(window.claude && typeof window.claude.use === 'function');
 const FRAMED = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 const OAI_DEFAULT_MODEL = 'gpt-5-mini';
 let OAI = null;
-const oaiKey = () => spaceKey(UI.space) + '-openai';
+const oaiKey = () => {
+  const sp = (typeof CL !== 'undefined' && CL.user && loginName(CL.user.email).toLowerCase() === 'stefan') ? 's' : UI.space;
+  return spaceKey(sp) + '-openai';
+};
 function loadOAI() { if (!UI.space) return null; try { const r = JSON.parse(localStorage.getItem(oaiKey()) || 'null'); return r && r.key ? { key: String(r.key), model: String(r.model || OAI_DEFAULT_MODEL) } : null; } catch (e) { return null; } }
 function saveOAI(v) { if (!UI.space) return false; try { if (v) localStorage.setItem(oaiKey(), JSON.stringify(v)); else localStorage.removeItem(oaiKey()); return true; } catch (e) { return false; } }
 async function openaiJSON(prompt, signal, cfg) {
