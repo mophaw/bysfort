@@ -879,6 +879,31 @@ button.theme-name:hover{color:var(--ivory);text-decoration-color:var(--ivory-3)}
 .gate.opening .knot .pP{stroke-dashoffset:0} .gate.opening .knot .pDot{opacity:1}
 @media (prefers-reduced-motion:reduce){.gate.leaving{opacity:0}}
 @property --hl-a{syntax:'<percentage>';inherits:true;initial-value:14%}
+
+/* ---- writing: the written formulation, progress notes, the safety plan draft ---- */
+.written{gap:14px}
+.wr-head{align-items:flex-end;gap:12px 20px}
+.wr-head h2{margin:0}
+.written-ta{min-height:420px;padding:20px 22px;border-radius:18px;background:oklch(17% .011 290 / .62);border:1px solid var(--line);font-size:var(--t-m);line-height:1.8;color:var(--ivory);max-width:none;resize:vertical}
+.written-ta:focus{border-color:var(--line-3);outline:none;box-shadow:0 0 0 3px oklch(93% .012 80 / .08)}
+.wr-stale{display:flex;gap:8px;align-items:flex-start;color:var(--ivory);padding:10px 14px;border:1px dashed var(--line-3);border-radius:12px}
+.wr-stale .icon{flex:none;margin-top:3px;color:var(--ivory-2)}
+.notebox{margin:4px 0 18px;padding:16px;border:1px solid var(--line-2);border-radius:16px;background:oklch(14% .01 290 / .55)}
+.notebox .row.between{align-items:center}
+.note-ta{min-height:360px;font-size:var(--t-s);line-height:1.7;padding:16px 18px;white-space:pre-wrap}
+details.sp-plan>summary{list-style:none;cursor:pointer;align-items:center}
+details.sp-plan>summary::-webkit-details-marker{display:none}
+details.sp-plan>summary .chev{transition:transform .25s;color:var(--ivory-3)}
+details.sp-plan[open]>summary .chev{transform:rotate(180deg)}
+details.sp-plan:not([open]){gap:0}
+details.sp-plan:not([open])>summary{padding-bottom:0;border-bottom:0}
+details.sp-plan .num{white-space:nowrap}
+details.sp-plan.need{border-color:oklch(68% .19 25 / .55)}
+details.sp-plan.need>summary .overline{color:var(--risk)}
+details.sp-plan[open]{display:flex}
+details.sp-plan>p,details.sp-plan>.prep-grid,details.sp-plan>.row{margin-top:16px}
+details.sp-plan>.prep-grid{margin-top:20px}
+@media (max-width:599px){.written-ta{min-height:360px;padding:16px;font-size:var(--t-s)}.note-ta{min-height:320px}.notebox{padding:12px}}
 </style>
 </head>
 <body>
@@ -963,6 +988,7 @@ camhs cymhs headspace centrelink ndis dcj facs police ed emergency hospital life
 cbt dbt act abft tf-cbt emdr ipt fft mst sdq honosca cgas fihs k10 phq gad adhd add asd autism autistic ocd ptsd odd mdd bpd dsm icd ssri fluoxetine sertraline escitalopram ritalin concerta vyvanse melatonin iq wisc naplan mse heeadsss
 snapchat instagram tiktok facebook youtube discord roblox fortnite minecraft xbox playstation nintendo switch netflix google iphone ipad android whatsapp messenger reddit twitch spotify maccas mcdonalds kfc uno
 i ok okay re plan goals summary impression formulation history background assessment session review risk appearance behaviour speech mood affect thought perception cognition insight judgement presenting predisposing precipitating perpetuating protective positive strengths referral reason collateral identifying information social medical developmental family education substance forensic legal other initial follow up phone call home visit
+progress note contact attendees present subjective objective mse outcome outcomes action actions discussion issues intervention interventions recommendation recommendations observations presentation impression state examination unit sw ot pt hx dx rx tx sx ix si sh dsh nssi aod nfa tbc dna dnas nok mdt mrn urn dob crn oohc cyp mhl ecav ses yr f/u social worker case manager coordinator care team key
 `));
 const COMMON = new Set(words(`
 a an the this that these those there here he she they we you it his her their our my your its him them us me i
@@ -977,7 +1003,7 @@ good well ok okay great poor fair mild moderate severe low high positive negativ
 first second third last next one two three four five six seven eight nine ten
 please thanks thank note notes update updates continue continues ongoing appears appeared seems seemed feels felt
 
-bullying bullied sleep sleeping mood moods anxiety anxious attendance eating appetite behaviour behavior gaming schoolwork homework friendships conflict arguments arguing fighting medication therapy progress engagement worry worries worrying panic anger tantrums meltdowns nightmares weight concentration focus energy motivation confidence safety self-harm cutting vaping drinking smoking crying withdrawal isolation school learning sport sports exercise screen screens phone social reading drawing music dancing walking routine routines bedtime mornings evenings weekends things everything nothing something improvement improving`));
+bullying bullied sleep sleeping mood moods anxiety anxious attendance eating appetite behaviour behavior gaming schoolwork homework friendships conflict arguments arguing fighting medication therapy progress engagement worry worries worrying panic anger tantrums meltdowns nightmares weight concentration focus energy motivation confidence safety self-harm cutting vaping drinking smoking crying withdrawal isolation school learning sport sports exercise screen screens phone social reading drawing music dancing walking routine routines bedtime mornings evenings weekends things everything nothing something improvement improving attends attending enrolled goes went transferred started`));
 const PERSON_NEXT = new Set(words(`said says reported reports reporting stated states told tells described describes explained explains disclosed discloses presented presents attended attends is was has had feels felt wants wanted lives lived likes liked loves loved enjoys enjoyed became gets got goes went came comes will would can could does did doesn't didn't isn't wasn't hasn't appears appeared seemed seems denies denied agreed agrees refused refuses struggles struggled spends spent plays played and with`));
 const TITLES = { mr: 'Other adult', mrs: 'Other adult', ms: 'Other adult', miss: 'Other adult', mx: 'Other adult', dr: 'Doctor' };
 
@@ -985,13 +1011,16 @@ const PATTERNS = [
   { label: 'email', re: /[\w.+-]+@[\w-]+\.[\w.-]+/g },
   { label: 'link', re: /\bhttps?:\/\/\S+|\bwww\.[^\s]+/gi },
   { label: 'handle', re: /(?<=^|\s)@[A-Za-z0-9_.]{2,}/g },
-  { label: 'date of birth', re: /\b(?:d\.?o\.?b\.?|date of birth|born(?: on)?)\s*[:\-]?\s*(?:\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}|\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9},?\s+\d{4})/gi },
+  { label: 'date of birth', re: /\b(?:d\.?o\.?b\.?|date of birth|born(?: on)?)\s*[:\-]?\s*(?:\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}|\d{4}-\d{2}-\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9},?\s+\d{4})/gi },
   { label: 'phone', re: /(?:\+61\s?4\d{2}|\b04\d{2})[\s-]?\d{3}[\s-]?\d{3}\b|\(?\b0[2378]\)?[\s-]?\d{4}[\s-]?\d{4}\b|\+61\s?[2378][\s-]?\d{4}[\s-]?\d{4}\b/g },
-  { label: 'number', re: /\b(?:MRN|URN|MBS|Medicare(?: number)?|ID)\s*(?:no\.?|number)?\s*[:#]?\s*[A-Z0-9][A-Z0-9-]{3,}\b/gi },
-  { label: 'number', re: /\b\d{4}\s\d{5}\s\d(?:\s?\d)?\b|\b\d{6,}\b/g },
+  /* Medicare (4 5 1, with or without spaces) first, so a labelled number never leaves half of it behind */
+  { label: 'number', re: /\b\d{4}\s?\d{5}\s?\d(?:[\s\/-]?\d)?\b|\b\d{6,}\b/g },
+  { label: 'number', re: /\b(?:MRN|URN|MBS|CRN|NDIS|Medicare(?: number)?|ID)\s*(?:no\.?|number)?\s*[:#]?\s*[A-Z0-9][A-Z0-9-]{3,}\b/gi },
   { label: 'address', re: /\b\d{1,5}[A-Za-z]?(?:\/\d{1,5})?\s+(?:[A-Z][a-z]+\s){1,3}(?:Street|St|Road|Rd|Avenue|Ave|Crescent|Cres|Drive|Dr|Place|Pl|Court|Ct|Lane|Ln|Parade|Pde|Highway|Hwy|Way|Close|Boulevard|Blvd|Terrace|Tce|Circuit|Cct|Grove)\b\.?/g },
-  { label: 'school', re: /\b(?:St\.?\s|Saint\s)?(?:[A-Z][a-z]+\s){1,4}(?:High School|Public School|Primary School|Secondary College|Grammar School|Christian School|Catholic School|Anglican School|Intensive English Centre|College|Grammar|Academy)\b/g },
-  { label: 'service', re: /\b(?:[A-Z][a-z]+\s){1,4}(?:Hospital|Medical Centre|Health Centre|Medical Practice|Family Practice|Medical)\b/g },
+  { label: 'school', re: /\b(?:St\.?\s|Saint\s)?(?:[A-Z][a-z]+(?:['’]s)?\s){1,4}(?:High School|Public School|Primary School|Secondary College|Grammar School|Christian School|Catholic School|Anglican School|Intensive English Centre|College|Grammar|Academy|High|Public|Primary)\b/g, lead: true },
+  { label: 'service', re: /\b(?:[A-Z][a-z]+(?:['’]s)?\s){1,4}(?:Hospital|Medical Centre|Health Centre|Medical Practice|Family Practice|Medical|Clinic|Health Service)\b/g, lead: true },
+  /* a place named after lives in, moved to, staying at: hide it, but keep states and countries */
+  { label: 'suburb', re: /(?<=\b(?:[Ll]ives|[Ll]iving|[Ll]ived|[Mm]oved|[Mm]oving|[Ss]taying|[Ss]tays|[Rr]esides|[Rr]esiding|[Rr]elocated)\s(?:in|at|to|out to)\s)[A-Z][a-z]+(?:\s[A-Z][a-z]+){0,2}/g, skip: m => m.split(/\s+/).every(w => ALLOW.has(w.toLowerCase())) },
   { label: 'suburb', re: /\b(?:[A-Z][a-z]+\s){1,3}(?:NSW|ACT|VIC|QLD|SA|WA|TAS|NT)\s+\d{4}\b/g },
   { label: 'postcode', re: /\b(?:NSW|ACT|VIC|QLD|TAS)\s?\d{4}\b/g },
   { label: 'initials', re: /\b[A-Z]\.\s?[A-Z]\.(?:\s?[A-Z]\.)?(?=\s|$|[,;)])/g }
@@ -1045,10 +1074,12 @@ function deidentify(raw, opts) {
   for (const p of PATTERNS) {
     p.re.lastIndex = 0; let m;
     while ((m = p.re.exec(text))) {
-      const a = m.index, b = a + m[0].length;
-      if (!m[0].trim() || taken(a, b)) continue;
-      if (unhide.has(m[0].toLowerCase())) { ranges.push({ a, b, kind: 'keep', orig: m[0] }); continue; }
-      ranges.push({ a, b, kind: 'pattern', label: p.label, orig: m[0] });
+      let a = m.index, b = a + m[0].length; let hit = m[0];
+      /* "Attends Westfield High": the verb in front is not part of the school's name */
+      if (p.lead) { const lm = hit.match(/^(?:[A-Za-z]+\s)+/); if (lm) { const ws = lm[0].split(/\s+/).filter(Boolean); let k = 0; while (k < ws.length && (COMMON.has(ws[k].toLowerCase()) || ALLOW.has(ws[k].toLowerCase()))) k++; const cut = ws.slice(0, k).join(' ').length + (k ? 1 : 0); a += cut; hit = hit.slice(cut); } }
+      if (!hit.trim() || taken(a, b) || (p.skip && p.skip(hit))) continue;
+      if (unhide.has(hit.toLowerCase())) { ranges.push({ a, b, kind: 'keep', orig: hit }); continue; }
+      ranges.push({ a, b, kind: 'pattern', label: p.label, orig: hit });
     }
   }
   // 2. full dates -> month and year
@@ -1064,24 +1095,33 @@ function deidentify(raw, opts) {
   // 3. names
   const toks = []; const TR = /[A-Za-z][A-Za-z'’-]*/g; let tm;
   while ((tm = TR.exec(text))) toks.push({ s: tm[0], a: tm.index, b: tm.index + tm[0].length });
+  const base = s => s.replace(/['’]s$/i, '');
+  const titleAt = i => i >= 0 && i < toks.length && !!TITLES[toks[i].s.toLowerCase()];
   const isStart = i => {
     let j = toks[i].a - 1;
     while (j >= 0 && /[\s"'“‘(\[*•\-]/.test(text[j]) && text[j] !== '\n') j--;
+    /* the full stop in "Dr. Nguyen" does not start a sentence */
+    if (j >= 0 && text[j] === '.' && titleAt(i - 1) && toks[i - 1].b === j) return false;
     return j < 0 || /[.!?:\n]/.test(text[j]);
   };
-  const base = s => s.replace(/['’]s$/i, '');
   const capLike = s => /^[A-Z][a-z]/.test(s) || /^[A-Z][a-z]*['’-][A-Z]/.test(s);
+  /* SMITH: a surname in capitals, as records often write it. Only counted right next to a name. */
+  const capsLike = s => { const w = base(s); return /^[A-Z]{3,}(?:['’-][A-Z]+)?$/.test(w) && !ALLOW.has(w.toLowerCase()) && !COMMON.has(w.toLowerCase()); };
+  const joined = (i, j) => j < toks.length && /^ $/.test(text.slice(toks[i].b, toks[j].a));
   const cand = [];
   toks.forEach((t, i) => {
     if (taken(t.a, t.b)) return;
     const b0 = base(t.s); const low = b0.toLowerCase();
     if (unhide.has(low)) return;
     if (manual.has(low)) { ranges.push({ a: t.a, b: t.b, kind: 'pattern', label: 'hidden', orig: t.s }); return; }
+    if (TITLES[low]) return;
     if (!capLike(t.s) || ALLOW.has(low)) return;
     const st = isStart(i);
-    if (st && COMMON.has(low)) return;
-    cand.push({ i, low, start: st });
+    const afterTitle = titleAt(i - 1) && /^\.?\s$/.test(text.slice(toks[i - 1].b, t.a));
+    if (st && COMMON.has(low) && !afterTitle) return;
+    cand.push({ i, low, start: st, force: afterTitle });
   });
+  const candAt = new Set(cand.map(c => c.i));
   const midLows = new Set(cand.filter(c => !c.start || c.force).map(c => c.low));
   const nextWord = i => { const n = toks[i + 1]; if (!n) return ''; const gap = text.slice(toks[i].b, n.a); if (/[.!?\n]/.test(gap)) return ''; return n.s.toLowerCase(); };
   const names = cand.filter(c => {
@@ -1091,36 +1131,50 @@ function deidentify(raw, opts) {
     if (midLows.has(c.low)) return true;
     const after = text.slice(t.b, t.b + 3);
     if (/^\s*[(,]/.test(after)) return true;
+    /* a first name that opens a line, followed by a surname: "Taylah Hallab", "Jordan SMITH" */
+    if (joined(c.i, c.i + 1) && (candAt.has(c.i + 1) || capsLike(toks[c.i + 1].s))) return true;
     return PERSON_NEXT.has(nextWord(c.i));
   });
-  // group consecutive name tokens (first + last), with optional title before
+  const nameAt = new Set(names.map(n => n.i));
+  const isCaps = i => i >= 0 && i < toks.length && !taken(toks[i].a, toks[i].b) && capsLike(toks[i].s);
+  // group consecutive name tokens (first + last, or SURNAME, First), with optional title before
   const used = new Set(); const mentions = [];
   names.forEach(c => {
     if (used.has(c.i)) return;
     let i0 = c.i, i1 = c.i;
-    while (names.some(n => n.i === i1 + 1) && /^ $/.test(text.slice(toks[i1].b, toks[i1 + 1].a))) { i1++; used.add(i1); }
-    let a = toks[i0].a, title = null;
-    const prev = toks[i0 - 1];
-    if (prev && TITLES[prev.s.toLowerCase().replace('.', '')] && /^\.?\s$/.test(text.slice(prev.b, toks[i0].a))) { a = prev.a; title = prev.s.toLowerCase().replace('.', ''); }
+    while ((nameAt.has(i1 + 1) || isCaps(i1 + 1)) && joined(i1, i1 + 1)) { i1++; used.add(i1); }
+    let a = toks[i0].a, title = null, sur = -1;
+    if (isCaps(i0 - 1) && /^,? $/.test(text.slice(toks[i0 - 1].b, toks[i0].a))) { sur = i0 - 1; a = toks[sur].a; }
+    const first = sur >= 0 ? sur : i0;
+    const prev = toks[first - 1];
+    if (sur < 0 && prev && TITLES[prev.s.toLowerCase().replace('.', '')] && /^\.?\s$/.test(text.slice(prev.b, toks[i0].a))) { a = prev.a; title = prev.s.toLowerCase().replace('.', ''); }
     let b = toks[i1].b; if (/['’]s$/i.test(toks[i1].s)) b -= 2;
     if (taken(a, b)) return;
     const parts = []; for (let k = i0; k <= i1; k++) parts.push(base(toks[k].s).toLowerCase());
+    if (sur >= 0) parts.push(base(toks[sur].s).toLowerCase());
     let guess = title ? TITLES[title] : null, preceded = false;
-    let pj = i0 - 1; if (title) pj--;
+    let pj = first - 1; if (title) pj--;
     while (pj >= 0 && /^(his|her|their|my|the|yp's|yp’s)$/i.test(toks[pj].s)) pj--;
-    if (pj >= 0 && REL_WORDS[toks[pj].s.toLowerCase()] && /^[\s,.]*$/.test(text.slice(toks[pj].b, a).replace(/\b(his|her|their|my|the)\b/gi, ''))) { preceded = true; if (!guess || title === 'dr') guess = guess || REL_WORDS[toks[pj].s.toLowerCase()]; }
-    if (!guess) { const after = text.slice(b, b + 24).match(/^\s*\(\s*(?:his|her|their|my)?\s*([a-z]+)\s*\)/i); if (after && REL_WORDS[after[1].toLowerCase()]) guess = REL_WORDS[after[1].toLowerCase()]; }
+    if (pj >= 0 && REL_WORDS[toks[pj].s.toLowerCase()] && /^[\s,.(]*$/.test(text.slice(toks[pj].b, a).replace(/\b(his|her|their|my|the)\b/gi, ''))) { preceded = true; if (!guess || title === 'dr') guess = guess || REL_WORDS[toks[pj].s.toLowerCase()]; }
+    if (!guess) { const after = text.slice(b, b + 28).match(/^\s*\(\s*(?:his|her|their|my)?\s*([a-z]+)\s*[,)]/i); if (after && REL_WORDS[after[1].toLowerCase()]) guess = REL_WORDS[after[1].toLowerCase()]; }
     mentions.push({ a, b, parts, guess, preceded, orig: text.slice(a, b) });
   });
-  // assign people
-  const people = []; const byPart = new Map();
-  mentions.forEach(m => {
-    let p = null;
-    for (const part of m.parts) if (byPart.has(part)) { p = byPart.get(part); break; }
-    if (!p) { p = { key: m.parts[0], letter: people.length < 26 ? String.fromCharCode(65 + people.length) : String(people.length + 1), count: 0, guess: null, origs: new Set() }; people.push(p); }
-    m.parts.forEach(part => { if (!byPart.has(part)) byPart.set(part, p); });
-    p.count++; p.origs.add(m.orig); if (!p.guess && m.guess) p.guess = m.guess;
-    m.person = p;
+  // assign people: the first name decides who it is, so a shared family surname never merges two people
+  const people = []; const byGiven = new Map(), bySur = new Map();
+  const personFor = m => { const g = m.parts[0]; let p = byGiven.get(g) || (m.parts.length === 1 ? bySur.get(g) : null) || null;
+    if (!p) { p = { key: g, letter: people.length < 26 ? String.fromCharCode(65 + people.length) : String(people.length + 1), count: 0, guess: null, origs: new Set() }; people.push(p); }
+    if (!byGiven.has(g) && !(m.parts.length === 1 && bySur.get(g) === p)) byGiven.set(g, p);
+    m.parts.slice(1).forEach(part => { if (!bySur.has(part)) bySur.set(part, p); });
+    return p; };
+  mentions.sort((x, y) => x.a - y.a).forEach(m => { const p = personFor(m); p.count++; p.origs.add(m.orig); if (!p.guess && m.guess) p.guess = m.guess; m.person = p; });
+  /* the same name again anywhere else, even where it opens a sentence or is in capitals */
+  const inMention = (x, y) => mentions.some(m => x < m.b && y > m.a);
+  toks.forEach(t => {
+    const low = base(t.s).toLowerCase(); if (taken(t.a, t.b) || inMention(t.a, t.b) || unhide.has(low)) return;
+    if (!(capLike(t.s) || /^[A-Z]{3,}/.test(t.s))) return;
+    const pg = byGiven.get(low), ps = bySur.get(low); if (!pg && !ps) return;
+    const b = /['’]s$/i.test(t.s) ? t.b - 2 : t.b; const p = pg || ps;
+    p.count++; p.origs.add(text.slice(t.a, b)); mentions.push({ a: t.a, b, parts: [low], person: p, preceded: !pg, orig: text.slice(t.a, b) });
   });
   const sorted = people.slice().sort((x, y) => y.count - x.count);
   if (sorted[0] && !sorted[0].guess && sorted[0].count >= (opts.ypMin || 2) && (!sorted[1] || sorted[0].count > sorted[1].count) && !people.some(p => p.guess === 'YP')) sorted[0].guess = 'YP';
@@ -1317,7 +1371,7 @@ const CHECKLIST = [
   { group: 'assessment', key: 'health', title: 'Health, development and medication', detect: T('health', 'development'), cat: 'context', topics: ['health'] },
   { group: 'assessment', key: 'familymh', title: 'Family mental health history', detect: OR(T('familymh'), K(/family history|history of (depress|anxi|bipolar|psychosis|mental)/)), cat: 'predisposing', topics: ['familymh'] },
   { group: 'assessment', key: 'culture', title: 'Culture and what matters to them', hint: 'Identity, faith, community, language.', detect: T('culture'), cat: 'context', topics: ['culture'], optional: true },
-  { group: 'admin', key: 'measures', title: 'Outcome measures', hint: 'SDQ, HoNOSCA and CGAS, as your service’s NOCC schedule requires.', detect: T('measures'), cat: 'context', topics: ['measures'], optional: true, quick: ['Outcome measures completed'] },
+  { group: 'admin', key: 'measures', title: 'Outcome measures', hint: 'HoNOSCA, CGAS and SDQ at admission; with FIHS at each 3-month review (NOCC).', detect: T('measures'), cat: 'context', topics: ['measures'], optional: true, quick: ['Outcome measures completed'] },
   { group: 'admin', key: 'consent', title: 'Consent and confidentiality explained', detect: T('consent'), cat: 'context', topics: ['consent'], optional: true, quick: ['Consent and limits of confidentiality explained'] }
 ];
 /* "Picked up from your notes": prompts the notes trigger, each tied to an Australian or NSW source.
@@ -1410,7 +1464,10 @@ const SRC = {
   dbta: ['DBT-A programme summary (ACF)', 'https://preventionservices.acf.hhs.gov/programs/783/show'],
   abft: ['ABFT trial, 2021', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8041448'],
   ifi: ['Dadds and Hawes, 2006', 'https://silvereye.com.au/integrated-family-intervention-for-child-conduct-problems/prod4082'],
-  etg: ['Therapeutic Guidelines through CIAP', 'https://www.ciap.health.nsw.gov.au/']
+  etg: ['Therapeutic Guidelines through CIAP', 'https://www.ciap.health.nsw.gov.au/'],
+  nocc: ['NOCC data specification 4.01 (AMHOCN), collection protocol', 'https://docs.validator.com.au/projects/data-specification-nocc/en/04.01/collection-protocol.html'],
+  pd2012: ['NSW Health PD2012_069, Health care records: documentation and management', 'https://www1.health.nsw.gov.au/pds/ActivePDSDocuments/PD2012_069.pdf'],
+  beyondnow: ['Lifeline Beyond Now safety plan', 'https://www.lifeline.org.au/get-help/beyond-now/information-for-health-professionals']
 };
 const link = k => `<a href="${esc(SRC[k][1])}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a>`;
 const INTERVENTIONS = [
@@ -1798,21 +1855,25 @@ presenting = the reason for referral or the main current difficulty
 predisposing = earlier or background factors that made difficulties more likely (history, family history, development, early adversity, temperament)
 precipitating = recent events or changes that triggered the current difficulties
 perpetuating = what keeps the difficulties going now (patterns, avoidance, sleep, ongoing conflict or stressors)
-protective = people, supports and resources that help
-positive = the young person's strengths, interests, skills and hopes
+protective = people, supports and resources around the young person that help (family, friends, school staff, services, routines)
+positive = the young person's own strengths, interests, skills and hopes
 risk = any statement about suicidal thoughts, self-harm, harm to others, abuse, family violence, neglect, exploitation or running away, including statements that these were asked about and denied
 goal = something the young person, family or worker wants to change
 context = other useful background (school year, who lives at home, services involved)
 
 Topics (zero or more): home, family, education, peers, activities, eating, sleep, drugs, sexuality, mood, selfharm, aggression, abuse, exploitation, missing, health, development, mhhistory (past mental health support), familymh (family mental health history), culture, voice (the young person's own words or view), onset (when it started), trauma, anxiety, attention, behaviour, measures (SDQ, HoNOSCA, CGAS), consent.
 
-For each span also give "short": the point in 4 to 12 plain words, third person, keeping placeholders. If the span reports a change since one of the EARLIER POINTS (from an earlier session), set "update" to {"id": that point's id, "change": "better" | "worse" | "resolved"}; otherwise null. Track change across sessions carefully: compare with the dated earlier points.
+Keep a concern and its qualifiers together in one span (for example "passive thoughts, no plan or intent" is one span).
+
+For every risk span also give "screen": "denied" when it records that a risk was asked about and nothing was reported (for example "denies suicidal thoughts", "SI: nil", "no self-harm"), or "concern" for anything else, including passive thoughts, past self-harm, a disclosure or a worry raised by someone else. Use null for spans that are not risk.
+
+For each span also give "short": the point in 4 to 12 plain words, third person, keeping placeholders. Say who reported it when the notes make that clear (for example "Mum reports more arguments at home"). If the span reports a change since one of the EARLIER POINTS (from an earlier session), set "update" to {"id": that point's id, "change": "better" | "worse" | "resolved"}; otherwise null. Track change across sessions carefully: compare with the dated earlier points.
 
 Then give up to 3 "checks": questions a careful, sceptical clinician would ask next to test the formulation (timing that does not fit, an alternative explanation, a contradiction, or missing information that would change the plan). Each {"text": a question under 20 words, "why": a reason under 20 words}.
 
 Also give "title": a 3 to 6 word name for this session in plain words, built from what happened (for example "Assessment: low mood, school" or "Sleep better, bullying stopped"). No names or placeholders in the title.
 
-Reply with only JSON: {"title":"...","spans":[{"quote":"...","cat":"...","topics":["..."],"short":"...","update":null}],"checks":[{"text":"...","why":"..."}]}`;
+Reply with only JSON: {"title":"...","spans":[{"quote":"...","cat":"...","topics":["..."],"short":"...","screen":null,"update":null}],"checks":[{"text":"...","why":"..."}]}`;
 function locate(text, quote, from) {
   if (!quote) return -1;
   let i = text.indexOf(quote, from); if (i >= 0) return i;
@@ -1831,6 +1892,8 @@ const FRAMED = (() => { try { return window.self !== window.top; } catch (e) { r
 const OAI_DEFAULT_MODEL = 'gpt-5-mini';
 let OAI = null;
 const oaiKey = () => {
+  /* Stefan's key lives in his own space ('s') regardless of which space he's viewing,
+     so Taylah never needs a key in her browser and his key stays on his device only. */
   const sp = (typeof CL !== 'undefined' && CL.user && loginName(CL.user.email).toLowerCase() === 'stefan') ? 's' : UI.space;
   return spaceKey(sp) + '-openai';
 };
@@ -1872,7 +1935,10 @@ async function sortWithAI(c, text, signal, provider, date) {
     const cat = CATS[x.cat] ? x.cat : 'context';
     const tps = Array.isArray(x.topics) ? x.topics.filter(t => TOPICS.includes(t)) : [];
     let rel = null; if (x.update && known.has(String(x.update.id)) && ['better', 'worse', 'resolved'].includes(x.update.change)) rel = { id: String(x.update.id), change: x.update.change };
-    spans.push({ id: uid('s'), a, b, cat, topics: tps, short: String(x.short || '').slice(0, 120) || shortOf(body.slice(a, b)), rel, by: provider });
+    const sp = { id: uid('s'), a, b, cat, topics: tps, short: String(x.short || '').slice(0, 120) || shortOf(body.slice(a, b)), rel, by: provider };
+    /* the sort says a risk was asked about and denied: trust it unless the words say otherwise */
+    if (cat === 'risk' && x.screen === 'denied' && !POS_RE.test(plainText(body.slice(a, b)))) sp.neg = true;
+    spans.push(sp);
     cursor = b;
   });
   if (text.length > body.length) sortByRules(text.slice(body.length)).forEach(s => { s.a += body.length; s.b += body.length; spans.push(s); });
@@ -1910,6 +1976,7 @@ function buildSummary(c) {
   const L = []; const ch = latestChanges(c); const sp = allSpans(c);
   L.push(`${c.label}${c.age ? ', ' + c.age : ''}: formulation summary (${fmtDate(todayISO())})`);
   L.push('De-identified. Prepared from session notes; check before filing.');
+  if (typeof formulationText === 'function') { L.push(''); L.push('Formulation'); L.push(c.written && c.written.text ? c.written.text : formulationText(c)); }
   const sec = (title, list) => { if (!list.length) return; L.push(''); L.push(title); list.forEach(s => { const t = ch[s.id]; L.push(`- ${plainText(s.short || shortOf(s.text))}${t ? ` (${t.change}, ${fmtShort(t.date)})` : ''}`); }); };
   sec('Risk and safety', sp.filter(s => s.cat === 'risk'));
   FIVE_PS.forEach(k => sec(CATS[k].label, sp.filter(s => s.cat === k)));
@@ -2252,7 +2319,7 @@ function safetyHTML(c) {
   const fresh = newRisk(c);
   if (!fresh.length) return `<div class="safety calm small">${icon('check')}<span>Risk notes reviewed ${fmtShort(c.safetyReviewed)}. ${plural(all.length, 'risk note')} on file.</span></div>`;
   return `<div class="safety" role="region" aria-label="Risk">${icon('alert')}<div class="grow"><b>Risk noted</b> <span>${fresh.slice(0, 2).map(s => esc(plainText(s.short || shortOf(s.text)))).join('; ')}${fresh.length > 2 ? `; and ${fresh.length - 2} more` : ''}. Follow your service's risk assessment.</span>
-      <div class="lines"><span>Health Child Wellbeing Unit <b class="num">1300 480 420</b></span><span>Child Protection Helpline <b class="num">132 111</b></span><span>Emergency <b class="num">000</b></span><span><a href="https://reporter.childstory.nsw.gov.au/s/" target="_blank" rel="noopener">Mandatory Reporter Guide</a></span></div></div>
+      <div class="lines"><span>Health Child Wellbeing Unit <b class="num">1300 480 420</b></span><span>Child Protection Helpline <b class="num">13 21 11</b></span><span>Emergency <b class="num">000</b></span><span><a href="https://reporter.childstory.nsw.gov.au/s/mrg" target="_blank" rel="noopener">Mandatory Reporter Guide</a></span></div></div>
     <button class="btn sm" data-act="risk-reviewed">Mark reviewed</button></div>`;
 }
 
@@ -2388,9 +2455,10 @@ function sessListHTML(c) {
     const rename = UI.renaming === g.id ? `<form class="row rename" data-form="rename-sess" data-id="${esc(g.id)}"><label class="sr" for="rn-in">Session name</label><input type="text" id="rn-in" maxlength="60" value="${esc(g.title || sessionTitle(g))}" autocomplete="off"><button class="btn sm primary" type="submit">Save</button><button class="btn quiet sm" type="button" data-act="cancel-rename">Cancel</button></form>` : `<button class="btn quiet sm" data-act="rename-sess" data-id="${esc(g.id)}">${icon('pen')}Rename</button>`;
     return `<article class="sheet sess${isOpen ? ' open' : ''}${i === 0 && !q ? ' first' : ''}" style="--i:${i}" id="sheet-${esc(g.id)}">${sessHeadHTML(g, isOpen, over, sessionTitle(g), meta, snip)}
       ${isOpen ? `<div class="sess-body" id="sb-${esc(g.id)}">
-        <div class="sess-actions row">${dateHandleHTML(g)}${rename}<button class="btn quiet sm" data-act="copy-entry" data-id="${esc(g.id)}">${icon('copy')}Copy</button>
+        <div class="sess-actions row">${dateHandleHTML(g)}${rename}<button class="btn sm${UI.noteFor === g.id ? ' primary' : ''}" data-act="open-note" data-id="${esc(g.id)}" aria-expanded="${UI.noteFor === g.id}">${icon('pen')}Progress note</button><button class="btn quiet sm" data-act="copy-entry" data-id="${esc(g.id)}">${icon('copy')}Copy points</button>
           ${UI.confirm === 'e:' + g.id ? `<button class="btn sm danger" data-act="del-entry-yes" data-id="${esc(g.id)}">Delete these notes</button><button class="btn quiet sm" data-act="cancel-confirm">Keep</button>` : `<button class="btn quiet sm" data-act="del-entry" data-id="${esc(g.id)}" aria-label="Delete these notes">${icon('trash')}</button>`}
           <span class="xs faint grow" style="text-align:right">Sorted ${g.by === 'claude' ? 'by Claude' : g.by === 'openai' ? 'by ChatGPT' : 'on this device'}</span></div>
+        ${UI.noteFor === g.id ? noteBoxHTML(c, g) : ''}
         <div class="sheet-body ruled" style="white-space:pre-wrap">${hlHTML(g, UI.justSorted === g.id)}</div></div>` : ''}</article>`;
   };
   const months = byMonth(groups);
@@ -2453,10 +2521,10 @@ function coveredHTML(cl) {
 /* ---- formulation tab ---- */
 function formHTML(c) {
   if (!c.entries.length) return `<div class="empty"><h2>Nothing to show yet</h2><p class="muted">Add notes and the 5 Ps fill in here, each in its own colour.</p><div><button class="btn primary" data-act="tab" data-tab="notes">Add notes</button></div></div>`;
-  const mode = UI.formMode === 'map' || UI.formMode === 'time' ? UI.formMode : 'board';
-  return `<div class="stack"><div class="row between"><div class="seg" role="group" aria-label="View">${[['board', 'Board'], ['map', 'Map'], ['time', 'Over time']].map(([k, l]) => `<button data-act="form-mode" data-mode="${k}" aria-pressed="${mode === k}">${l}</button>`).join('')}</div>
-    ${mode === 'time' ? `<button class="btn" data-act="copy-progress">${icon('copy')}Copy progress</button>` : `<button class="btn" data-act="copy-summary">${icon('copy')}Copy formulation</button>`}</div>
-    ${mode === 'time' ? journeyHTML(c) : asOfHTML(c) + (mode === 'map' ? mapHTML(c) : boardHTML(c))}</div>`;
+  const mode = ['map', 'time', 'written'].includes(UI.formMode) ? UI.formMode : 'board';
+  return `<div class="stack"><div class="row between"><div class="seg" role="group" aria-label="View">${[['board', 'Board'], ['written', 'Written'], ['map', 'Map'], ['time', 'Over time']].map(([k, l]) => `<button data-act="form-mode" data-mode="${k}" aria-pressed="${mode === k}">${l}</button>`).join('')}</div>
+    ${mode === 'written' ? '' : mode === 'time' ? `<button class="btn" data-act="copy-progress">${icon('copy')}Copy progress</button>` : `<button class="btn" data-act="copy-summary">${icon('copy')}Copy as list</button>`}</div>
+    ${mode === 'written' ? writtenHTML(c) : mode === 'time' ? journeyHTML(c) : asOfHTML(c) + (mode === 'map' ? mapHTML(c) : boardHTML(c))}</div>`;
 }
 /* Show the formulation as it stood at any session: a scrubber that fits any number of sessions. */
 const CHANGE_WORD = { better: 'Better', worse: 'Worse', resolved: 'Resolved' };
@@ -2647,7 +2715,7 @@ function planHTML(c) {
   const iv = activeInt(c);
   const opts = INTERVENTIONS.map(def => ({ def, fit: fitFor(c, def) })).sort((a, b) => ({ yes: 0, maybe: 1, no: 2 }[a.fit.level] - { yes: 0, maybe: 1, no: 2 }[b.fit.level]));
   const goals = allSpans(c).filter(s => s.cat === 'goal');
-  return `${prepHTML(c)}<div class="plan-grid"><section class="stack">
+  return `${prepHTML(c)}${safetyPlanHTML(c)}<div class="plan-grid"><section class="stack">
       <h2>Intervention</h2>
       ${iv ? activeHTML(c, iv) : '<p class="muted">None started. Pick one below; the notes you add can then count as sessions.</p>'}
       <div>${opts.map((o, i) => optionHTML(c, o, iv, i)).join('')}</div>
@@ -3563,7 +3631,8 @@ function nextPrep(c) {
   const expect = measures.map(m => `${m.label} (last: ${m.value})`).concat(['The self-harm screen, asked and answered'], follow.length ? [`What happened with ${listWords(follow.map(t => t.label.toLowerCase()))}`] : [], cl.saved.map(i => i.title));
   const gap = ds.length > 1 ? Math.round(daysBetween(ds[0], last) / (ds.length - 1)) : 0;
   const due = gap ? new Date(Date.parse(last) + gap * 864e5).toISOString().slice(0, 10) : '';
-  return { safety, follow, gaps, goals, plan, expect, last, due: due && due >= todayISO() ? due : '', picks: cl.picks.length + cl.tests.length };
+  const md = measuresDue(c); if (md) expect.push(md.kind === 'start' ? 'Outcome measures: HoNOSCA, CGAS, SDQ' : 'Review outcome measures');
+  return { safety, follow, gaps, goals, plan, expect, last, due: due && due >= todayISO() ? due : '', picks: cl.picks.length + cl.tests.length, measures: md };
 }
 function prepHTML(c) {
   if (!c.entries.length) return '';
@@ -3578,13 +3647,14 @@ function prepHTML(c) {
       ${sec('Your notes should come back with', p.expect.map(li), 'expect')}
       ${sec('Goals to review', p.goals.map(x => `<li><mark class="hl c-goal" role="button" tabindex="0" data-act="span" data-id="${esc(x.g.id)}">${markup(x.g.short || shortOf(x.g.text))}</mark> <span class="xs faint">${x.p}</span></li>`))}
       ${sec('Intervention', [li(p.plan)])}
+      ${p.measures ? sec('Outcome measures', [`<li>${esc(p.measures.short)}.<span class="xs faint" style="display:block">${esc(p.measures.long)} ${link('nocc')}</span></li>`]) : ''}
     </div></div></section>`;
 }
 function buildPrep(c) {
   const p = nextPrep(c); const L = [`${c.label}: plan for next session${p.due ? ` (around ${fmtDate(p.due)})` : ''}`, ''];
   const block = (t, xs) => { if (!xs.length) return; L.push(t); xs.forEach(x => L.push('[ ] ' + x)); L.push(''); };
   block('Safety first', p.safety); block('Follow up', p.follow.map(t => FOLLOW[t.status.kind](t))); block('Fill in', p.gaps);
-  block('Notes should come back with', p.expect); block('Goals to review', p.goals.map(x => `${plainText(x.g.short || shortOf(x.g.text))} (${x.p})`)); L.push(p.plan);
+  block('Notes should come back with', p.expect); block('Goals to review', p.goals.map(x => `${plainText(x.g.short || shortOf(x.g.text))} (${x.p})`)); if (p.measures) block('Outcome measures', [p.measures.short]); L.push(p.plan);
   return L.join('\n');
 }
 
@@ -3764,6 +3834,317 @@ function hideTip(force) {
   if (TIP.pinned && !force) return; clearTimeout(TIP.timer);
   if (TIP.el) TIP.el.hidden = true; if (TIP.target) TIP.target.classList.remove('tip-on'); TIP.target = null; TIP.pinned = false;
 }
+/* ================= writing: what she pastes into the record ================= */
+/* Everything here turns her own sorted points into prose for the eMR: a written 5 Ps formulation,
+   a progress note for a session, and a safety plan draft. Built on the device from the points;
+   ChatGPT (or Claude) can write a smoother version from the same points, never from more. */
+
+/* a point as running text: lower-case first letter unless it is an acronym, a placeholder or "I" */
+const wLower = s => { s = plainText(s).replace(/\s+/g, ' ').trim().replace(/[.;]+$/, ''); return /^[A-Z][a-z]/.test(s) && !/^I\b/.test(s) ? s[0].toLowerCase() + s.slice(1) : s; };
+const wList = xs => xs.length < 2 ? (xs[0] || '') : xs.length === 2 ? `${xs[0]} and ${xs[1]}` : xs.slice(0, -1).join('; ') + '; and ' + xs[xs.length - 1];
+const wShort = s => s.short || shortOf(s.text);
+/* Which points tell each part of the story:
+   presenting and precipitating come from the start (why they came, what set it off), background from any time,
+   what keeps it going and what helps from now. Updates ("bullying has stopped") are change, not cause. */
+const W_NOISE = /^(session|appointment|assessment|review|contact)\b[^a-z]*\d|^\W*\d{1,2}\s+\w{3}\w*\s+\d{4}\W*$|^session \d+/i;
+const W_LOW = /\b(nobody|no one|hates?|worthless|useless|can'?t cope|not wanted|alone)\b/i;
+const W_PERSON = /⟦|\b(mum|mom|dad|mother|father|parents?|aunt|aunty|uncle|nan|nana|nanna|grand\w*|sister|brother|sibling|cousin|friends?|teacher|counsellor|coach|carer|staff|adviser|advisor|person|worker|gp|doctor|mentor|youth worker|partner)\b/i;
+function wUsable(s) { const t = plainText(wShort(s)); return t.length > 3 && !W_NOISE.test(t); }
+const W_GOOD = /\b(attend(s|ing|ed) (school )?(most|all|every)|back (at|to) school|feeling (good|better)|mood [6-9](\s*(to|-)\s*\d+)? out of 10|rare(ly)?)\b/i;
+const wImproving = (s, ch) => { const t = ch[s.id]; const w = plainText(wShort(s)); return !!(s.rel && (s.rel.change === 'better' || s.rel.change === 'resolved')) || !!(t && (t.change === 'better' || t.change === 'resolved')) || IMPROVING.test(w) || W_GOOD.test(w); };
+function wPoints(c, cat, max, upto, mode) {
+  const ch = latestChanges(c, upto); const sp = allSpans(c, upto).filter(s => s.cat === cat && wUsable(s));
+  let pick;
+  if (mode === 'early') pick = sp.filter(s => !s.rel);
+  else if (mode === 'any') pick = sp.filter(s => !s.rel);
+  else {
+    /* now: the newest point on each theme, unless that theme is easing or resolved */
+    pick = [];
+    themeGroups(sp).forEach(g => (g.key === 'other' ? g.items.slice(0, 2) : [g.latest]).forEach(s => { if (!(cat === 'perpetuating' && wImproving(s, ch)) && !(ch[s.id] && ch[s.id].change === 'resolved')) pick.push(s); }));
+  }
+  if (cat === 'positive') pick = pick.filter(s => !W_LOW.test(plainText(wShort(s))));
+  const seen = new Set(), themes = new Set();
+  return pick.filter(s => { const k = wLower(wShort(s)).toLowerCase(); const th = themeOf(s); if (seen.has(k) || (mode === 'early' && th && themes.has(th))) return false; seen.add(k); if (th) themes.add(th); return true; }).slice(0, max || 5);
+}
+const wLine = (label, pts) => pts.length ? `${label}: ${pts.map(s => wLower(wShort(s))).join('; ')}.` : '';
+function riskLine(c, upto) {
+  const sp = allSpans(c, upto).filter(s => s.cat === 'risk');
+  if (!sp.length) return 'Risk and safety: suicidal thoughts and self-harm are not yet recorded as asked about.';
+  const th = threadsOf(c, upto); const L = [];
+  ['selfharm', 'abuse', 'aggression', 'exploitation', 'missing'].forEach(k => {
+    const t = th.map[k]; if (!t) return;
+    const con = sp.filter(s => themeOf(s) === k && !isNegScreen(s));
+    if (!con.length) { if (k === 'selfharm') L.push(`self-harm and suicidal thoughts asked about ${plural(t.dates.length, 'time')}, nothing reported (last ${fmtShort(t.dates[t.dates.length - 1])})`); return; }
+    const first = con[0], last = con[con.length - 1];
+    L.push(`${wLower(wShort(first))} (${fmtShort(first.date)})${last !== first ? `; most recently: ${wLower(wShort(last))} (${fmtShort(last.date)})` : ''}. ${t.status.long}`);
+  });
+  const other = sp.filter(s => !isNegScreen(s) && !['selfharm', 'abuse', 'aggression', 'exploitation', 'missing'].includes(themeOf(s)));
+  other.slice(-2).forEach(s => L.push(`${wLower(wShort(s))} (${fmtShort(s.date)})`));
+  return L.length ? `Risk and safety: ${L.join('. ')}.` : 'Risk and safety: see notes.';
+}
+/* The written 5 Ps formulation, built on the device: headed lines, only what the notes say. */
+function formulationText(c, upto) {
+  const ds = sessionDates(c).filter(d => !upto || d <= upto);
+  const head = `${c.label}${c.age ? `, aged ${c.age}` : ''}${ds.length ? `. Seen for ${plural(ds.length, 'session')} since ${fmtDate(ds[0])}${ds.length > 2 && rhythm(ds) ? `, ${rhythm(ds)}` : ''}` : ''}.`;
+  const L = [head, ''];
+  [['Presenting concern', 'presenting', 4, 'early'], ['Predisposing', 'predisposing', 5, 'any'], ['Precipitating', 'precipitating', 4, 'early'], ['Perpetuating', 'perpetuating', 5, 'now'], ['Protective', 'protective', 5, 'now'], ['Strengths', 'positive', 5, 'now']]
+    .forEach(([label, cat, n, mode]) => { const line = wLine(label, wPoints(c, cat, n, upto, mode)); if (line) L.push(line); });
+  if (L.length === 2) L.push('Presenting concern: not yet clear from the notes.');
+  L.push('');
+  const th = threadsOf(c, upto); const of = kinds => th.list.filter(t => !t.risk && kinds.includes(t.status.kind));
+  if (ds.length > 1) {
+    const say = (ts, verb) => ts.length ? `${listWords(ts.map(t => t.label.toLowerCase()))} ${verb}` : '';
+    const moved = [say(of(['better', 'resolved']), 'easing'), say(of(['worse']), 'worse'), ...of(['back']).map(t => `${t.label.toLowerCase()} came back ${fmtShort(t.status.date)}`)].filter(Boolean);
+    L.push(`Course: ${moved.length ? listWords(moved) : 'no clear change noted yet'}.`);
+  }
+  L.push(riskLine(c, upto));
+  return L.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+function formulationPoints(c) {
+  const ch = latestChanges(c); const L = [];
+  ['presenting', 'predisposing', 'precipitating', 'perpetuating', 'protective', 'positive', 'risk', 'goal'].forEach(k => {
+    const sp = allSpans(c).filter(s => s.cat === k).slice(-25); if (!sp.length) return;
+    L.push(`${CATS[k].label.toUpperCase()}:`);
+    sp.forEach(s => { const t = ch[s.id]; L.push(`- (${fmtShort(s.date)}) ${wShort(s)}${k === 'risk' ? (isNegScreen(s) ? ' [asked, denied]' : ' [concern]') : ''}${t ? ` [later ${t.change}, ${fmtShort(t.date)}]` : ''}`); });
+  });
+  return L.join('\n');
+}
+const AI_WRITE_RULES = `Hard rules:
+- Australian English, plain clinical language, third person, past tense for what happened.
+- Text inside ⟦ ⟧ is a placeholder for a hidden name or detail. Keep every placeholder exactly as written and never guess what it hides.
+- Use only the facts given. Do not add facts, diagnoses, likelihoods or risk ratings (never "low", "medium" or "high risk").
+- Hedged formulation language ("appears to", "may be maintained by") is fine. Culture, religion and family background are context, never risk.`;
+function formulationPrompt(c) {
+  const th = threadsOf(c); const moves = th.list.filter(t => ['better', 'worse', 'back', 'resolved', 'quiet'].includes(t.status.kind)).map(t => `${t.label}: ${t.status.long}`).join('; ');
+  const iv = activeInt(c); const ds = sessionDates(c);
+  return `You are helping a social worker in a NSW Health Child and Adolescent Mental Health Service (CAMHS) write the 5 Ps formulation for a young person's clinical record, from her own de-identified, already sorted points.
+
+${AI_WRITE_RULES}
+- Show how the factors connect (for example how sleep, mood and school attendance feed each other), but only where the points support the link.
+
+Write 5 or 6 short paragraphs, no headings and no bullet points, 200 to 320 words in all, following the RANZCP formulation structure:
+1. A short summary: who (refer to the young person as "${c.label}"), the presenting concern and its context.
+2. Predisposing factors: the longer-term biological, psychological and social vulnerabilities.
+3. The linking explanation: how the precipitating events and the perpetuating factors act on those vulnerabilities to produce and keep the difficulties going now.
+4. Protective factors and strengths.
+5. How things have changed across sessions, if there is more than one session.
+6. Risk and safety in one or two factual sentences: what was asked, what was reported, with dates.
+Keep the management plan out of the formulation.
+
+AGE: ${c.age || 'not given'}
+SESSIONS: ${ds.length}${ds.length ? `, ${fmtDate(ds[0])} to ${fmtDate(ds[ds.length - 1])}` : ''}
+INTERVENTION: ${iv ? `${variantOf(iv).name}, ${plural(interventionStats(c, iv).done, 'session')} so far` : 'none started'}
+CHANGES TRACKED: ${moves || 'none yet'}
+
+POINTS:
+${formulationPoints(c)}
+
+Reply with only JSON: {"text": "the formulation, paragraphs separated by \\n\\n"}`;
+}
+
+/* ---- progress note for one session ---- */
+const NOTE_CATS = ['presenting', 'precipitating', 'perpetuating', 'predisposing', 'context'];
+function sessionKind(e) { const head = plainText(e.text).slice(0, 160); return (SESSION_KINDS.find(([re]) => re.test(head)) || [])[1] || 'Session'; }
+function progressNoteText(c, e) {
+  const nums = sessionNumbers(c); const iv = e.intId && c.ints.find(x => x.id === e.intId);
+  const ivN = iv ? c.entries.filter(x => x.intId === iv.id && x.date <= e.date).length : 0;
+  const sp = e.spans.map(s => Object.assign({}, s, { text: spanText(e, s), date: e.date }));
+  const by = k => sp.filter(s => s.cat === k);
+  const all = allSpans(c); const byId = {}; all.forEach(s => { byId[s.id] = s; });
+  const changes = sp.filter(s => s.rel && byId[s.rel.id]);
+  const L = [];
+  L.push(`Date: ${fmtDate(e.date)}   Time: [24-hour time]`);
+  const kind = sessionKind(e); L.push(`Contact: ${kind === 'Session' ? `Session ${nums[e.id] || ''}`.trim() : `${kind}${nums[e.id] ? `, session ${nums[e.id]}` : ''}`}${iv ? `; ${variantOf(iv).name} session ${ivN}` : ''}`);
+  L.push('Mode: [face to face / phone / telehealth]   Present: [who attended]');
+  const content = NOTE_CATS.flatMap(by).filter(s => !changes.includes(s) && wUsable(s)).sort((x, y) => x.a - y.a);
+  L.push(''); L.push('Session content');
+  (content.length ? content : sp.filter(s => s.cat !== 'risk')).slice(0, 10).forEach(s => L.push(`- ${cap(wLower(wShort(s)))}`));
+  if (changes.length) { L.push(''); L.push('Changes since earlier sessions'); changes.forEach(s => { const o = byId[s.rel.id]; L.push(`- ${cap(s.rel.change)}: ${wLower(wShort(s))} (earlier, ${fmtShort(o.date)}: ${wLower(wShort(o))})`); }); }
+  const strengths = by('protective').concat(by('positive'));
+  if (strengths.length) { L.push(''); L.push('Strengths and supports'); strengths.forEach(s => L.push(`- ${cap(wLower(wShort(s)))}`)); }
+  L.push(''); L.push('Risk and safety');
+  const risk = by('risk');
+  if (risk.length) risk.forEach(s => L.push(`- ${cap(wLower(wShort(s)))}${isNegScreen(s) ? '' : ' [follow your service’s risk assessment and safety planning]'}`));
+  else L.push('- [Risk screen not recorded in these notes: record what was asked and what was said]');
+  const goals = by('goal'); if (goals.length) { L.push(''); L.push('Goals'); goals.forEach(s => L.push(`- ${cap(wLower(wShort(s)))}`)); }
+  L.push(''); L.push('Impression'); L.push('- [Your clinical opinion, kept apart from what was observed and what was reported]');
+  L.push(''); L.push('Plan');
+  const latest = sessionDates(c).slice(-1)[0] === e.date;
+  if (latest) {
+    const p = nextPrep(c);
+    p.follow.slice(0, 3).forEach(t => L.push(`- ${FOLLOW[t.status.kind](t)}`));
+    p.gaps.slice(0, 2).forEach(g => L.push(`- Explore: ${g.toLowerCase()}`));
+    const md = measuresDue(c); if (md) L.push(`- ${md.short}`);
+    if (p.due) L.push(`- Next appointment: around ${fmtDate(p.due)}`);
+  }
+  L.push('- [Plan agreed with the young person and family]');
+  L.push(''); L.push('[Name, designation, signature]');
+  return L.join('\n');
+}
+function progressNotePrompt(c, e) {
+  const nums = sessionNumbers(c); const iv = e.intId && c.ints.find(x => x.id === e.intId);
+  const all = allSpans(c); const byId = {}; all.forEach(s => { byId[s.id] = s; });
+  const pts = e.spans.map(s => `- [${s.cat}${s.cat === 'risk' ? (isNegScreen(Object.assign({}, s, { text: spanText(e, s) })) ? ', asked and denied' : ', concern') : ''}] ${wShort(s)}${s.rel && byId[s.rel.id] ? ` (${s.rel.change} since ${fmtShort(byId[s.rel.id].date)}: ${wShort(byId[s.rel.id])})` : ''}`).join('\n');
+  const latest = sessionDates(c).slice(-1)[0] === e.date; const p = latest ? nextPrep(c) : null;
+  return `You are helping a social worker in a NSW Health Child and Adolescent Mental Health Service (CAMHS) write the progress note for one session, for the young person's clinical record, from her own de-identified notes.
+
+${AI_WRITE_RULES}
+- Where something a progress note normally records is not in the notes, write it in square brackets for her to fill in, for example "[who attended]". Never guess it.
+- Risk and safety: state exactly what was asked and what was reported. If the notes record no risk screen, write "[Risk screen not recorded]".
+- Keep what was observed, what the young person or others reported (say who), and clinical opinion apart, as NSW Health record-keeping policy asks. Opinion goes only under Impression.
+- Contact gives the type of session and the mode (face to face, phone, telehealth) if the notes say; otherwise "[mode]". Add "[24-hour time]" after the date.
+
+Use these headings, each on its own line followed by short text or a few "- " lines:
+Contact
+Present
+Presentation
+Session content
+Risk and safety
+Impression (one or two hedged sentences linking this session to the formulation and to what changed)
+Plan
+Keep it under 260 words. End with the line "[Name, designation, signature]".
+
+SESSION: ${fmtDate(e.date)}, ${sessionKind(e)}${nums[e.id] ? `, session ${nums[e.id]}` : ''}${iv ? `, ${variantOf(iv).name}` : ''}
+YOUNG PERSON: ${c.label}${c.age ? `, ${c.age}` : ''}
+${p ? `NEXT STEPS ALREADY IDENTIFIED: ${[...p.follow.map(t => FOLLOW[t.status.kind](t)), ...p.gaps.map(g => 'Explore ' + g.toLowerCase())].slice(0, 5).join(' ') || 'none'}${p.due ? ` Next session around ${fmtDate(p.due)}.` : ''}\n` : ''}
+SORTED POINTS FROM THIS SESSION:
+${pts || 'none'}
+
+NOTES:
+"""
+${e.text.slice(0, 12000)}
+"""
+
+Reply with only JSON: {"text": "the progress note, lines separated by \\n"}`;
+}
+
+/* ---- outcome measures on the NOCC schedule (AMHOCN NOCC spec 4.01): admission, review every 3 months (91 days), discharge ---- */
+const MEASURE_RE = /\b(sdq|honosca|hono?sca|cgas|c-gas|fihs)\b/i;
+const NOCC_REVIEW_DAYS = 91;
+function measuresDue(c) {
+  const ds = sessionDates(c); if (!ds.length) return null;
+  const hits = chronEntries(c).filter(e => MEASURE_RE.test(plainText(e.text))).map(e => e.date).sort();
+  const last = hits[hits.length - 1]; const today = todayISO();
+  if (!last) return { kind: 'start', short: 'Admission outcome measures not recorded yet: HoNOSCA, CGAS and SDQ', long: `Nothing recorded since the first session (${fmtShort(ds[0])}). At admission NOCC collects HoNOSCA and CGAS (past 2 weeks) and the SDQ baseline (past 6 months): parent report for ages 4 to 10, parent and youth self-report for 11 to 17.` };
+  const since = daysBetween(last, today); const due = new Date(Date.parse(last) + NOCC_REVIEW_DAYS * 864e5).toISOString().slice(0, 10);
+  if (since >= NOCC_REVIEW_DAYS - 7) return { kind: 'review', short: `3-month review measures ${due <= today ? 'due' : 'due ' + fmtShort(due)}: last recorded ${fmtShort(last)}`, long: `Review collection is every 91 days of care: HoNOSCA, CGAS, FIHS and the SDQ follow-up version (past month). An ad hoc review restarts the 91 days.` };
+  return null;
+}
+
+/* ---- safety plan draft: from her notes, to finish with the young person and family ---- */
+const CRISIS = [
+  ['NSW Mental Health Line', '1800 011 511', '24 hours'],
+  ['Kids Helpline', '1800 55 1800', '24 hours, ages 5 to 25'],
+  ['Lifeline', '13 11 14', '24 hours, or text 0477 13 11 14'],
+  ['Suicide Call Back Service', '1300 659 467', ''],
+  ['13YARN (Aboriginal and Torres Strait Islander crisis support)', '13 92 76', '24 hours'],
+  ['Emergency', '000', '']
+];
+function selfHarmConcern(c) { const t = threadsOf(c).map.selfharm; return !!(t && t.dates.some(d => t.marks[d] === 'concern')); }
+function safetyPlanParts(c) {
+  const th = threadsOf(c); const sh = th.map.selfharm; const ch = latestChanges(c);
+  const warn = [];
+  if (sh && sh.same) sh.same.forEach(x => { const t = th.map[x.key]; const n = t && t.notes[x.date]; const hit = n && n.find(y => y.s.cat !== 'risk' && !wImproving(y.s, ch)); if (hit) warn.push(wLower(wShort(hit.s))); });
+  wPoints(c, 'perpetuating', 3, null, 'now').forEach(s => warn.push(wLower(wShort(s))));
+  const prot = wPoints(c, 'protective', 6, null, 'now');
+  const people = prot.filter(s => W_PERSON.test(plainText(s.text) + ' ' + wShort(s))).map(s => wLower(wShort(s)));
+  const places = prot.filter(s => !W_PERSON.test(plainText(s.text) + ' ' + wShort(s))).map(s => wLower(wShort(s)));
+  const self = wPoints(c, 'positive', 4, null, 'now').map(s => wLower(wShort(s)));
+  const reasons = wPoints(c, 'goal', 3, null, 'now').map(s => wLower(wShort(s)));
+  const uniq = a => Array.from(new Set(a)).slice(0, 4);
+  return { warn: uniq(warn), self: uniq(self), people: uniq(people), places: uniq(places), reasons: uniq(reasons) };
+}
+function safetyPlanText(c) {
+  const p = safetyPlanParts(c); const L = [`${c.label}: safety plan draft (${fmtDate(todayISO())})`, 'Draft from session notes. Complete it with the young person and family, in their own words, and give them a copy.', ''];
+  const sec = (t, xs, blank) => { L.push(t); (xs.length ? xs : []).forEach(x => L.push(`- ${cap(x)}`)); L.push(`- ${blank}`); L.push(''); };
+  sec('1. My warning signs (thoughts, feelings, situations)', p.warn, '[in their words]');
+  sec('2. Things I can do on my own to cope', p.self, '[what has helped before]');
+  sec('3. People and places that take my mind off things', p.places, '[where they feel calmer, who they like being around]');
+  sec('4. People I can ask for help', p.people, '[names and how to reach them]');
+  L.push('5. Professionals and services');
+  L.push('- My CAMHS clinician: [name, number, hours]'); L.push('- GP: [name, number]');
+  CRISIS.forEach(([n, num, h]) => L.push(`- ${n}: ${num}${h ? ` (${h})` : ''}`)); L.push('');
+  sec('6. Making things safer', ['agree with the family how medicines, sharp objects and other means will be stored or removed'], '[what was agreed, and who will do it]');
+  sec('7. What matters to me and keeps me going', p.reasons, '[their reasons]');
+  L.push('Give the young person a copy, record the plan in the eMR, and review it regularly.');
+  return L.join('\n');
+}
+
+/* ---- the AI writer: same provider as sorting, same de-identified text only ---- */
+async function aiWriteJSON(prompt, signal) {
+  const p = aiProvider(); if (!p) throw { code: 'no_ai' };
+  const data = p === 'openai' ? await openaiJSON(prompt, signal) : await SAMPLE.json(prompt, { signal, modelTier: 'default' });
+  const text = String(data && data.text || '').replace(/\r/g, '').trim();
+  if (text.length < 40) throw { code: 'empty_sort' };
+  return { text, by: p };
+}
+/* placeholders the writer was given must come back; a hidden name it invents never may */
+function keptMarks(src, out) { const a = new Set((src.match(MARK_RE) || [])); return (out.match(MARK_RE) || []).every(m => a.has(m)); }
+
+/* ---- views ---- */
+function writtenStale(c) { const w = c.written; if (!w) return false; return (w.n || 0) !== allSpans(c).length; }
+function writtenHTML(c) {
+  const w = c.written; const p = aiProvider(); const busy = UI.writing === 'form:' + c.id;
+  const text = w ? w.text : formulationText(c);
+  const by = !w ? 'Built on this device from your sorted points' : w.by === 'edited' ? 'Edited by you' : w.by === 'device' ? 'Built on this device from your sorted points' : `Written by ${PROVIDER_NAME[w.by] || 'AI'} from your sorted points`;
+  return `<section class="written stack-s" aria-label="Written formulation">
+    <div class="row between wr-head"><div class="stack-s"><h2>Written formulation</h2><p class="small muted">${esc(by)}${w && w.at ? ` · ${esc(fmtWhen(w.at))}` : ''}. Read it through and change anything before it goes in the record.</p></div>
+      <div class="row">${p ? `<button class="btn${w && w.by !== 'device' ? '' : ' primary'}" data-act="write-form" ${busy ? 'disabled' : ''}>${busy ? 'Writing…' : `${icon('pen')}${w && w.by !== 'device' && w.by !== 'edited' ? 'Rewrite' : 'Write'} with ${PROVIDER_NAME[p]}`}</button>` : ''}
+        ${w ? `<button class="btn quiet" data-act="reset-form">Rebuild from points</button>` : ''}<button class="btn" data-act="copy-written">${icon('copy')}Copy</button></div></div>
+    ${writtenStale(c) ? `<p class="small wr-stale">${icon('alert')}Notes were added since this was written. ${p ? `Write it again with ${PROVIDER_NAME[p]}, or rebuild it from the points.` : 'Rebuild it from the points to include them.'}</p>` : ''}
+    <label class="sr" for="written-ta">Written formulation</label>
+    <textarea id="written-ta" class="written-ta" spellcheck="true">${esc(text)}</textarea>
+    <p class="xs faint">${p ? `${PROVIDER_NAME[p]} gets only the sorted, de-identified points, never the original notes, and writes it the way the RANZCP formulation guidelines lay one out: summary, vulnerabilities, how the triggers and maintaining factors act on them, then protective factors.` : 'With a ChatGPT key in Settings, it can write a flowing version from the same points.'} Placeholders like [name] stay as they are; fill them in your record.</p></section>`;
+}
+function noteBoxHTML(c, e) {
+  const n = e.note; const p = aiProvider(); const busy = UI.writing === 'note:' + e.id;
+  const text = n ? n.text : progressNoteText(c, e);
+  return `<div class="notebox stack-s"><div class="row between"><span class="overline">Progress note${n && n.by !== 'device' ? ` · ${n.by === 'edited' ? 'edited by you' : 'by ' + esc(PROVIDER_NAME[n.by] || 'AI')}` : ' · draft from your points'}</span>
+      <div class="row">${p ? `<button class="btn sm" data-act="write-note" data-id="${esc(e.id)}" ${busy ? 'disabled' : ''}>${busy ? 'Writing…' : `${icon('pen')}Write with ${PROVIDER_NAME[p]}`}</button>` : ''}<button class="btn sm primary" data-act="copy-note" data-id="${esc(e.id)}">${icon('copy')}Copy note</button><button class="btn quiet sm" data-act="close-note">Close</button></div></div>
+    <label class="sr" for="note-ta">Progress note</label><textarea id="note-ta" class="written-ta note-ta" data-id="${esc(e.id)}" spellcheck="true">${esc(text)}</textarea>
+    <p class="xs faint">Anything in [square brackets] is for you to fill in. Check it against what happened before it goes in the record. Layout follows ${link('pd2012')}: date and time, who was there, what was observed and reported, opinion kept apart, plan, your name and designation.</p></div>`;
+}
+function safetyPlanHTML(c) {
+  if (!c.entries.length) return '';
+  const need = selfHarmConcern(c); const p = safetyPlanParts(c); const open = need || UI.spOpen;
+  const li = xs => xs.map(x => `<li>${esc(cap(x))}</li>`).join('');
+  const sec = (t, xs, blank) => `<section class="prep-sec"><h3>${t}</h3><ul>${li(xs)}<li class="faint">${blank}</li></ul></section>`;
+  const body = `<div class="prep-grid"><div class="prep-col">
+      ${sec('1 · Warning signs', p.warn, 'In their words')}${sec('2 · Coping on my own', p.self, 'What has helped before')}${sec('3 · People and places that distract', p.places, 'Where they feel calmer')}${sec('4 · People to ask for help', p.people, 'Names and how to reach them')}</div>
+    <div class="prep-col"><section class="prep-sec"><h3>5 · Services</h3><ul>${CRISIS.map(([n, num, h]) => `<li>${esc(n)} <b class="num">${esc(num)}</b>${h ? ` <span class="xs faint">${esc(h)}</span>` : ''}</li>`).join('')}</ul></section>
+      ${sec('6 · Making things safer', ['Agree how medicines, sharp objects and other means are stored or removed'], 'What was agreed, and who does it')}${sec('7 · What keeps me going', p.reasons, 'Their reasons')}</div></div>`;
+  return `<details class="prep sp-plan${need ? ' need' : ''}" ${open ? 'open' : ''} data-more="sp"><summary class="prep-head"><div class="stack-s"><p class="overline">${need ? 'Self-harm concern noted' : 'If it’s needed'}</p><h2>Safety plan draft</h2></div>${icon('chev', 'chev')}</summary>
+    <p class="small muted">Pre-filled from your notes. NSW Health policy asks for a safety plan made together with anyone who may be suicidal: in their own words, given to them, recorded in the eMR and reviewed regularly.</p>
+    ${body}<div class="row"><button class="btn" data-act="copy-sp">${icon('copy')}Copy safety plan draft</button><span class="xs faint">Sources: ${link('nswpd')}; item 7 from ${link('beyondnow')}</span></div></details>`;
+}
+
+/* ---- actions (joined to ACT in js6) ---- */
+function writeErrorText(e) {
+  const code = e && e.code; const name = PROVIDER_NAME[aiProvider()] || 'ChatGPT';
+  if (code === 'marks') return `${name} changed a hidden name, so its version wasn’t kept. The version built from your points is still here.`;
+  if (code === 'oai_key') return 'Your OpenAI key wasn’t accepted. Check it in Settings.';
+  if (code === 'oai_credit') return 'Your OpenAI account has no API credit left.';
+  if (code === 'rate_limited') return `${name} is busy right now. Try again in a minute.`;
+  if (code === 'no_ai') return 'Add a ChatGPT key in Settings to write with it.';
+  return `Couldn’t get a version from ${name}. The one built from your points is still here.`;
+}
+async function aiWriteInto(key, prompt, save) {
+  if (UI.writing) return; UI.writing = key; render();
+  const ctl = new AbortController(); UI.writeCtl = ctl;
+  try { const r = await aiWriteJSON(prompt, ctl.signal); if (!keptMarks(prompt, r.text)) throw { code: 'marks' }; r.text = plainText(r.text); save(r); showToast('Written. Read it through before it goes in the record.'); }
+  catch (e) { if (!ctl.signal.aborted) showToast(writeErrorText(e)); }
+  finally { UI.writing = null; UI.writeCtl = null; render(); }
+}
+const WRITE_ACT = {
+  'write-form': () => { const c = current(); if (!c) return; aiWriteInto('form:' + c.id, formulationPrompt(c), r => { c.written = { text: r.text, by: r.by, at: Date.now(), n: allSpans(c).length }; touch(c); }); },
+  'reset-form': () => { const c = current(); if (!c) return; const prev = c.written; delete c.written; touch(c); render(); showToast('Rebuilt from your sorted points.', { label: 'Undo', run: () => { c.written = prev; touch(c); render(); } }); },
+  'copy-written': () => { const c = current(); const ta = $('#written-ta'); copyText(ta ? ta.value : (c.written ? c.written.text : formulationText(c)), 'Formulation copied. Paste it into the record.'); if (typeof whisperFor === 'function') whisperFor('copied'); },
+  'open-note': el => { UI.noteFor = UI.noteFor === el.dataset.id ? null : el.dataset.id; render(); const b = $('#note-ta'); if (b) b.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' }); },
+  'close-note': () => { const id = UI.noteFor; UI.noteFor = null; render(); refocus(`[data-act="open-note"][data-id="${id}"]`); },
+  'write-note': el => { const c = current(); const e = c && c.entries.find(x => x.id === el.dataset.id); if (!e) return; aiWriteInto('note:' + e.id, progressNotePrompt(c, e), r => { e.note = { text: r.text, by: r.by, at: Date.now() }; touch(c); }); },
+  'copy-note': el => { const c = current(); const e = c && c.entries.find(x => x.id === el.dataset.id); const ta = $('#note-ta'); if (!e) return; copyText(ta ? ta.value : (e.note ? e.note.text : progressNoteText(c, e)), 'Progress note copied. Paste it into the record.'); },
+  'copy-sp': () => { const c = current(); if (c) copyText(safetyPlanText(c), 'Safety plan draft copied.'); }
+};
 /* ================= example notes (fictional) ================= */
 const EXAMPLE = `Initial assessment 21/10/2026 with Jordan (15, Year 9 at Westfield High School) and his mum Sarah. Referred by GP Dr Patel for low mood and school refusal since Term 3.
 Jordan said "I just can't be bothered with anything anymore". Sleeping 2am to 11am most days, gaming late. Lost interest in basketball, which he used to love.
@@ -4094,6 +4475,7 @@ const ACT = {
   'oai-remove': () => { OAI = null; saveOAI(null); UI.oaiStatus = ''; render(); showToast('Key removed from this device.'); },
   'close-copy': () => { const el = $('#copy-panel'); if (el) el.remove(); }
 };
+Object.assign(ACT, WRITE_ACT);
 
 document.addEventListener('click', e => {
   const tipEl = e.target.closest('[data-tip]');
@@ -4140,6 +4522,8 @@ document.addEventListener('input', e => {
   const t = e.target;
   if (t.id === 'case-q') { const q = t.value.trim().toLowerCase(); $$('#rail-list .rail-row').forEach(r => { r.hidden = !!q && !r.dataset.q.includes(q); }); return; }
   if (t.id === 'paste') { const c = current(); if (!c) return; const d = draftOf(c); d.text = t.value; const b = $('#to-review'); if (b) b.disabled = !t.value.trim(); refreshDraftDate(d, true); }
+  if (t.id === 'written-ta') { const c = current(); if (!c) return; c.written = { text: t.value, by: 'edited', at: Date.now(), n: c.written && c.written.n != null ? c.written.n : allSpans(c).length }; touch(c); return; }
+  if (t.id === 'note-ta') { const c = current(); const en = c && c.entries.find(x => x.id === t.dataset.id); if (!en) return; en.note = { text: t.value, by: 'edited', at: Date.now() }; touch(c); return; }
   if (t.id === 'sess-find') { const c = current(); if (!c) return; UI.find[c.id] = t.value; const l = $('#sess-list'); if (l) l.innerHTML = sessListHTML(c); return; }
   if (t.id === 'asof-range') { const c = current(); if (!c) return; const ds = sessionDates(c); const i = Number(t.value); const n = $('#scrub-now'); if (n) n.innerHTML = scrubNow(c, ds, i); const tr = $('#scrub-track'); if (tr) { tr.style.setProperty('--at', (i / (ds.length - 1) * 100).toFixed(3) + '%'); $$('.scrub-rail i', tr).forEach((el, k) => { el.className = k < i ? 'past' : k === i ? 'on' : 'after'; }); } }
 });
@@ -4179,6 +4563,7 @@ document.addEventListener('toggle', e => {
   if (d.classList.contains('case-admin')) UI.adminOpen = d.open;
   if (d.dataset.more === 'opt') UI.optOpen = d.open;
   if (d.dataset.more === 'ctx') UI.ctxOpen = d.open;
+  if (d.dataset.more === 'sp') UI.spOpen = d.open;
 }, true);
 window.addEventListener('resize', () => { if (UI.pop) closePop(true); hideTip(true); });
 document.addEventListener('scroll', () => { if (UI.pop && !$('#pop:focus-within')) closePop(true); if (TIP.target) { if (TIP.pinned) placeTip(); else hideTip(true); } }, { passive: true });
