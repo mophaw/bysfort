@@ -990,6 +990,11 @@ details.more>summary{min-height:44px}
 .br-steps textarea{min-height:140px;width:100%;border-radius:14px;border:1px solid var(--line-2);background:oklch(13% .01 290 / .8);padding:12px 14px;font-size:var(--t-s)}
 .ai-way{padding:14px 0;border-top:1px solid var(--line)}
 .ai-way h3{font-size:var(--t-m)}
+
+/* a pinned note from Stefan on her home */
+.pinned{display:flex;flex-direction:column;gap:8px;max-width:44ch;margin-top:14px;padding:16px 20px;border-radius:18px;border:1px solid oklch(80% .1 350 / .4);background:oklch(20% .03 350 / .45);text-align:left}
+.pinned .overline{color:var(--p-pres)}
+.pinned p{margin:0;font:300 1.05rem/1.55 var(--display);color:var(--ivory)}
 </style>
 </head>
 <body>
@@ -2339,9 +2344,19 @@ function railRowHTML(x, c) {
 const NOTICE = `<p class="notice">Prototype for testing with de-identified or example notes. It is not an approved NSW Health system. It sorts and reminds; it never diagnoses, and your clinical judgement decides.</p>`;
 
 /* ================= home ================= */
+/* A note from Stefan pinned to her home for a set window, then gone by itself. */
+const PINNED = [
+  { from: '2026-11-13T00:00:00+11:00', until: '2026-11-14T00:00:00+11:00', hello: 'From Stefan, for tonight',
+    lines: ['Hey beautiful,', 'Seat 20B, 7 pm from Central (bay 9, upstairs), Jolimont at 10:45. Rest on the way, my love.', 'I’ll be waiting on the platform when the doors open, ready to grab your bag and take you home.', 'I miss you so much,\nYour man,\nStefan'] }
+];
+function pinnedHTML() {
+  if (!(isTaylah() || (typeof isStefan === 'function' && isStefan()))) return '';
+  const now = Date.now(); const p = PINNED.find(x => now >= Date.parse(x.from) && now < Date.parse(x.until)); if (!p) return '';
+  return `<div class="pinned" role="note"><span class="overline">${esc(p.hello)}</span>${p.lines.map(l => `<p>${esc(l).replace(/\n/g, '<br>')}</p>`).join('')}</div>`;
+}
 function heroHTML(compact) {
   const g = UI.greeting && isTaylah() ? UI.greeting : null;
-  return `<section class="hero${compact ? ' compact' : ''}">${logoSVG(UI.entering ? 'draw-logo' : '')}<p class="wordmark">Five Ps</p><p class="dedication">Built by S for T, ${circled('with Love')}</p>${g ? `<p class="hero-greet"><span class="overline">${esc(g.hello)}</span><span>${esc(g.text)}${g.by ? ` <i>${esc(g.by)}</i>` : ''}</span></p>` : ''}</section>`;
+  return `<section class="hero${compact ? ' compact' : ''}">${logoSVG(UI.entering ? 'draw-logo' : '')}<p class="wordmark">Five Ps</p><p class="dedication">Built by S for T, ${circled('with Love')}</p>${g ? `<p class="hero-greet"><span class="overline">${esc(g.hello)}</span><span>${esc(g.text)}${g.by ? ` <i>${esc(g.by)}</i>` : ''}</span></p>` : ''}${pinnedHTML()}</section>`;
 }
 /* Website only: cases live in this browser, so offer a file to carry them to her other device. */
 function everywhereHTML() {
